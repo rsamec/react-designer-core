@@ -3,8 +3,15 @@ react-designer-core
 
 Warning - it is prototype and work in progress.
 
-React designer is WYSIWYG editor for easy content creation (legal contracts, business forms, marketing leaflets, technical guides, visual reports, rich dashboards, tutorials and other content, etc.).
-It is based on the simple document description [logical object tree](#LOT) and the [React rendering](http://facebook.github.io/react) that form the visual tree in DOM so that it maps logical tree to react component and its properties.
+React designer is WYSIWYG editor for **easy content creation** (legal contracts, business forms, marketing leaflets, technical guides, visual reports, rich dashboards, tutorials and other content, etc.).
+
+[Live demo](http://rsamec.github.io/react-designer-core/)
+
+It is based on
+
++   logical object tree - JSON simple document description - [logical object tree](#LOT)
++   visual object tree [React components](http://facebook.github.io/react) - rendering to DOM so that it maps logical tree to react component and its properties
+
 
 React designer core components
 
@@ -66,26 +73,26 @@ There is an minimal 'Hello world' example. The logical tree consists of one cont
 
 You can see 2 collections (arrays) of objects
 
-+   containers - collection of children
-+   boxes - collection of widgets
++   **containers** - collection of children
++   **boxes** - collection of widgets
 
 The object schema tree is composed using __containers__ property as collection of children.
 The boxes on the other hand is a leaf collection that can not have other children.
 
 Objects can have these object properties
 
-+   name - optional element identifier (has no impact on visual tree rendering)
-+   elementName - type of element
-+   style - element positions and dimensions
++   **name** - optional element identifier (has no impact on visual tree rendering)
++   **elementName** - type of element
++   **style** - element positions and dimensions
     +   top, left - element position
     +   width, height - optional element dimensions
     +   position - support for various position schemas -> absolute or relative position of elements (normal flow, flex or grid position schemas is not yet implemented)
-+   props - react component props as component's options.
++   **props** - react component props as component's options.
 
 
 ### React elements and components
 
-To render in react is super simple
+To render in react is really simple
 
 ```js
     createComponent: function (box) {
@@ -137,9 +144,6 @@ import {Workplace,Preview,ObjectBrowser,ObjectPropertyGrid} from 'react-designer
 
 See the example folder.
 
-### Properties
-
-See the demo.
 
 ## Roadmap
 
