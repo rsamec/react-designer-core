@@ -1,13 +1,111 @@
 react-designer-core
 =======================
 
-React designer core compoents
+Warning - it is prototype and work in progress.
+
+React designer is WYSIWYG editor for easy content creation (legal contracts, business forms, marketing leaflets, technical guides, visual reports, rich dashboards, tutorials and other content, etc.).
+It is based on the simple document description [logical object tree](#LOT) and the [React rendering](http://facebook.github.io/react) that form the visual tree in DOM so that it maps logical tree to react component and its properties.
+
+React designer core components
 
 +   Workplace
 +   PropertyGrid
 +   Toolbox
 +   ObjectTree
 +   Preview
+
+## Features
+
++   directly manipulate the layout of a document without having to type or remember names of components, elements, properties or other layout commands.
++   high-quality on-screen output and on-printer output
++   precise visual layout that corresponds to an existing paper version
+    +   support for various output formats - html, pdf, etc.
++   comfortable user experience - basic WYSIWYG features
+    +   support drag nad drop - resize object length, move object positions
+    +   support manipulating objects -> copy, move, up, down objects in object schema hierarchy
+    +   highlighting currently selected object and its parent
++   undo/redo functionality
++   build-in html content publishing (preview of html dynamic document)
++   binding support using [react-binding](https://github.com/rsamec/react-binding) - experimental
++   props inheritance - when rendering occurs -> the props value is resolved by using a value resolution strategy (Binding Value -> Local Value -> Style Value -> Default Value)
++   usable for big documents - careful designed to use react performance
+    +   we won't render the component if it doesn't need it
+    +   simple comparison is fast because of using immutable data structure
+
+## <a name="LOT">Logical object tree</a>
+
+It is a simple object tree that consists of
+
++   **containers** - nodes that are invisible components - usable for logical grouping of reactive parts of document (sections)
++   **boxes** - terminal nodes (leaf) that are visible components - (react components, boxes, widgets) - it maps to props of react component
+
+
+There is an minimal 'Hello world' example. The logical tree consists of one container and one box with TextBox element.
+
+```json
+{
+ "name": "ExampleSchema",
+ "elementName": "ObjectSchema",
+ "containers": [
+    {
+     "name": "container",
+     "elementName": "Container",
+     "style": { "top": 0, "left": 0, "height": 200, "width": 740, "position": "relative" }
+     "boxes": [{
+        "name": "TextBox",
+        "elementName": "TextBox",
+        "style": { "top": 0, "left": 0 },
+        "props":{
+             "content": "Hello world"
+            }
+        }],
+    }]
+}
+
+```
+
+You can see 2 collections (arrays) of objects
+
++   containers - collection of children
++   boxes - collection of widgets
+
+The object schema tree is composed using __containers__ property as collection of children.
+The boxes on the other hand is a leaf collection that can not have other children.
+
+Objects can have these object properties
+
++   name - optional element identifier (has no impact on visual tree rendering)
++   elementName - type of element
++   style - element positions and dimensions
+    +   top, left - element position
+    +   width, height - optional element dimensions
+    +   position - support for various position schemas -> absolute or relative position of elements (normal flow, flex or grid position schemas is not yet implemented)
++   props - react component props as component's options.
+
+
+### React elements and components
+
+To render in react is super simple
+
+```js
+    createComponent: function (box) {
+        var widget =widgets[box.elementName];
+        if (widget === undefined) return React.DOM.span(null,'Component ' + box.elementName + ' is not register among widgets.');
+
+        return React.createElement(widget,box, box.content!== undefined?React.DOM.span(null, box.content):undefined);
+    },
+    render:function(){
+       {this.props.boxes.map(function (box, i) {
+                var component = this.createComponent(box);
+                return (
+                       <div style={box.style}>
+                            {component}
+                       </div>
+                       );
+       }, this)}
+    }
+```
+
 
 ## Demo & Examples
 
@@ -33,17 +131,34 @@ You can also use the standalone build by including `dist/react-shapes.js` in you
 npm install react-designer-core --save
 ```
 
-
 ## Usage
 
+import {Workplace,Preview,ObjectBrowser,ObjectPropertyGrid} from 'react-designer-core';
+
+See the example folder.
 
 ### Properties
 
 See the demo.
 
-### Notes
+## Roadmap
 
-
++   add typography support
++   improve designer experience
+    +   move objects in object browser
+    +   improve - resize -
+    +   disabled add widget when box is selected (1)
+    +   improve property editor
++   performance issues
+    +   recheck - should component update
+    +   parse property values (parseInt,etc.) - to many places - remove defensive programming favor contract by design
++   data watchers - if some data changes, it changes on the other site
++   support for binding to remote stores
++   full support for css positioning schemas - absolute, relative, normal flow, flex, grid, ...
++   PDF - better support
+    +   publish pdfkit service
+    +   better support html fragments -> to pdf (using html parser) - consider using pdfmake
++   support for svg - rendering on server
 
 ### License
 
