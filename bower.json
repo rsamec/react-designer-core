@@ -1,0 +1,32 @@
+{
+  "name": "react-designer-core",
+  "main": "dist/react-designer-core.min.js",
+  "version": "0.0.5",
+  "homepage": "https://github.com/rsamec/react-designer-core",
+  "authors": [
+    "Roman Samec"
+  ],
+  "description": "React designer core components.",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "dependencies": {
+    "tinymce": "~4.1.9"
+  },
+  "keywords": [
+    "react",
+    "react-component"
+  ],
+  "license": "MIT",
+  "ignore": [
+    ".editorconfig",
+    ".gitignore",
+    "package.json",
+    "src",
+    "node_modules",
+    "example",
+    "test"
+  ]
+}
