@@ -4,7 +4,7 @@ var HtmlPagesRenderer = require('react-page-renderer').HtmlPagesRenderer;
 var BindToMixin = require('react-binding');
 
 //get print widgets
-var widgets = require('./WidgetFactory');
+var widgets = require('./example/src/WidgetFactory');
 
 var App = React.createClass({displayName: "App",
     mixins:[BindToMixin],
