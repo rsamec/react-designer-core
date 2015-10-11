@@ -5,12 +5,15 @@ import { DropTarget } from 'react-dnd';
 import _ from 'lodash';
 import cx from 'classnames';
 
+//import TransformContainer from './TransformContainer.js';
 import Box from './Box.js';
 import ResizableHandle from './ResizableHandle.js';
+import ResizeContainer from './ResizeContainer.js';
 import If from './../util/If';
 
+var handle = 30;
 const target = {
-    drop(props, monitor,component) {
+    drop(props, monitor, component) {
         if (monitor.didDrop()) {
             // If you want, you can check whether some nested
             // target already handled drop
@@ -25,19 +28,20 @@ const target = {
         //console.log(delta);
         if (!!!delta) return;
 
-        if (monitor.getItemType()=== ItemTypes.BOX) {
+        if (monitor.getItemType() === ItemTypes.BOX) {
             var left = Math.round(isNaN(item.left) ? 0 : parseInt(item.left, 10) + delta.x);
             var top = Math.round(isNaN(item.top) ? 0 : parseInt(item.top, 10) + delta.y);
             component.moveBox(item.index, left, top);
-        };
+        }
+        ;
 
-        if (monitor.getItemType()=== ItemTypes.RESIZABLE_HANDLE)
-        {
-            var left = Math.round(item.left + 30 + delta.x);
-            var top = Math.round(item.top + 30 + delta.y);
+        if (monitor.getItemType() === ItemTypes.RESIZABLE_HANDLE) {
+            var left = Math.round(delta.x);
+            var top = Math.round(delta.y);
 
             component.resizeContainer(item.parent, left, top);
-        };
+        }
+        ;
     }
 };
 class Container extends React.Component {
@@ -47,18 +51,18 @@ class Container extends React.Component {
         var box = boxes[index];
         if (box === undefined) return;
 
-        var updated = box.set({'style': {'top': top, 'left': left}});
+        var updated = box.set({'style': _.merge(_.clone(box.style),{'top': top, 'left': left})});
         //var updated = box.set({'style': {'top': top, 'left': left,'height':box.style.height,'width':box.style.width}});
         this.props.currentChanged(updated);
     }
 
-    resizeContainer(container, width, height) {
+    resizeContainer(container, deltaWidth, deltaHeight) {
         if (container === undefined) return;
 
         //TODO: use merge instead of clone
         var style = _.clone(container.style);
-        style.width = width;
-        style.height = height;
+        style.width += deltaWidth;
+        style.height += deltaHeight;
 
         //var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
         var updated = container.set({'style': style});
@@ -94,8 +98,8 @@ class Container extends React.Component {
         };
 
         //resize handle position
-        var handle = 30;
-        var resizeHandlePosition = {top: (this.props.height - handle), left: (this.props.width - handle)};
+
+        var resizeHandlePosition = {top: (this.props.top + this.props.height - handle), left: (this.props.left + this.props.width - handle)};
 
 
         const { canDrop, isOver, connectDropTarget } = this.props;
@@ -117,24 +121,24 @@ class Container extends React.Component {
                         var top = container.style.top === undefined ? 0 : parseInt(container.style.top, 10);
                         return (
                             <WrappedContainer key={key}
-                                       index={index}
-                                       left={left}
-                                       top={top}
-                                       height={container.style.height}
-                                       width={container.style.width}
-                                       position={container.style.position}
-                                       boxes={container.boxes}
-                                       containers={container.containers}
-                                       currentChanged={this.props.currentChanged}
-                                       current={this.props.current}
-                                       handleClick={handleClick}
-                                       parent={container}
-                                       parentSelected={parentSelected}
-                                       selected={selected}
-                                       dataBinder={this.props.dataBinder}
-                                       intlData={this.props.intlData}
-                                       ctx={this.props.ctx}
-                                       widgets={this.props.widgets}
+                                              index={index}
+                                              left={left}
+                                              top={top}
+                                              height={container.style.height}
+                                              width={container.style.width}
+                                              position={container.style.position}
+                                              boxes={container.boxes}
+                                              containers={container.containers}
+                                              currentChanged={this.props.currentChanged}
+                                              current={this.props.current}
+                                              handleClick={handleClick}
+                                              parent={container}
+                                              parentSelected={parentSelected}
+                                              selected={selected}
+                                              dataBinder={this.props.dataBinder}
+                                              intlData={this.props.intlData}
+                                              ctx={this.props.ctx}
+                                              widgets={this.props.widgets}
                                 />
                         );
                     }, this)
@@ -145,25 +149,23 @@ class Container extends React.Component {
                         var selected = box === this.props.current.node;
                         var key = box.name + index;
 
-                        var handleClick = function () {
-                            if (this.props.currentChanged !== undefined) this.props.currentChanged(box);
-                        }.bind(this);
-
                         var left = box.style.left === undefined ? 0 : parseInt(box.style.left, 10);
                         var top = box.style.top === undefined ? 0 : parseInt(box.style.top, 10);
                         return (
-                            <Box key={key}
-                                 index={index}
-                                 left={left}
-                                 top={top}
-                                 selected={selected}
-                                 hideSourceOnDrag={this.props.hideSourceOnDrag}
-                                 handleClick={handleClick}
-                                 node={box} dataBinder={this.props.dataBinder}
-                                 ctx={this.props.ctx}
-                                 widgets={this.props.widgets}
-                                >
-                            </Box>
+
+                                    <Box key={key}
+                                         index={index}
+                                         left={left}
+                                         top={top}
+                                         selected={selected}
+                                         hideSourceOnDrag={this.props.hideSourceOnDrag}
+                                         currentChanged={this.props.currentChanged}
+                                         node={box} dataBinder={this.props.dataBinder}
+                                         ctx={this.props.ctx}
+                                         widgets={this.props.widgets}
+                                        >
+                                    </Box>
+
                         );
                     }, this)
                     }
@@ -176,7 +178,6 @@ class Container extends React.Component {
         );
     }
 };
-
 //Container.propTypes = propTypes;
 
 var collect = (connect, monitor) => ({
@@ -184,7 +185,7 @@ var collect = (connect, monitor) => ({
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop()
 });
-var WrappedContainer =DropTarget([ItemTypes.RESIZABLE_HANDLE,ItemTypes.BOX], target,collect)(Container);
+var WrappedContainer = DropTarget([ItemTypes.RESIZABLE_HANDLE, ItemTypes.BOX], target, collect)(Container);
 // Export the wrapped component:
 export default WrappedContainer;
 

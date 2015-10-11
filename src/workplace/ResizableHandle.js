@@ -25,7 +25,7 @@ function collect(connect, monitor) {
     };
 }
 const propTypes = {
-    //item: PropTypes..isRequired,
+    item: PropTypes.isRequired,
 
     // Injected by React DnD:
     isDragging: PropTypes.bool.isRequired,
@@ -36,7 +36,7 @@ class ResizableHandle extends React.Component {
     render() {
         const { isDragging, connectDragSource, item } = this.props;
         return connectDragSource(
-            <div className="resizable-handle" style={{left: this.props.left,top: this.props.top}}>
+            <div className="resizable-handle" style={{left: this.props.left,top: this.props.top,position:'absolute'}}>
             </div>
         );
     }

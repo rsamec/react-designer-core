@@ -4,6 +4,7 @@ import _ from 'lodash';
 import Freezer from 'freezer-js';
 import BindToMixin from 'react-binding';
 import SplitPane from 'react-split-pane';
+import PropertyEditor from 'react-property-editor';
 
 import {Workplace,Preview, ObjectBrowser,ObjectPropertyGrid,ComponentMetaData} from 'react-designer-core';
 import ToolBox from './ToolBox.js';
@@ -13,6 +14,8 @@ import {Modal} from 'react-overlays';
 import ModalStyles from './ModalStyles.js';
 import Dock from 'react-dock';
 import FilePickerDialog from './FilePickerDialog.js';
+
+import WidgetStyleEditor from './WidgetStyleEditor.js';
 
 var emptyObjectSchema = {
     elementName: 'ObjectSchema',
@@ -28,7 +31,7 @@ var emptyObjectSchema = {
 
     }
 };
-
+PropertyEditor.registerType('widgetStyleEditor',WidgetStyleEditor);
 
 // Create a Freezer store
 var frozen = new Freezer({schema: emptyObjectSchema});
@@ -128,7 +131,6 @@ var ToolbarActions = React.createClass({
         );
     }
 });
-
 
 //Designer - top editor
 var Designer = React.createClass({
@@ -303,8 +305,12 @@ var Designer = React.createClass({
 
         var exportSchema = "data:text/json;charset=utf-8," + encodeURIComponent(this.schemaToJson());
         var exportSchemaName = schema.name + ".json";
+
+
+
         return (
             <div>
+
                 <SplitPane split="vertical" minSize={80} defaultSize="70vw">
                     <div>
                         <Workplace schema={schema} current={this.state.current}
