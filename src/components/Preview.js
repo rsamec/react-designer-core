@@ -1,13 +1,20 @@
 import React from 'react';
 import BindToMixin from 'react-binding';
 import _ from 'lodash';
+import falcor from 'falcor';
+import falcorDataSource from 'falcor-http-datasource';
 
 import {HtmlPagesRenderer,BootstrapPublisher} from 'react-page-renderer';
 
 var Preview = React.createClass({
     mixins: [BindToMixin],
-    getInitialState() {
-        return {data: _.cloneDeep(this.props.schema.props.defaultData)}
+    getInitialState:function() {
+
+        var dataSources = _.reduce(this.props.schema.props.dataSources,function(memo,value,key){
+            memo[key] = new falcor.Model({source: new falcorDataSource(value)});
+            return memo;
+        },{});
+        return {data:_.extend({dataSources:dataSources}, _.cloneDeep(this.props.schema.props.defaultData))};
     },
     render: function () {
         var schema = this.props.schema; //_.cloneDeep(this.props.schema);

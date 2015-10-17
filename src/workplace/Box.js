@@ -88,7 +88,7 @@ class Box extends React.Component
         //if (!box.props.width && !!box.style.width) box.props.width = box.style.width;
         //if (!box.props.height&& !!box.style.height) box.props.height = box.style.height;
 
-        var boxComponent = <WidgetRenderer widget={widgets[box.elementName]} node={box} dataBinder={this.props.dataBinder} customStyle={customStyle} />;
+        var boxComponent = <WidgetRenderer widget={widgets[box.elementName]} node={box} dataBinder={this.props.dataBinder} customStyle={customStyle} designer={true} />;
         const { isDragging, connectDragSource, item } = this.props;
 
 

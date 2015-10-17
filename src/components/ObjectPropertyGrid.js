@@ -36,7 +36,8 @@ export default class ObjectPropertyGrid extends React.Component
         var metaData = isContainer? ComponentMetaData[elementName].metaData:this.props.widgets[elementName].metaData;
 
         //props
-        var props = _.merge(clearObject(metaData.props),currentNode.toJS().props);
+        var metaDataProps = metaData && metaData.props || {};
+        var props = _.merge(clearObject(metaDataProps),currentNode.toJS().props);
         var settings = metaData && metaData.settings || {};
 
         var commonProps = { name:currentNode.name};

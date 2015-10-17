@@ -15,6 +15,7 @@ var bodyParser = require('body-parser');
 
 var React = require("react");
 var pdf = require('html-pdf');
+var Transmit = require('react-transmit');
 
 //var areIntlLocalesSupported = require('intl-locales-supported');
 //
@@ -345,7 +346,7 @@ var SampleApp = function() {
                     fs.readFile(fileName, 'utf8', function (err, data) {
                         if (err) console.log(err);
 
-
+                        Transmit.renderToString()
                         var html = React.renderToStaticMarkup(React.createElement(App,{schema:JSON.parse(data)}));
 
                         var options = {  format: 'A4', zoomFactor:1.4 };
@@ -386,14 +387,23 @@ var SampleApp = function() {
 
         var generateBinary = function(req,res,type){
             console.log('Generate: ' + type);
-            var html = React.renderToStaticMarkup(React.createElement(App, {schema: req.body}));
 
-            var options = {type:type, format: 'A4', zoomFactor: 1.4};
-            pdf.create(html, options).toBuffer(function (err, buffer) {
-                res.contentType(type == 'pdf'?"application/pdf":"image/" + type);
-                res.send(buffer);
-                console.log("print generation finished");
-            });
+            //var html = React.renderToStaticMarkup(React.createElement(App, {schema: req.body}));
+
+            Transmit.renderToString(App, {schema: req.body}).then(function(response){
+
+                console.log("Generated");
+                var html =  response.reactString;
+
+
+
+                var options = type === "pdf"?{type:type, format: 'A4', zoomFactor: 1.40}:{type:type,zoomFactor: 1.0};
+                pdf.create(html, options).toBuffer(function (err, buffer) {
+                    res.contentType(type == 'pdf'?"application/pdf":"image/" + type);
+                    res.send(buffer);
+                    console.log("print generation finished");
+                });
+            }, function(error){console.log(error)})
         };
 
         self.app.post('/pdf', function(req, res) {

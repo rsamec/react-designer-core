@@ -4,7 +4,6 @@ import _ from 'lodash';
 import HTML5Backend from 'react-dnd/modules/backends/HTML5';
 import { DragDropContext } from 'react-dnd';
 import {CSSTranshand} from 'transhand';
-
 import Container from './../workplace/Container';
 
 var defaultTransform = {
@@ -16,8 +15,10 @@ var defaultTransform = {
 var Workplace = React.createClass({
     mixins: [BindToMixin],
     getInitialState(){
-        return {data: _.cloneDeep(this.props.schema.props.defaultData)}
+
+        return {data:_.cloneDeep(this.props.schema.props.defaultData) || {}};
     },
+
     handleChange (change){
         var currentNode = this.props.current.node;
         if (currentNode == undefined) return;

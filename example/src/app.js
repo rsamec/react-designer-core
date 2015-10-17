@@ -16,6 +16,7 @@ import Dock from 'react-dock';
 import FilePickerDialog from './FilePickerDialog.js';
 
 import WidgetStyleEditor from './WidgetStyleEditor.js';
+import DataTemplates from './dataTemplates/DataTemplateExamples.js';
 
 var emptyObjectSchema = {
     elementName: 'ObjectSchema',
@@ -87,8 +88,13 @@ var ToolbarActions = React.createClass({
         var clone = _.cloneDeep(current);
         clone.name = "Copy " + clone.name;
 
+        var isContainer =  this.isContainer();
 
-        var items = this.isContainer() ? parent.containers : parent.boxes;
+        //move down by item height
+        if (!isContainer) clone.style.top = (current.style.top || 0) + (current.style.height || 0);
+
+        var items = isContainer ? parent.containers : parent.boxes;
+
         //add new cloned of selected item
         var updated = items.push(clone);
 
@@ -195,7 +201,7 @@ var Designer = React.createClass({
     addNewContainer(){
         this.addNewCtrl('Container')
     },
-    addNewCtrl (elName) {
+    addNewCtrl (elName,itemToAdd) {
         var current = this.state.current.node;
         if (current === undefined) return;
 
@@ -230,6 +236,13 @@ var Designer = React.createClass({
             },
             props: {}
         };
+
+        if (itemToAdd !== undefined){
+            defaultNewItem.style.transform = _.clone(itemToAdd.style.transform);
+            defaultNewItem.props = _.cloneDeep(itemToAdd.props);
+          //  defaultNewItem.style.top = 0;
+          //  defaultNewItem.style.left = 0;
+        }
 
         var updated = items.push(defaultNewItem);
         this.currentChanged(updated.__.parents[0]);
@@ -270,8 +283,10 @@ var Designer = React.createClass({
     },
     openModal() {
         this.setState({previewModalOpen: true});
+
     },
     closeModal(){
+        this.setState({dataGeneratorModalOpen: false});
         this.setState({previewModalOpen: false});
     },
     generate(type){
@@ -362,9 +377,12 @@ var Designer = React.createClass({
                                             </a>
                                             <ul className="dropdown-menu">
                                                 <li><a onClick={() => {this.generate('pdf')}}>PDF</a></li>
+                                                <li><a onClick={() => {this.generate('png')}}>PNG</a></li>
                                                 <li role="separator" className="divider"></li>
                                                 <li><a onClick={()=> {this.setState({importDlgShow:true})}}>Import</a></li>
                                                 <li> <a href={exportSchema} download={exportSchemaName}>Export</a></li>
+                                                <li role="separator" className="divider"></li>
+                                                <li><a onClick={()=> {this.setState({dataGeneratorModalOpen:true})}}>Data generator</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -394,6 +412,12 @@ var Designer = React.createClass({
                            backdropStyle={ModalStyles.backdropStyle}>
                         <div style={ModalStyles.dialogStyle}>
                             <Preview widgets={Widgets} schema={schema}/>
+                        </div>
+                    </Modal>
+                    <Modal show={this.state.dataGeneratorModalOpen} onHide={this.closeModal} style={ModalStyles.modalStyle}
+                           backdropStyle={ModalStyles.backdropStyle}>
+                        <div style={ModalStyles.dialogStyle}>
+                            <PropertyEditor value={{template:{}}} settings={{fields:{template:{type:'dataTemplateEditor',settings:{templates:DataTemplates}}}}} />
                         </div>
                     </Modal>
                     <FilePickerDialog show={this.state.importDlgShow} confirm={this.loadObjectSchema} storageKey={this.state.storageKey} onHide={() => {this.setState({importDlgShow:false})}} />

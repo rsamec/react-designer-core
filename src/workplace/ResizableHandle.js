@@ -25,7 +25,8 @@ function collect(connect, monitor) {
     };
 }
 const propTypes = {
-    item: PropTypes.isRequired,
+    //item: PropTypes.isRequired,
+
 
     // Injected by React DnD:
     isDragging: PropTypes.bool.isRequired,

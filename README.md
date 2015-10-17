@@ -7,11 +7,7 @@ React designer is WYSIWYG editor for **easy content creation** (legal contracts,
 
 [Live demo](http://rsamec.github.io/react-designer-core/)
 
-It is based on
-
-+   logical object tree - JSON simple document description - [logical object tree](#LOT)
-+   visual object tree [React components](http://facebook.github.io/react) - rendering to DOM so that it maps logical tree to react component and its properties
-
+It is based on PTT (Page Transform Tree) = JSON simple document description.
 
 React designer core components
 
@@ -39,20 +35,33 @@ React designer core components
     +   we won't render the component if it doesn't need it
     +   simple comparison is fast because of using immutable data structure
 
-## <a name="LOT">Logical object tree</a>
 
-It is a simple object tree that consists of
+## <a name="PTT">Page Transform Tree</a>
+
+This document is a full specification of the PTT format.
+
+The PTT is essentially a set of semantic assumptions laid on top of the JSON syntax. The PPT document is a plain text JSON describing visual content on the page.
+The typical description of the visual content consists of two parts:
+
++   logical component tree - it enables composition of elements - it describes the logical hierarchical layout of components
++   visual component tree - it describes the visual appearance - it describes the visual hierarchical layout of components
+
+The PTT document __must__ follow only the logical component tree.
+
+### The structure of PTT document
+
+It is a simple component tree that consists of these two nodes
 
 +   **containers** - nodes that are invisible components - usable for logical grouping of reactive parts of document (sections)
-+   **boxes** - terminal nodes (leaf) that are visible components - (react components, boxes, widgets) - it maps to props of react component
++   **boxes** - terminal nodes (leaf) that are visible components - (components, boxes, widgets) - it maps to props of component
 
 
 There is an minimal 'Hello world' example. The logical tree consists of one container and one box with TextBox element.
 
 ```json
 {
- "name": "ExampleSchema",
- "elementName": "ObjectSchema",
+ "name": "Hello World Example",
+ "elementName": "PTTv1",
  "containers": [
     {
      "name": "container",
@@ -68,27 +77,38 @@ There is an minimal 'Hello world' example. The logical tree consists of one cont
         }],
     }]
 }
-
 ```
+### PPT Node
 
-You can see 2 collections (arrays) of objects
++   **containers** node - collection of children
++   **boxes** node - collection of widgets
 
-+   **containers** - collection of children
-+   **boxes** - collection of widgets
-
-The object schema tree is composed using __containers__ property as collection of children.
+The component schema tree is composed using __containers__ property as collection of children.
 The boxes on the other hand is a leaf collection that can not have other children.
 
-Objects can have these object properties
+### PTT Node Properties
 
-+   **name** - optional element identifier (has no impact on visual tree rendering)
-+   **elementName** - type of element
-+   **style** - element positions and dimensions
-    +   top, left - element position
-    +   width, height - optional element dimensions
+Each node can have these object properties
+
++   **name** - optional element identifier (has no impact on page tree rendering)
++   **elementName** - required component name - type of element
++   **style** - required element positions and dimensions
+    +   top, left - element position - if not specified the default value is 0
+    +   width, height - element dimensions - if not specified the default value is the same as its parent
     +   position - support for various position schemas -> absolute or relative position of elements (normal flow, flex or grid position schemas is not yet implemented)
-+   **props** - react component props as component's options.
+    +   zIndex - optional - it defines stacking context, if not defined - stacking context is based on the order in document
+    +   transform - optional - it enables to translate, rotate, scale, move transform origin component
++   **props** - component props as component's options.
 
+React PTT implementation
+
++   logical object tree - JSON simple document description - [Page Transform Tree](#PTT)
++   visual object tree [React components](http://facebook.github.io/react) - rendering to DOM so that it maps logical tree to react component and its properties
+
+It is a simple object tree that consists of
+
++   **containers** - nodes that are invisible components - usable for logical grouping of reactive parts of document (sections)
++   **boxes** - terminal nodes (leaf) that are visible components - (react components, boxes, widgets) - it maps to props of react component
 
 ### React elements and components
 
@@ -112,7 +132,6 @@ To render in react is really simple
        }, this)}
     }
 ```
-
 
 ## Demo & Examples
 
@@ -144,13 +163,11 @@ import {Workplace,Preview,ObjectBrowser,ObjectPropertyGrid} from 'react-designer
 
 See the example folder.
 
-
 ## Roadmap
 
 +   add typography support
 +   improve designer experience
     +   move objects in object browser
-    +   improve - resize -
     +   disabled add widget when box is selected (1)
     +   improve property editor
 +   performance issues
@@ -162,7 +179,6 @@ See the example folder.
 +   PDF - better support
     +   publish pdfkit service
     +   better support html fragments -> to pdf (using html parser) - consider using pdfmake
-+   support for svg - rendering on server
 
 ### License
 

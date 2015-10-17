@@ -7,6 +7,7 @@ export default {
             props: {
                 title: undefined,
                 defaultData:undefined,
+                dataSources:undefined,
                 context:{
                     styles:undefined
                 }
@@ -14,6 +15,7 @@ export default {
             settings: {
                 fields: {
                     defaultData: {type: 'plainJsonEditor'},
+                    dataSources: {type: 'plainJsonEditor'},
                     context: {
                         fields:{
                             intlData: {type: 'plainJsonEditor'},
