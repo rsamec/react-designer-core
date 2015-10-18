@@ -388,13 +388,13 @@ var SampleApp = function() {
         var generateBinary = function(req,res,type){
             console.log('Generate: ' + type);
 
-            //var html = React.renderToStaticMarkup(React.createElement(App, {schema: req.body}));
+            var html = React.renderToStaticMarkup(React.createElement(App, {schema: req.body}));
 
-            Transmit.renderToString(App, {schema: req.body}).then(function(response){
-
-                console.log("Generated");
-                var html =  response.reactString;
-
+            //Transmit.renderToString(App, {schema: req.body}).then(function(response){
+            //
+            //    console.log("Generated");
+            //    var html =  response.reactString;
+            //
 
 
                 var options = type === "pdf"?{type:type, format: 'A4', zoomFactor: 1.40}:{type:type,zoomFactor: 1.0};
@@ -403,7 +403,7 @@ var SampleApp = function() {
                     res.send(buffer);
                     console.log("print generation finished");
                 });
-            }, function(error){console.log(error)})
+            //}, function(error){console.log(error)})
         };
 
         self.app.post('/pdf', function(req, res) {
