@@ -7,9 +7,13 @@ React designer is WYSIWYG editor for **easy content creation** (legal contracts,
 
 [Live demo](http://rsamec.github.io/react-designer-core/)
 
-It is based on PTT (Page Transform Tree) = JSON simple document description.
+It is based on
 
-React designer core components
++   logical component tree - JSON simple document description - [Page Transform Tree (PTT)](#PTT)
++   visual component tree [React components](http://facebook.github.io/react) - rendering to DOM so that it maps each component from logical tree to react component and its properties
+
+
+It comes with some core components typical for WYSIWYG designers
 
 +   Workplace
 +   PropertyGrid
@@ -91,24 +95,14 @@ The boxes on the other hand is a leaf collection that can not have other childre
 Each node can have these object properties
 
 +   **name** - optional element identifier (has no impact on page tree rendering)
-+   **elementName** - required component name - type of element
++   **elementName** - required component name - type of element to render 
 +   **style** - required element positions and dimensions
     +   top, left - element position - if not specified the default value is 0
     +   width, height - element dimensions - if not specified the default value is the same as its parent
     +   position - support for various position schemas -> absolute or relative position of elements (normal flow, flex or grid position schemas is not yet implemented)
     +   zIndex - optional - it defines stacking context, if not defined - stacking context is based on the order in document
     +   transform - optional - it enables to translate, rotate, scale, move transform origin component
-+   **props** - component props as component's options.
-
-React PTT implementation
-
-+   logical object tree - JSON simple document description - [Page Transform Tree](#PTT)
-+   visual object tree [React components](http://facebook.github.io/react) - rendering to DOM so that it maps logical tree to react component and its properties
-
-It is a simple object tree that consists of
-
-+   **containers** - nodes that are invisible components - usable for logical grouping of reactive parts of document (sections)
-+   **boxes** - terminal nodes (leaf) that are visible components - (react components, boxes, widgets) - it maps to props of react component
++   **props** - component props as component's options - specific properties of element to render
 
 ### React elements and components
 
