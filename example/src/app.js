@@ -6,17 +6,17 @@ import BindToMixin from 'react-binding';
 import SplitPane from 'react-split-pane';
 import PropertyEditor from 'react-property-editor';
 
-import {Workplace,Preview, ObjectBrowser,ObjectPropertyGrid,ComponentMetaData} from 'react-designer-core';
-import ToolBox from './ToolBox.js';
-import Widgets from './WidgetFactory.js';
+import {Workplace,ObjectBrowser,ObjectPropertyGrid,ComponentMetaData} from 'react-designer-core';
+import Preview from './components/Preview.js';
+import ToolBox from './components/ToolBox.js';
+import Widgets from './components/WidgetFactory.js';
 
 import {Modal} from 'react-overlays';
 import ModalStyles from './ModalStyles.js';
 import Dock from 'react-dock';
-import FilePickerDialog from './FilePickerDialog.js';
+import FilePickerDialog from './components/FilePickerDialog.js';
 
-import WidgetStyleEditor from './WidgetStyleEditor.js';
-import DataTemplates from './dataTemplates/DataTemplateExamples.js';
+import WidgetStyleEditor from './components/WidgetStyleEditor.js';
 
 var emptyObjectSchema = {
     elementName: 'ObjectSchema',
@@ -417,7 +417,7 @@ var Designer = React.createClass({
                     <Modal show={this.state.dataGeneratorModalOpen} onHide={this.closeModal} style={ModalStyles.modalStyle}
                            backdropStyle={ModalStyles.backdropStyle}>
                         <div style={ModalStyles.dialogStyle}>
-                            <PropertyEditor value={{template:{}}} settings={{fields:{template:{type:'dataTemplateEditor',settings:{templates:DataTemplates}}}}} />
+
                         </div>
                     </Modal>
                     <FilePickerDialog show={this.state.importDlgShow} confirm={this.loadObjectSchema} storageKey={this.state.storageKey} onHide={() => {this.setState({importDlgShow:false})}} />

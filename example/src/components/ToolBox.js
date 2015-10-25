@@ -3,10 +3,10 @@ import _ from 'lodash';
 import {Panel,Tabs,Tab} from 'react-bootstrap';
 import ToolBoxItem from './ToolBoxItem.js';
 
-var textParagraph = require('./toolbox/TextParagraph.json').containers[0];
-var textTitles = require('./toolbox/TextTitles.json').containers[0];
-var textLists = require('./toolbox/TextLists.json').containers[0];
-var textColumns = require('./toolbox/TextColumns.json').containers[0];
+var textParagraph = require('../toolbox/TextParagraph.json').containers[0];
+var textTitles = require('../toolbox/TextTitles.json').containers[0];
+var textLists = require('../toolbox/TextLists.json').containers[0];
+var textColumns = require('../toolbox/TextColumns.json').containers[0];
 class ToolboxTexts extends React.Component {
     render(){
         return (
@@ -29,7 +29,7 @@ class ToolboxTexts extends React.Component {
 };
 
 
-var shapeBasic = require('./toolbox/ShapeBasic.json').containers[0];
+var shapeBasic = require('../toolbox/ShapeBasic.json').containers[0];
 class ToolboxShapes extends React.Component {
     render(){
         return (
@@ -41,7 +41,7 @@ class ToolboxShapes extends React.Component {
         )
     }
 };
-var bootstrapCon = require('./toolbox/Bootstrap.json').containers[0];
+var bootstrapCon = require('../toolbox/Bootstrap.json').containers[0];
 class ToobBoxBootstrap extends React.Component {
     render(){
         return (
@@ -54,7 +54,7 @@ class ToobBoxBootstrap extends React.Component {
     }
 };
 
-var imagesCon = require('./toolbox/Images.json').containers[0];
+var imagesCon = require('../toolbox/Images.json').containers[0];
 class ToobBoxImages extends React.Component {
     render(){
         return (
@@ -66,7 +66,7 @@ class ToobBoxImages extends React.Component {
         )
     }
 };
-var chartCon = require('./toolbox/Chart.json').containers[0];
+var chartCon = require('../toolbox/Chart.json').containers[0];
 class ToolBoxCharts extends React.Component {
     render(){
         return (

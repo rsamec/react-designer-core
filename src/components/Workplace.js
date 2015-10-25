@@ -15,7 +15,6 @@ var defaultTransform = {
 var Workplace = React.createClass({
     mixins: [BindToMixin],
     getInitialState(){
-
         return {data:_.cloneDeep(this.props.schema.props.defaultData) || {}};
     },
 
