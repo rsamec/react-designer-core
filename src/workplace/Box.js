@@ -4,7 +4,7 @@ import ItemTypes  from '../util/ItemTypes.js';
 
 import _ from 'lodash';
 import cx from 'classnames';
-import {WidgetRenderer} from 'react-page-renderer';
+import WidgetRenderer from '../components/WidgetRenderer.js';
 import {Transhand} from 'transhand';
 import ResizeContainer from './ResizeContainer.js';
 /**
