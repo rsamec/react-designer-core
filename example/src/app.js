@@ -377,7 +377,6 @@ var Designer = React.createClass({
                                             </a>
                                             <ul className="dropdown-menu">
                                                 <li><a onClick={() => {this.generate('pdf')}}>PDF</a></li>
-                                                <li><a onClick={() => {this.generate('png')}}>PNG</a></li>
                                                 <li role="separator" className="divider"></li>
                                                 <li><a onClick={()=> {this.setState({importDlgShow:true})}}>Import</a></li>
                                                 <li> <a href={exportSchema} download={exportSchemaName}>Export</a></li>
