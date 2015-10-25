@@ -20,6 +20,7 @@
     "react": "^0.13.3",
     "react-binding": "^0.6.4",
     "react-dnd": "^1.1.8",
+    "react-dock": "^0.2.3",
     "react-property-editor": "^0.2.5",
     "react-treeview": "^0.4.2",
     "reactify": "^1.1.1",

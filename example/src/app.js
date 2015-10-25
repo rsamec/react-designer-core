@@ -326,7 +326,7 @@ var Designer = React.createClass({
         return (
             <div>
 
-                <SplitPane split="vertical" minSize={80} defaultSize="70vw">
+                <SplitPane split="vertical" minSize={80} defaultSize="65vw">
                     <div>
                         <Workplace schema={schema} current={this.state.current}
                                    currentChanged={this.currentChanged} widgets={Widgets}/>
@@ -382,7 +382,7 @@ var Designer = React.createClass({
                                                 <li><a onClick={()=> {this.setState({importDlgShow:true})}}>Import</a></li>
                                                 <li> <a href={exportSchema} download={exportSchemaName}>Export</a></li>
                                                 <li role="separator" className="divider"></li>
-                                                <li><a onClick={()=> {this.setState({dataGeneratorModalOpen:true})}}>Data generator</a></li>
+                                                <li><a onClick={()=> {this.setState({dataGeneratorModalOpen:true})}}>Data</a></li>
                                             </ul>
                                         </li>
                                     </ul>
@@ -399,7 +399,7 @@ var Designer = React.createClass({
                         </SplitPane>
                     </div>
                 </SplitPane>
-                <Dock position='right' dimMode='none' isVisible={this.state.isVisible}>
+                <Dock position='right' isVisible={this.state.isVisible} onVisibleChange={(isVisible)=> this.setState({isVisible})}>
                     <div>
                         <span style={{float:'right'}} className="glyphicon glyphicon-remove"  title="close" onClick={() => this.setState({ isVisible: !this.state.isVisible })}></span>
                     </div>

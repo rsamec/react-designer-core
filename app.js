@@ -7,7 +7,7 @@ var falcor = require('falcor');
 var falcorDataSource = require('falcor-http-datasource');
 
 //get print widgets
-var widgets = require('./example/src/WidgetFactory');
+var widgets = require('./example/src/components/WidgetFactory');
 
 var App = React.createClass({displayName: "App",
     mixins:[BindToMixin],
@@ -21,8 +21,8 @@ var App = React.createClass({displayName: "App",
     },
     render: function () {
         var style = {margin: 0, padding: 0 };
-        //var pageOptions = {border:'none'};
-        var pageOptions = {width:300,height:1000,margin:{top:-31,left:-31,right:31,bottom:31},border:'none'};
+        var pageOptions = {top:31,bottom:31};
+        //var pageOptions = {width:300,height:1000,margin:{top:-31,left:-31,right:31,bottom:31},border:'none'};
         var schema = this.props.schema;
         var data = this.props.data || schema.data;
 
