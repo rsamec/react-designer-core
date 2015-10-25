@@ -2301,7 +2301,7 @@ var HTML5Backend = (function () {
 function createHTML5Backend(manager) {
   return new HTML5Backend(manager);
 }
-},{"../utils/BrowserDetector":51,"../utils/EnterLeaveCounter":52,"../utils/OffsetHelpers":53,"../utils/shallowEqual":55,"dnd-core":64,"invariant":75,"lodash/object/defaults":44}],51:[function(require,module,exports){
+},{"../utils/BrowserDetector":51,"../utils/EnterLeaveCounter":52,"../utils/OffsetHelpers":53,"../utils/shallowEqual":55,"dnd-core":64,"invariant":74,"lodash/object/defaults":44}],51:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2713,7 +2713,7 @@ var DragDropManager = (function () {
 
 exports['default'] = DragDropManager;
 module.exports = exports['default'];
-},{"./DragDropMonitor":57,"./HandlerRegistry":60,"./actions/dragDrop":61,"./reducers":68,"redux/lib/createStore":73}],57:[function(require,module,exports){
+},{"./DragDropMonitor":57,"./HandlerRegistry":60,"./actions/dragDrop":61,"./reducers":68,"redux/lib/createStore":72}],57:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2915,7 +2915,7 @@ var DragDropMonitor = (function () {
 
 exports['default'] = DragDropMonitor;
 module.exports = exports['default'];
-},{"./HandlerRegistry":60,"./reducers/dirtyHandlerIds":65,"./reducers/dragOffset":66,"./utils/matchesType":71,"invariant":75,"lodash/lang/isArray":39}],58:[function(require,module,exports){
+},{"./HandlerRegistry":60,"./reducers/dirtyHandlerIds":65,"./reducers/dragOffset":66,"./utils/matchesType":71,"invariant":74,"lodash/lang/isArray":39}],58:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2982,10 +2982,6 @@ var _invariant = require('invariant');
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _keymirror = require('keymirror');
-
-var _keymirror2 = _interopRequireDefault(_keymirror);
-
 var _lodashLangIsArray = require('lodash/lang/isArray');
 
 var _lodashLangIsArray2 = _interopRequireDefault(_lodashLangIsArray);
@@ -2996,10 +2992,10 @@ var _utilsGetNextUniqueId2 = _interopRequireDefault(_utilsGetNextUniqueId);
 
 var _actionsRegistry = require('./actions/registry');
 
-var HandlerRoles = _keymirror2['default']({
-  SOURCE: null,
-  TARGET: null
-});
+var HandlerRoles = {
+  SOURCE: 'SOURCE',
+  TARGET: 'TARGET'
+};
 
 function validateSourceContract(source) {
   _invariant2['default'](typeof source.canDrag === 'function', 'Expected canDrag to be a function.');
@@ -3162,7 +3158,7 @@ var HandlerRegistry = (function () {
 
 exports['default'] = HandlerRegistry;
 module.exports = exports['default'];
-},{"./actions/registry":62,"./utils/getNextUniqueId":70,"invariant":75,"keymirror":72,"lodash/lang/isArray":39}],61:[function(require,module,exports){
+},{"./actions/registry":62,"./utils/getNextUniqueId":70,"invariant":74,"lodash/lang/isArray":39}],61:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3344,7 +3340,7 @@ function endDrag() {
     type: END_DRAG
   };
 }
-},{"../utils/matchesType":71,"invariant":75,"lodash/lang/isArray":39,"lodash/lang/isObject":42}],62:[function(require,module,exports){
+},{"../utils/matchesType":71,"invariant":74,"lodash/lang/isArray":39,"lodash/lang/isObject":42}],62:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3825,61 +3821,6 @@ function matchesType(targetType, draggedItemType) {
 
 module.exports = exports['default'];
 },{"lodash/lang/isArray":39}],72:[function(require,module,exports){
-/**
- * Copyright 2013-2014 Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
-"use strict";
-
-/**
- * Constructs an enumeration with keys equal to their value.
- *
- * For example:
- *
- *   var COLORS = keyMirror({blue: null, red: null});
- *   var myColor = COLORS.blue;
- *   var isColorValid = !!COLORS[myColor];
- *
- * The last line could not be performed if the values of the generated enum were
- * not equal to their keys.
- *
- *   Input:  {key1: val1, key2: val2}
- *   Output: {key1: key1, key2: key2}
- *
- * @param {object} obj
- * @return {object}
- */
-var keyMirror = function(obj) {
-  var ret = {};
-  var key;
-  if (!(obj instanceof Object && !Array.isArray(obj))) {
-    throw new Error('keyMirror(...): Argument must be an object.');
-  }
-  for (key in obj) {
-    if (!obj.hasOwnProperty(key)) {
-      continue;
-    }
-    ret[key] = key;
-  }
-  return ret;
-};
-
-module.exports = keyMirror;
-
-},{}],73:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4037,7 +3978,7 @@ function createStore(reducer, initialState) {
     replaceReducer: replaceReducer
   };
 }
-},{"./utils/isPlainObject":74}],74:[function(require,module,exports){
+},{"./utils/isPlainObject":73}],73:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4068,7 +4009,7 @@ function isPlainObject(obj) {
 }
 
 module.exports = exports['default'];
-},{}],75:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -4125,7 +4066,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":49}],76:[function(require,module,exports){
+},{"_process":49}],75:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -4354,7 +4295,7 @@ var TreeNode = _react2['default'].createClass({
 module.exports = ObjectBrowser;
 
 
-},{"classnames":undefined,"lodash":undefined,"react":undefined,"react-treeview":undefined}],77:[function(require,module,exports){
+},{"classnames":undefined,"lodash":undefined,"react":undefined,"react-treeview":undefined}],76:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4394,6 +4335,8 @@ var _utilClearObjectJs2 = _interopRequireDefault(_utilClearObjectJs);
 //import WidgetStyleEditor  from '../editors/WidgetStyleEditor';
 
 //PropertyEditor.registerType('widgetStyleEditor',WidgetStyleEditor);
+var boxEmptyStyle = _utilComponentMetaDataJs2['default']["BoxStyle"].metaData;
+var containerEmptyStyle = _utilComponentMetaDataJs2['default']["ContainerStyle"].metaData;
 
 var ObjectPropertyGrid = (function (_React$Component) {
     _inherits(ObjectPropertyGrid, _React$Component);
@@ -4429,14 +4372,16 @@ var ObjectPropertyGrid = (function (_React$Component) {
             var currentNode = this.props.current.node;
             var elementName = currentNode.elementName;
 
-            var metaData = elementName === "Container" || elementName === "Repeater" || elementName === "ObjectSchema" ? _utilComponentMetaDataJs2['default'][elementName].metaData : this.props.widgets[elementName].metaData;
+            var isContainer = elementName === "Container" || elementName === "Repeater" || elementName === "ObjectSchema";
+            var metaData = isContainer ? _utilComponentMetaDataJs2['default'][elementName].metaData : this.props.widgets[elementName].metaData;
 
             //props
-            var props = _lodash2['default'].merge((0, _utilClearObjectJs2['default'])(metaData.props), currentNode.toJS().props);
+            var metaDataProps = metaData && metaData.props || {};
+            var props = _lodash2['default'].merge((0, _utilClearObjectJs2['default'])(metaDataProps), currentNode.toJS().props);
             var settings = metaData && metaData.settings || {};
 
             var commonProps = { name: currentNode.name };
-            if (elementName !== "ObjectSchema") commonProps["style"] = currentNode.style;
+            if (elementName !== "ObjectSchema") commonProps["style"] = _lodash2['default'].merge(_lodash2['default'].cloneDeep(isContainer ? containerEmptyStyle.props : boxEmptyStyle.props), currentNode.style);
 
             return _react2['default'].createElement(
                 'div',
@@ -4456,7 +4401,7 @@ exports['default'] = ObjectPropertyGrid;
 module.exports = exports['default'];
 
 
-},{"../util/ComponentMetaData.js":80,"../util/clearObject.js":83,"lodash":undefined,"react":undefined,"react-property-editor":undefined}],78:[function(require,module,exports){
+},{"../util/ComponentMetaData.js":79,"../util/clearObject.js":82,"lodash":undefined,"react":undefined,"react-property-editor":undefined}],77:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4469,53 +4414,171 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBinding = require('react-binding');
-
-var _reactBinding2 = _interopRequireDefault(_reactBinding);
-
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _reactPageRenderer = require('react-page-renderer');
+var _reactBinding = require('react-binding');
 
-var Preview = _react2['default'].createClass({
-    displayName: 'Preview',
+var _reactBinding2 = _interopRequireDefault(_reactBinding);
+
+var WidgetRenderer = _react2['default'].createClass({
+    displayName: 'WidgetRenderer',
 
     mixins: [_reactBinding2['default']],
-    getInitialState: function getInitialState() {
-        return { data: _lodash2['default'].cloneDeep(this.props.schema.props.defaultData) };
+    shouldComponentUpdate: function shouldComponentUpdate(nextProps) {
+        return this.props.node !== nextProps.node;
+    },
+    //componentDidMount(){
+    //	var box = this.props.node;
+    //	var dataBinder = this.props.dataBinder;
+    //	if (dataBinder === undefined) return;
+    //	var dataSources = this.bindTo(this.props.dataBinder, "dataSources").value;
+    //	if (dataSources == undefined) return;
+    //
+    //	for (var propName in box.props) {
+    //		var bindingProps = box.props[propName];
+    //
+    //		if (!(_.isObject(bindingProps) && !!bindingProps.path)) continue;
+    //
+    //
+    //		//apply binding
+    //		//var converter;
+    //		//if (!!bindingProps.converter && !!bindingProps.converter.compiled) {
+    //		//	converter = eval(bindingProps.converter.compiled);
+    //		//}
+    //		var binding = this.bindTo(dataBinder, bindingProps.path);
+    //
+    //
+    //		var pos = bindingProps.path.indexOf('.');
+    //		if (pos === -1) continue;
+    //
+    //		//grab pathes
+    //		var modelPath = bindingProps.path.substr(0, pos);
+    //		var falcorPath = bindingProps.path.substr(pos + 1);
+    //
+    //		if (dataSources[modelPath] === undefined) continue;
+    //
+    //	   	dataSources[modelPath].get(falcorPath).then(function(response){
+    //			var pathSet =falcorPath.indexOf('..') !== -1;
+    //			if (pathSet) {
+    //				console.log(binding.path);
+    //				console.log(response.json);
+    //			}
+    //			var val = _.get(response.json,pathSet?falcorPath.substr(0,falcorPath.indexOf('[')):falcorPath);
+    //			binding.value =val;//converter!==undefined? converter.format(val):val;
+    //		});
+    //	}
+    //},
+    hasBinding: function hasBinding(propName) {
+        //TODO: find better way how to detect binding
+        var widget = this.props.widget;
+        var field = widget.metaData && widget.metaData.settings && widget.metaData.settings.fields && widget.metaData.settings.fields[propName];
+        return field !== undefined && (field.type === 'bindingEditor' || field.type === 'bindingValueEditor');
+    },
+    applyBinding: function applyBinding(box, dataBinder, dataSources) {
+
+        var fragments = {};
+        //go through all properties
+        for (var propName in box) {
+            var prop = box[propName];
+
+            var isBinding = this.hasBinding(propName);
+
+            //if binding -> replace binding props
+            if (isBinding) {
+
+                if (prop === undefined) continue;
+
+                //bind to const value
+                if (prop.value !== undefined) {
+                    box[propName] = prop.value;
+                    continue;
+                }
+
+                var bindingProps = prop; //field.type === 'bindingEditor'?prop:prop.binding;
+                if (_lodash2['default'].isObject(bindingProps) && !!bindingProps.path) {
+
+                    //apply binding
+                    var converter;
+                    if (!!prop.converter && !!bindingProps.converter.compiled) {
+                        converter = eval(bindingProps.converter.compiled);
+                    }
+                    var binding = this.bindTo(dataBinder, bindingProps.path, converter);
+
+                    //if (dataSources !==undefined){
+                    //    var pos = bindingProps.path.indexOf('.');
+                    //    if (pos !== -1) {
+                    //
+                    //        //grab pathes
+                    //        var modelPath = bindingProps.path.substr(0, pos);
+                    //        var falcorPath = bindingProps.path.substr(pos + 1);
+                    //
+                    //        if (dataSources[modelPath] !== undefined) {
+                    //            fragments[propName] = function () {
+                    //                return dataSources[modelPath].get(falcorPath).then(function(response){
+                    //                    var pathSet =falcorPath.indexOf('..') !== -1;
+                    //                    var val = _.get(response.json,pathSet?falcorPath.substr(0,falcorPath.indexOf('[')):falcorPath);
+                    //                    return converter!==undefined?converter.format(val):val;
+                    //                });
+                    //            };
+                    //            //remove
+                    //            delete box[propName];
+                    //            continue;
+                    //        }
+                    //    }
+                    //}
+
+                    if (prop.mode === 'TwoWay') {
+                        //two-way binding
+                        //if (this.props.designer!== true) box.valueLink = this.bindTo(dataBinder, bindingProps.path, converter);
+                        box[propName] = undefined;
+                    } else {
+                        //one-way binding
+                        //box[propName] = dataBinder.value[prop.Path];
+                        //if (!!dataSources) console.log(dataSources.mfcr && dataSources.mfcr.toJSON());
+                        box[propName] = binding.value;
+                    }
+                } else {
+                    //binding is not correctly set - do not apply binding
+                    box[propName] = undefined;
+                }
+            }
+        }
+        return fragments;
     },
     render: function render() {
-        var schema = this.props.schema; //_.cloneDeep(this.props.schema);
-        var dataContext = this.bindToState('data');
+        var designer = this.props.designer;
 
-        if (schema.input) {
-            var rules = schema.businessRules || {};
-            var style = { height: '90vh', width: '90vw' };
-
-            return _react2['default'].createElement(
-                'div',
-                { style: style },
-                _react2['default'].createElement(_reactPageRenderer.BootstrapPublisher, { widgets: this.props.widgets, schema: schema, rules: rules,
-                    dataContext: dataContext })
-            );
-        } else {
-            return _react2['default'].createElement(
-                'div',
-                null,
-                _react2['default'].createElement(_reactPageRenderer.HtmlPagesRenderer, { widgets: this.props.widgets, schema: schema, data: this.state.data,
-                    intlData: schema.intlData, dataContext: dataContext })
-            );
+        var box = this.props.node;
+        var widget = this.props.widget;
+        if (widget === undefined) {
+            return _react2['default'].DOM.span(null, 'Component ' + box.elementName + ' is not register among widgets.');
         }
+
+        var customStyle = this.props.customStyle;
+
+        //apply property resolution strategy -> default style -> custom style -> local style
+        var widgetStyle = _lodash2['default'].cloneDeep(widget.metaData && widget.metaData.props || {});
+        if (customStyle !== undefined) widgetStyle = _lodash2['default'].merge(widgetStyle, customStyle);
+        var props = _lodash2['default'].merge(widgetStyle, box.props);
+
+        var fragments;
+        if (this.props.dataBinder !== undefined) fragments = this.applyBinding(props, this.props.dataBinder, this.bindTo(this.props.dataBinder, "dataSources").value);
+
+        //if (designer !==true && _.keys(fragments).length !==0) widget = Transmit.createContainer(widget,{fragments: fragments});
+        return _react2['default'].createElement(widget, props, props.content !== undefined ? _react2['default'].DOM.div({ dangerouslySetInnerHTML: { __html: props.content } }) : null);
+
+        //return React.createElement(widget, props, props.content !== undefined ? React.DOM.div({dangerouslySetInnerHTML: {__html: props.content}}) : null);
     }
 });
+exports['default'] = WidgetRenderer;
 
-exports['default'] = Preview;
+//WidgetRenderer.propTypes = { widget:  React.PropTypes.node, value:React.PropTypes.object,dataBinder:React.PropTypes.object };
 module.exports = exports['default'];
 
 
-},{"lodash":undefined,"react":undefined,"react-binding":undefined,"react-page-renderer":undefined}],79:[function(require,module,exports){
+},{"lodash":undefined,"react":undefined,"react-binding":undefined}],78:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -4538,34 +4601,66 @@ var _reactDndModulesBackendsHTML52 = _interopRequireDefault(_reactDndModulesBack
 
 var _reactDnd = require('react-dnd');
 
+var _transhand = require('transhand');
+
 var _workplaceContainer = require('./../workplace/Container');
 
 var _workplaceContainer2 = _interopRequireDefault(_workplaceContainer);
 
+var defaultTransform = {
+    tx: 0, ty: 0, //translate in px
+    sx: 1, sy: 1, //scale
+    rz: 0, //rotation in radian
+    ox: 0.5, oy: 0.5 //transform origin
+};
 var Workplace = _react2['default'].createClass({
     displayName: 'Workplace',
 
     mixins: [_reactBinding2['default']],
     getInitialState: function getInitialState() {
-        return { data: _lodash2['default'].cloneDeep(this.props.schema.props.defaultData) };
+        return { data: _lodash2['default'].cloneDeep(this.props.schema.props.defaultData) || {} };
+    },
+
+    handleChange: function handleChange(change) {
+        var currentNode = this.props.current.node;
+        if (currentNode == undefined) return;
+
+        var style = currentNode.style;
+        if (style === undefined) return;
+
+        //resolution strategy -> defaultTransform -> style.transform -> change
+        var transform = _lodash2['default'].merge(_lodash2['default'].merge(_lodash2['default'].clone(defaultTransform), style.transform), change);
+
+        //apply to current DOM node
+        //this.state.currentNode.style.transform = this.generateCssTransform(transform);
+        //this.state.currentNode.style.transformOrigin = `${transform.ox*100}% ${transform.oy*100}%`;
+
+        var updated = currentNode.set('style', _lodash2['default'].extend(_lodash2['default'].clone(style), { 'transform': transform }));
+        this.props.currentChanged(updated);
     },
     componentWillReceiveProps: function componentWillReceiveProps(newProps) {
         if (this.props.schema.props.defaultData !== newProps.schema.props.defaultData) {
             this.setState({ data: _lodash2['default'].cloneDeep(newProps.schema.props.defaultData) });
         }
     },
+    currentChanged: function currentChanged(node, domEl) {
+        this.setState({ currentDOMNode: domEl });
+        if (this.props.currentChanged !== undefined) this.props.currentChanged(node);
+    },
     render: function render() {
         var handleClick = (function () {
             if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.schema);
         }).bind(this);
 
-        //var empty = this.props.schema.containers.length == 0;
         var dataContext = this.bindToState('data');
+
+        var style = this.props.current.node.style || {};
+        var transform = _lodash2['default'].merge(_lodash2['default'].clone(defaultTransform), style.transform);
 
         var component = _react2['default'].createElement(_workplaceContainer2['default'], {
             containers: this.props.schema.containers,
             boxes: this.props.schema.boxes,
-            currentChanged: this.props.currentChanged,
+            currentChanged: this.currentChanged,
             current: this.props.current,
             handleClick: handleClick,
             isRoot: true,
@@ -4577,7 +4672,8 @@ var Workplace = _react2['default'].createClass({
         return _react2['default'].createElement(
             'div',
             { className: 'cWorkplace' },
-            component
+            component,
+            this.state.currentDOMNode !== undefined ? _react2['default'].createElement(_transhand.CSSTranshand, { transform: transform, deTarget: this.state.currentDOMNode, onChange: this.handleChange }) : null
         );
     }
 });
@@ -4585,7 +4681,7 @@ var Workplace = _react2['default'].createClass({
 module.exports = (0, _reactDnd.DragDropContext)(_reactDndModulesBackendsHTML52['default'])(Workplace);
 
 
-},{"./../workplace/Container":85,"lodash":undefined,"react":undefined,"react-binding":undefined,"react-dnd":undefined,"react-dnd/modules/backends/HTML5":50}],80:[function(require,module,exports){
+},{"./../workplace/Container":84,"lodash":undefined,"react":undefined,"react-binding":undefined,"react-dnd":undefined,"react-dnd/modules/backends/HTML5":50,"transhand":undefined}],79:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4604,6 +4700,7 @@ exports['default'] = {
             props: {
                 title: undefined,
                 defaultData: undefined,
+                dataSources: undefined,
                 context: {
                     styles: undefined
                 }
@@ -4611,17 +4708,17 @@ exports['default'] = {
             settings: {
                 fields: {
                     defaultData: { type: 'plainJsonEditor' },
+                    dataSources: { type: 'plainJsonEditor' },
                     context: {
                         fields: {
-                            intlData: { type: 'plainJsonEditor' }
+                            intlData: { type: 'plainJsonEditor' },
+                            styles: { type: 'widgetStyleEditor' }
                         }
                     }
                 }
             }
         }
     },
-    //styles:{type:'widgetStyleEditor'}
-
     Container: {
         metaData: {
             props: {
@@ -4654,12 +4751,40 @@ exports['default'] = {
                 }
             }
         }
+    },
+    BoxStyle: {
+        metaData: {
+            props: {
+                top: undefined,
+                left: undefined,
+                width: undefined,
+                height: undefined,
+                zIndex: undefined,
+                transform: {
+                    tx: undefined, ty: undefined, //translate in px
+                    sx: undefined, sy: undefined, //scale
+                    rz: undefined, //rotation in radian
+                    ox: undefined, oy: undefined //transform origin
+                }
+            }
+        }
+    },
+    ContainerStyle: {
+        metaData: {
+            props: {
+                top: undefined,
+                left: undefined,
+                width: undefined,
+                height: undefined,
+                position: undefined
+            }
+        }
     }
 };
 module.exports = exports['default'];
 
 
-},{"lodash":undefined}],81:[function(require,module,exports){
+},{"lodash":undefined}],80:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4707,7 +4832,7 @@ exports['default'] = If;
 module.exports = exports['default'];
 
 
-},{"react":undefined}],82:[function(require,module,exports){
+},{"react":undefined}],81:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4724,7 +4849,7 @@ exports['default'] = {
 module.exports = exports['default'];
 
 
-},{}],83:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4766,7 +4891,7 @@ exports['default'] = cleanObjProps;
 module.exports = exports['default'];
 
 
-},{"lodash":undefined}],84:[function(require,module,exports){
+},{"lodash":undefined}],83:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4801,7 +4926,15 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _reactPageRenderer = require('react-page-renderer');
+var _componentsWidgetRendererJs = require('../components/WidgetRenderer.js');
+
+var _componentsWidgetRendererJs2 = _interopRequireDefault(_componentsWidgetRendererJs);
+
+var _transhand = require('transhand');
+
+var _ResizeContainerJs = require('./ResizeContainer.js');
+
+var _ResizeContainerJs2 = _interopRequireDefault(_ResizeContainerJs);
 
 /**
  * Implements the drag source contract.
@@ -4825,7 +4958,7 @@ function collect(connect, monitor) {
     };
 }
 var propTypes = {
-    item: _react.PropTypes.string.isRequired,
+    //item: PropTypes.string.isRequired,
 
     // Injected by React DnD:
     isDragging: _react.PropTypes.bool.isRequired,
@@ -4842,10 +4975,16 @@ var Box = (function (_React$Component) {
     }
 
     _createClass(Box, [{
+        key: 'handleDoubleClick',
+        value: function handleDoubleClick(e) {
+            e.stopPropagation();
+            if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node, _react2['default'].findDOMNode(this));
+        }
+    }, {
         key: 'handleClick',
         value: function handleClick(e) {
             e.stopPropagation();
-            if (this.props.handleClick !== undefined) this.props.handleClick();
+            if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node);
         }
     }, {
         key: 'shouldComponentUpdate',
@@ -4854,9 +4993,25 @@ var Box = (function (_React$Component) {
             // The comparison is fast, and we won't render the component if
             // it does not need it. This is a huge gain in performance.
             var box = this.props.node;
-            var update = this.props.node !== nextProps.node || this.props.selected != nextProps.selected || (this.props.ctx["styles"] && this.props.ctx["styles"][box.elementName]) !== (nextProps.ctx["styles"] && nextProps.ctx["styles"][box.elementName]);
+            var update = this.props.node !== nextProps.node || this.props.selected != nextProps.selected;
+            if (update) return update;
 
-            return update; //update;
+            var propsStyles = this.props.ctx.styles;
+            var nextPropsStyles = nextProps.ctx.styles;
+            return (propsStyles && propsStyles[box.elementName]) !== (nextPropsStyles && nextPropsStyles[box.elementName]);
+        }
+    }, {
+        key: 'generateCssTransform',
+        value: function generateCssTransform(transform) {
+            var cssTransform = '';
+
+            if (transform.tx !== undefined) cssTransform += ' translateX(' + transform.tx + 'px)';
+            if (transform.ty !== undefined) cssTransform += ' translateY(' + transform.ty + 'px)';
+            if (transform.rz !== undefined) cssTransform += ' rotate(' + transform.rz + 'rad)';
+            if (transform.sx !== undefined) cssTransform += ' scaleX(' + transform.sx + ')';
+            if (transform.sy !== undefined) cssTransform += ' scaleY(' + transform.sy + ')';
+
+            return cssTransform;
         }
     }, {
         key: 'render',
@@ -4867,22 +5022,44 @@ var Box = (function (_React$Component) {
                 'selected': this.props.selected
             });
 
-            var box = this.props.node;
+            var box = this.props.node.toJS();
             var ctx = this.props.ctx || {};
             var customStyle = ctx["styles"] && ctx["styles"][box.elementName];
-            var intlData = ctx["intlData"];
+            //var intlData = ctx["intlData"];
 
             var widgets = this.props.widgets;
-            var boxComponent = _react2['default'].createElement(_reactPageRenderer.WidgetRenderer, { widget: widgets[box.elementName], node: box, dataBinder: this.props.dataBinder, customStyle: customStyle, intlData: intlData });
+            //propagete width and height to widget props
+            //if (!box.props.width && !!box.style.width) box.props.width = box.style.width;
+            //if (!box.props.height&& !!box.style.height) box.props.height = box.style.height;
+
+            var boxComponent = _react2['default'].createElement(_componentsWidgetRendererJs2['default'], { widget: widgets[box.elementName], node: box, dataBinder: this.props.dataBinder, customStyle: customStyle, designer: true });
             var _props = this.props;
             var isDragging = _props.isDragging;
             var connectDragSource = _props.connectDragSource;
             var item = _props.item;
 
+            var styles = box.style;
+            //var styles = {
+            //    left: this.props.left,
+            //    top: this.props.top,
+            //    height: this.props.height,
+            //    width: this.props.width,
+            //    position: this.props.position,
+            //};
+            if (box.style.transform !== undefined) styles['transform'] = this.generateCssTransform(box.style.transform);
+
             return connectDragSource(_react2['default'].createElement(
                 'div',
-                { className: classes, style: { left: this.props.left, top: this.props.top }, onClick: this.handleClick.bind(this) },
-                boxComponent
+                { style: styles, className: classes, onClick: this.handleClick.bind(this) },
+                _react2['default'].createElement(
+                    'div',
+                    { onDoubleClick: this.handleDoubleClick.bind(this) },
+                    _react2['default'].createElement(
+                        _ResizeContainerJs2['default'],
+                        { node: this.props.node, currentChanged: this.props.currentChanged },
+                        boxComponent
+                    )
+                )
             ));
         }
     }]);
@@ -4899,7 +5076,7 @@ exports['default'] = (0, _reactDnd.DragSource)(_utilItemTypesJs2['default'].BOX,
 module.exports = exports['default'];
 
 
-},{"../util/ItemTypes.js":82,"classnames":undefined,"lodash":undefined,"react":undefined,"react-dnd":undefined,"react-page-renderer":undefined}],85:[function(require,module,exports){
+},{"../components/WidgetRenderer.js":77,"../util/ItemTypes.js":81,"./ResizeContainer.js":86,"classnames":undefined,"lodash":undefined,"react":undefined,"react-dnd":undefined,"transhand":undefined}],84:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -4934,6 +5111,8 @@ var _classnames = require('classnames');
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
+//import TransformContainer from './TransformContainer.js';
+
 var _BoxJs = require('./Box.js');
 
 var _BoxJs2 = _interopRequireDefault(_BoxJs);
@@ -4942,10 +5121,15 @@ var _ResizableHandleJs = require('./ResizableHandle.js');
 
 var _ResizableHandleJs2 = _interopRequireDefault(_ResizableHandleJs);
 
+var _ResizeContainerJs = require('./ResizeContainer.js');
+
+var _ResizeContainerJs2 = _interopRequireDefault(_ResizeContainerJs);
+
 var _utilIf = require('./../util/If');
 
 var _utilIf2 = _interopRequireDefault(_utilIf);
 
+var handle = 30;
 var target = {
     drop: function drop(props, monitor, component) {
         if (monitor.didDrop()) {
@@ -4966,14 +5150,16 @@ var target = {
             var left = Math.round(isNaN(item.left) ? 0 : parseInt(item.left, 10) + delta.x);
             var top = Math.round(isNaN(item.top) ? 0 : parseInt(item.top, 10) + delta.y);
             component.moveBox(item.index, left, top);
-        };
+        }
+        ;
 
         if (monitor.getItemType() === _utilItemTypesJs2['default'].RESIZABLE_HANDLE) {
-            var left = Math.round(item.left + 30 + delta.x);
-            var top = Math.round(item.top + 30 + delta.y);
+            var left = Math.round(delta.x);
+            var top = Math.round(delta.y);
 
             component.resizeContainer(item.parent, left, top);
-        };
+        }
+        ;
     }
 };
 
@@ -4994,19 +5180,19 @@ var Container = (function (_React$Component) {
             var box = boxes[index];
             if (box === undefined) return;
 
-            var updated = box.set({ 'style': { 'top': top, 'left': left } });
+            var updated = box.set({ 'style': _lodash2['default'].merge(_lodash2['default'].clone(box.style), { 'top': top, 'left': left }) });
             //var updated = box.set({'style': {'top': top, 'left': left,'height':box.style.height,'width':box.style.width}});
             this.props.currentChanged(updated);
         }
     }, {
         key: 'resizeContainer',
-        value: function resizeContainer(container, width, height) {
+        value: function resizeContainer(container, deltaWidth, deltaHeight) {
             if (container === undefined) return;
 
             //TODO: use merge instead of clone
             var style = _lodash2['default'].clone(container.style);
-            style.width = width;
-            style.height = height;
+            style.width += deltaWidth;
+            style.height += deltaHeight;
 
             //var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
             var updated = container.set({ 'style': style });
@@ -5043,8 +5229,8 @@ var Container = (function (_React$Component) {
             };
 
             //resize handle position
-            var handle = 30;
-            var resizeHandlePosition = { top: this.props.height - handle, left: this.props.width - handle };
+
+            var resizeHandlePosition = { top: this.props.top + this.props.height - handle, left: this.props.left + this.props.width - handle };
 
             var _props = this.props;
             var canDrop = _props.canDrop;
@@ -5095,10 +5281,6 @@ var Container = (function (_React$Component) {
                         var selected = box === this.props.current.node;
                         var key = box.name + index;
 
-                        var handleClick = (function () {
-                            if (this.props.currentChanged !== undefined) this.props.currentChanged(box);
-                        }).bind(this);
-
                         var left = box.style.left === undefined ? 0 : parseInt(box.style.left, 10);
                         var top = box.style.top === undefined ? 0 : parseInt(box.style.top, 10);
                         return _react2['default'].createElement(_BoxJs2['default'], { key: key,
@@ -5107,7 +5289,7 @@ var Container = (function (_React$Component) {
                             top: top,
                             selected: selected,
                             hideSourceOnDrag: this.props.hideSourceOnDrag,
-                            handleClick: handleClick,
+                            currentChanged: this.props.currentChanged,
                             node: box, dataBinder: this.props.dataBinder,
                             ctx: this.props.ctx,
                             widgets: this.props.widgets
@@ -5128,7 +5310,6 @@ var Container = (function (_React$Component) {
 })(_react2['default'].Component);
 
 ;
-
 //Container.propTypes = propTypes;
 
 var collect = function collect(connect, monitor) {
@@ -5146,7 +5327,7 @@ exports['default'] = WrappedContainer;
 module.exports = exports['default'];
 
 
-},{"../util/ItemTypes.js":82,"./../util/If":81,"./Box.js":84,"./ResizableHandle.js":86,"classnames":undefined,"lodash":undefined,"react":undefined,"react-dnd":undefined}],86:[function(require,module,exports){
+},{"../util/ItemTypes.js":81,"./../util/If":80,"./Box.js":83,"./ResizableHandle.js":85,"./ResizeContainer.js":86,"classnames":undefined,"lodash":undefined,"react":undefined,"react-dnd":undefined}],85:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -5196,7 +5377,7 @@ function collect(connect, monitor) {
     };
 }
 var propTypes = {
-    //item: PropTypes..isRequired,
+    //item: PropTypes.isRequired,
 
     // Injected by React DnD:
     isDragging: _react.PropTypes.bool.isRequired,
@@ -5220,7 +5401,7 @@ var ResizableHandle = (function (_React$Component) {
             var connectDragSource = _props.connectDragSource;
             var item = _props.item;
 
-            return connectDragSource(_react2['default'].createElement('div', { className: 'resizable-handle', style: { left: this.props.left, top: this.props.top } }));
+            return connectDragSource(_react2['default'].createElement('div', { className: 'resizable-handle', style: { left: this.props.left, top: this.props.top, position: 'absolute' } }));
         }
     }]);
 
@@ -5236,7 +5417,136 @@ exports['default'] = (0, _reactDnd.DragSource)(_utilItemTypesJs2['default'].RESI
 module.exports = exports['default'];
 
 
-},{"../util/ItemTypes.js":82,"react":undefined,"react-dnd":undefined}],"react-designer-core":[function(require,module,exports){
+},{"../util/ItemTypes.js":81,"react":undefined,"react-dnd":undefined}],86:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _utilItemTypesJs = require('../util/ItemTypes.js');
+
+var _utilItemTypesJs2 = _interopRequireDefault(_utilItemTypesJs);
+
+var _reactDnd = require('react-dnd');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _ResizableHandleJs = require('./ResizableHandle.js');
+
+var _ResizableHandleJs2 = _interopRequireDefault(_ResizableHandleJs);
+
+var target = {
+    drop: function drop(props, monitor, component) {
+        if (monitor.didDrop()) {
+            // If you want, you can check whether some nested
+            // target already handled drop
+            return;
+        }
+        //props.onDrop(monitor.getItem());
+
+        var item = monitor.getItem().item;
+        //console.log(item);
+
+        var delta = monitor.getDifferenceFromInitialOffset();
+        //console.log(delta);
+        if (!!!delta) return;
+
+        if (monitor.getItemType() === _utilItemTypesJs2['default'].RESIZABLE_HANDLE) {
+            var left = Math.round(delta.x);
+            var top = Math.round(delta.y);
+
+            component.resizeContainer(item.parent, left, top);
+        };
+    }
+};
+
+var ResizeContainer = (function (_React$Component) {
+    _inherits(ResizeContainer, _React$Component);
+
+    function ResizeContainer() {
+        _classCallCheck(this, ResizeContainer);
+
+        _get(Object.getPrototypeOf(ResizeContainer.prototype), 'constructor', this).apply(this, arguments);
+    }
+
+    _createClass(ResizeContainer, [{
+        key: 'resizeContainer',
+        value: function resizeContainer(container, deltaWidth, deltaHeight) {
+            if (container === undefined) return;
+
+            //TODO: use merge instead of clone
+            var style = _lodash2['default'].cloneDeep(container.style);
+            style.width += deltaWidth;
+            style.height += deltaHeight;
+
+            //var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
+            var updated = container.set({ 'style': style });
+            this.props.currentChanged(updated);
+            //currentChanged(updated);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+
+            var style = this.props.node.style;
+
+            //resize handle position
+            var handle = 30;
+            var useResize = !!style.height && !!style.width;
+            var resizeHandlePosition = { top: style.height - handle, left: style.width - handle };
+
+            var _props = this.props;
+            var canDrop = _props.canDrop;
+            var isOver = _props.isOver;
+            var connectDropTarget = _props.connectDropTarget;
+
+            return connectDropTarget(_react2['default'].createElement(
+                'div',
+                null,
+                this.props.children,
+                useResize ? _react2['default'].createElement(_ResizableHandleJs2['default'], { styles: style, left: resizeHandlePosition.left, top: resizeHandlePosition.top, parent: this.props.node }) : null
+            ));
+        }
+    }]);
+
+    return ResizeContainer;
+})(_react2['default'].Component);
+
+;
+
+//Container.propTypes = propTypes;
+
+var collect = function collect(connect, monitor) {
+    return {
+        connectDropTarget: connect.dropTarget(),
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop()
+    };
+};
+
+// Export the wrapped component:
+exports['default'] = (0, _reactDnd.DropTarget)(_utilItemTypesJs2['default'].RESIZABLE_HANDLE, target, collect)(ResizeContainer);
+module.exports = exports['default'];
+
+
+},{"../util/ItemTypes.js":81,"./ResizableHandle.js":85,"lodash":undefined,"react":undefined,"react-dnd":undefined}],"react-designer-core":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -5265,10 +5575,6 @@ var _componentsObjectPropertyGridJs = require('./components/ObjectPropertyGrid.j
 
 var _componentsObjectPropertyGridJs2 = _interopRequireDefault(_componentsObjectPropertyGridJs);
 
-var _componentsPreviewJs = require('./components/Preview.js');
-
-var _componentsPreviewJs2 = _interopRequireDefault(_componentsPreviewJs);
-
 var _utilComponentMetaDataJs = require('./util/ComponentMetaData.js');
 
 var _utilComponentMetaDataJs2 = _interopRequireDefault(_utilComponentMetaDataJs);
@@ -5277,10 +5583,9 @@ exports['default'] = {
     Workplace: _componentsWorkplaceJs2['default'],
     ObjectBrowser: _componentsObjectBrowserJs2['default'],
     ObjectPropertyGrid: _componentsObjectPropertyGridJs2['default'],
-    ComponentMetaData: _utilComponentMetaDataJs2['default'],
-    Preview: _componentsPreviewJs2['default']
+    ComponentMetaData: _utilComponentMetaDataJs2['default']
 };
 module.exports = exports['default'];
 
 
-},{"./components/ObjectBrowser.js":76,"./components/ObjectPropertyGrid.js":77,"./components/Preview.js":78,"./components/Workplace.js":79,"./util/ComponentMetaData.js":80,"lodash":undefined,"react":undefined}]},{},[]);
+},{"./components/ObjectBrowser.js":75,"./components/ObjectPropertyGrid.js":76,"./components/Workplace.js":78,"./util/ComponentMetaData.js":79,"lodash":undefined,"react":undefined}]},{},[]);
