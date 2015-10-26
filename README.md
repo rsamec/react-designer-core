@@ -9,7 +9,7 @@ React designer is WYSIWYG editor for **easy content creation** (legal contracts,
 
 It is based on separation between
 
-+   logical component tree - JSON simple document description - [Page Transform Tree (PTT)](#PTT) - it is framework agnostic definition
++   logical component tree - JSON simple document description - [Page Transform Tree (PTT)](https://github.com/rsamec/ptt) - it is framework agnostic definition
 +   visual component tree - [React virtual DOM](http://facebook.github.io/react) - rendering to DOM so that it maps each component (terminal node) from logical tree to react component and its properties
 
 ## Main goals 
