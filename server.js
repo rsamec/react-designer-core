@@ -16,7 +16,14 @@ var bodyParser = require('body-parser');
 var React = require("react");
 var pdf = require('html-pdf');
 var Transmit = require('react-transmit');
+var BindingUtil = require('react-page-renderer').BindingUtil;
 
+Number.prototype.format = function(n, x, s, c) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+        num = this.toFixed(Math.max(0, ~~n));
+
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+};
 //var areIntlLocalesSupported = require('intl-locales-supported');
 //
 //var localesMyAppSupports = [
@@ -346,7 +353,7 @@ var SampleApp = function() {
                     fs.readFile(fileName, 'utf8', function (err, data) {
                         if (err) console.log(err);
 
-                        Transmit.renderToString()
+
                         var html = React.renderToStaticMarkup(React.createElement(App,{schema:JSON.parse(data)}));
 
                         var options = {  format: 'A4', zoomFactor:1.4 };
@@ -388,14 +395,14 @@ var SampleApp = function() {
         var generateBinary = function(req,res,type){
             console.log('Generate: ' + type);
 
-            var html = React.renderToStaticMarkup(React.createElement(App, {schema: req.body}));
+            //var html = React.renderToStaticMarkup(React.createElement(App, {schema: req.body}));
+            //console.log(html);
 
-            //Transmit.renderToString(App, {schema: req.body}).then(function(response){
-            //
-            //    console.log("Generated");
-            //    var html =  response.reactString;
-            //
+            BindingUtil.bindToSchemaAsync(req.body,{}).then(function(response){
 
+                //console.log(JSON.stringify(response,null,2));
+                var html = React.renderToStaticMarkup(React.createElement(App, {schema: response}));
+                console.log("Generated");
 
                 var options = type === "pdf"?{type:type, format: 'A4', zoomFactor: 1.40}:{type:type,zoomFactor: 1.0};
                 pdf.create(html, options).toBuffer(function (err, buffer) {
@@ -403,7 +410,7 @@ var SampleApp = function() {
                     res.send(buffer);
                     console.log("print generation finished");
                 });
-            //}, function(error){console.log(error)})
+            }, function(error){console.log(error)})
         };
 
         self.app.post('/pdf', function(req, res) {

@@ -6,7 +6,7 @@ var Chart = require('react-pathjs-chart');
 
 //external widgets with more controls
 var ReactBootstrap = require('react-bootstrap');
-//var Griddle = require('griddle-react');
+var Griddle = require('griddle-react');
 //var ChartistGraph = require('react-chartist');
 
 var Widgets = {
@@ -38,13 +38,11 @@ var Widgets = {
     'Chart.StockLine': Chart.StockLine,
     'Chart.Scatterplot': Chart.Scatterplot,
     'Chart.Radar': Chart.Radar,
-    'Chart.Tree': Chart.Tree
-
-
+    'Chart.Tree': Chart.Tree,
 
     //'ChartistGraph':require('../widgets/ChartistGraph'),
     //
-    //'React.Griddle':Griddle,
+    'React.Griddle':Griddle,
     //'react-inlinesvg':require('react-inlinesvg'),
     //'react-3d-carousel':require('react-3d-carousel'),
     //'MovieSelect': require('react-movie-select')
@@ -135,6 +133,23 @@ _.extend(Widgets['react-bootstrap.Input'], {
             type: 'text',placeholder:'type your text', label:'label', help:'',value:''
         },
         settings:bootstrapSettings
+    }
+});
+_.extend(Widgets['React.Griddle'], {
+    metaData: {
+        props: {
+            results: undefined,
+            showSettings:false,
+            showFilter:false
+        },
+        settings: {
+            fields:{
+                //content:{type:'string'},
+                results:{type:'bindingEditor'},
+                showSettings:{type:'boolean'},
+                showFilter:{type:'boolean'}
+            }
+        }
     }
 });
 
