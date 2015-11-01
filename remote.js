@@ -24,7 +24,7 @@ var idKey = 'cisloFaktury';
 
 csvToJson.on("record_parsed",function(input){
     input  = normalize( _.object(_.map(input,function(val,key){return [removeDiacritics(key),val]})),'camel');
-    if (counter === 0) console.log(input);
+    //if (counter === 0) console.log(input);
     counter++;
     var keyValue =input[idKey];
     yearInvoices.invoicesById[keyValue] = input;
@@ -52,7 +52,7 @@ csvToJson.on("end_parsed",function(jsonArray){
 
     //cache.invoices.push({$type: "ref", value: ['invoicesById', keyValue]});
     //mfcr.summary.year2015 = newB;
-    console.log(JSON.stringify(yearInvoices.suppliersById, null, 2));
+    //console.log(JSON.stringify(yearInvoices.suppliersById, null, 2));
 //    mfcr.invoices = jsonArray;
     mfcrDataSource = new falcor.Model({cache:yearInvoices}).asDataSource();
     console.log("DONE");

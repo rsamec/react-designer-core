@@ -191,17 +191,17 @@ ToolBox.defaultProps = {
             collapsed: false,
             controls: [
                 {name: 'Container', label: 'Container'},
-                {name: 'Repeater', label: 'Repeater'},
+                {name: 'Repeater', label: 'Repeater'}
             ]
         },
         {
             type: 'Extra',
             collapsed: true,
             controls: [
-                {name: 'React.Griddle', label: 'Griddle'}
-        //        {name: 'react-pivot.PivotTable', label: 'Pivot table'},
-        //        {name: 'Flipper', label: 'Flipper'},
-        //        {name: 'react-inlinesvg', label: 'SvgBox'},
+                {name: 'Core.PivotTable', label: 'Pivot table'},
+                {name: 'Core.Flipper', label: 'Flipper'},
+                {name: 'react-griddle', label: 'Griddle'},
+                {name: 'react-inlinesvg', label: 'SvgBox'}
         //        {name: 'MovieSelect', label: 'Movie carousel select'}
         //        //{name: 'Reacticon', label: 'Reacticon'},
         //        //{name: 'SnapSvgBox', label: 'SnapSvgBox'},

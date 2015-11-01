@@ -6,7 +6,6 @@ var Chart = require('react-pathjs-chart');
 
 //external widgets with more controls
 var ReactBootstrap = require('react-bootstrap');
-var Griddle = require('griddle-react');
 //var ChartistGraph = require('react-chartist');
 
 var Widgets = {
@@ -23,6 +22,7 @@ var Widgets = {
     'Core.Flipper': Core.Flipper,
     'Core.TangleNumberText': Core.TangleNumberText,
     'Core.TangleBoolText': Core.TangleBoolText,
+    'Core.PivotTable':Core.Pivot,
 
     'Shapes.Rectangle': Shapes.Rectangle,
     'Shapes.Ellipse': Shapes.Ellipse,
@@ -42,8 +42,8 @@ var Widgets = {
 
     //'ChartistGraph':require('../widgets/ChartistGraph'),
     //
-    'React.Griddle':Griddle,
-    //'react-inlinesvg':require('react-inlinesvg'),
+    'react-griddle':require('griddle-react'),
+    'react-inlinesvg':require('react-inlinesvg'),
     //'react-3d-carousel':require('react-3d-carousel'),
     //'MovieSelect': require('react-movie-select')
 
@@ -135,20 +135,44 @@ _.extend(Widgets['react-bootstrap.Input'], {
         settings:bootstrapSettings
     }
 });
-_.extend(Widgets['React.Griddle'], {
+_.extend(Widgets['react-griddle'], {
     metaData: {
         props: {
             results: undefined,
+            columns:undefined,
+            columnMetadata:undefined,
+            noDataMessage:undefined,
+            resultsPerPage:undefined,
             showSettings:false,
-            showFilter:false
+            showFilter:false,
+            showPager:true,
+            showTableHeading:true
+
         },
         settings: {
             fields:{
                 //content:{type:'string'},
                 results:{type:'bindingEditor'},
                 showSettings:{type:'boolean'},
-                showFilter:{type:'boolean'}
+                showFilter:{type:'boolean'},
+                showTableHeading:{type:'boolean'},
+                showPager:{type:'boolean'},
+                columnMetadata:{type:'plainJsonEditor'},
+                columns:{type:'jsonEditor'},
+                resultsPerPage:{type:'number'}
+
             }
+        }
+    }
+});
+
+_.extend(Widgets['react-inlinesvg'], {
+    metaData: {
+        props: {
+            src: undefined
+        },
+        settings: {
+            fields:{}
         }
     }
 });
