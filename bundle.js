@@ -4504,7 +4504,7 @@ var WidgetRenderer = _react2['default'].createClass({
                     if (!!prop.converter && !!bindingProps.converter.compiled) {
                         converter = eval(bindingProps.converter.compiled);
                     }
-                    var binding = this.bindTo(dataBinder, bindingProps.path, converter);
+                    var binding = this.bindTo(dataBinder, bindingProps.path, converter, bindingProps.converterArgs);
 
                     //if (dataSources !==undefined){
                     //    var pos = bindingProps.path.indexOf('.');
@@ -4562,6 +4562,7 @@ var WidgetRenderer = _react2['default'].createClass({
         var widgetStyle = _lodash2['default'].cloneDeep(widget.metaData && widget.metaData.props || {});
         if (customStyle !== undefined) widgetStyle = _lodash2['default'].merge(widgetStyle, customStyle);
         var props = _lodash2['default'].merge(widgetStyle, box.props);
+        if (this.props.customCode !== undefined) props.customCode = this.props.customCode;
 
         var fragments;
         if (this.props.dataBinder !== undefined) fragments = this.applyBinding(props, this.props.dataBinder, this.bindTo(this.props.dataBinder, "dataSources").value);
@@ -4657,6 +4658,16 @@ var Workplace = _react2['default'].createClass({
         var style = this.props.current.node.style || {};
         var transform = _lodash2['default'].merge(_lodash2['default'].clone(defaultTransform), style.transform);
 
+        var ctx = this.props.schema.props && this.props.schema.props.context || {};
+        var customStyles = ctx['styles'] || {};
+        var code = ctx['code'] && ctx['code'].code;
+        var customCode = !!code ? new Function(code)() : undefined;
+
+        var context = {
+            styles: customStyles,
+            customCode: customCode
+        };
+
         var component = _react2['default'].createElement(_workplaceContainer2['default'], {
             containers: this.props.schema.containers,
             boxes: this.props.schema.boxes,
@@ -4665,7 +4676,7 @@ var Workplace = _react2['default'].createClass({
             handleClick: handleClick,
             isRoot: true,
             dataBinder: dataContext,
-            ctx: this.props.schema.props.context || {},
+            ctx: context,
             widgets: this.props.widgets
         });
 
@@ -4701,18 +4712,24 @@ exports['default'] = {
                 title: undefined,
                 defaultData: undefined,
                 dataSources: undefined,
+                defaultPageSize: undefined,
+                tour: undefined,
                 context: {
-                    styles: undefined
+                    styles: undefined,
+                    code: undefined
                 }
             },
             settings: {
                 fields: {
                     defaultData: { type: 'plainJsonEditor' },
+                    defaultPageSize: { type: 'select', settings: { options: ['A4', 'A3', 'A2', 'A5', 'A6', 'Tabloid', 'Letter'] } },
                     dataSources: { type: 'plainJsonEditor' },
+                    tour: { type: 'plainJsonEditor' },
                     context: {
                         fields: {
                             intlData: { type: 'plainJsonEditor' },
-                            styles: { type: 'widgetStyleEditor' }
+                            styles: { type: 'widgetStyleEditor' },
+                            code: { type: 'codeEditor' }
                         }
                     }
                 }
@@ -5029,10 +5046,10 @@ var Box = (function (_React$Component) {
 
             var widgets = this.props.widgets;
             //propagete width and height to widget props
-            //if (!box.props.width && !!box.style.width) box.props.width = box.style.width;
-            //if (!box.props.height&& !!box.style.height) box.props.height = box.style.height;
+            if (!box.props.width && !!box.style.width) box.props.width = box.style.width;
+            if (!box.props.height && !!box.style.height) box.props.height = box.style.height;
 
-            var boxComponent = _react2['default'].createElement(_componentsWidgetRendererJs2['default'], { widget: widgets[box.elementName], node: box, dataBinder: this.props.dataBinder, customStyle: customStyle, designer: true });
+            var boxComponent = _react2['default'].createElement(_componentsWidgetRendererJs2['default'], { widget: widgets[box.elementName], node: box, dataBinder: this.props.dataBinder, customStyle: customStyle, customCode: ctx['customCode'], designer: true });
             var _props = this.props;
             var isDragging = _props.isDragging;
             var connectDragSource = _props.connectDragSource;
