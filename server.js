@@ -16,14 +16,9 @@ var bodyParser = require('body-parser');
 var React = require("react");
 var pdf = require('html-pdf');
 var Transmit = require('react-transmit');
-var BindingUtil = require('react-page-renderer').BindingUtil;
+var PageRenderer  = require('react-page-renderer');
+var BindingUtil = PageRenderer.BindingUtil;
 
-Number.prototype.format = function(n, x, s, c) {
-    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
-        num = this.toFixed(Math.max(0, ~~n));
-
-    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
-};
 //var areIntlLocalesSupported = require('intl-locales-supported');
 //
 //var localesMyAppSupports = [
@@ -393,22 +388,41 @@ var SampleApp = function() {
         });
 
         var generateBinary = function(req,res,type){
-            console.log('Generate: ' + type);
 
-            //var html = React.renderToStaticMarkup(React.createElement(App, {schema: req.body}));
-            //console.log(html);
+            var schema = req.body;
+            var schemaName = schema.name;
 
-            BindingUtil.bindToSchemaAsync(req.body,{}).then(function(response){
+            //take send data or fallback to default data
+            var data = schema.data || schema.props.defaultData;
 
-                //console.log(JSON.stringify(response,null,2));
-                var html = React.renderToStaticMarkup(React.createElement(App, {schema: response}));
-                console.log("Generated");
+            //obtain default page options
+            var defaultPageSizes = PageRenderer.GraphicUtil.PageSizes[schema.props.defaultPageSize || 'A4'];
+            var defaultPageOptions = {height:defaultPageSizes[1], width:defaultPageSizes[0]};
 
-                var options = type === "pdf"?{type:type, format: 'A4', zoomFactor: 1.40}:{type:type,zoomFactor: 1.0};
+            //take send page options or fallback to default page options
+            var pageOptions = schema.pageOptions || defaultPageOptions;
+            console.log("L:" + schema.data);
+            console.log("Data:" + JSON.stringify(data));
+            BindingUtil.bindToSchemaAsync(schema,data).then(function(response){
+
+                var html = React.renderToStaticMarkup(React.createElement(App, {schema: response,pageOptions:pageOptions,data:data}));
+
+
+                var options = {type:type};
+                options.zoomFactor = type === "pdf"?1.4:1.0;
+
+                if (pageOptions.height !== undefined){
+                    options.height = Math.round(PageRenderer.GraphicUtil.pointToPixel(pageOptions.height)) * 1.4;
+                }
+                if (pageOptions.width !== undefined){
+                    options.width = Math.round(PageRenderer.GraphicUtil.pointToPixel(pageOptions.width)) * 1.4;
+                }
+
+
                 pdf.create(html, options).toBuffer(function (err, buffer) {
                     res.contentType(type == 'pdf'?"application/pdf":"image/" + type);
                     res.send(buffer);
-                    console.log("print generation finished");
+                    console.log(schemaName + " generation finished");
                 });
             }, function(error){console.log(error)})
         };

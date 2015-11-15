@@ -164,7 +164,7 @@ ToolBox.defaultProps = {
         {
             type: 'Shapes',
             collapsed: true,
-            controls: _.map(['Rectangle', 'Circle', 'Ellipse', 'Line', 'Triangle'], function (x) {
+            controls: _.map(['Rectangle', 'Circle', 'Ellipse', 'Line', 'Triangle','Dimension'], function (x) {
                 return {
                     'name': 'Shapes.' + x, 'label': x
                 }

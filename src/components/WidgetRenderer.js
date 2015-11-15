@@ -84,7 +84,7 @@ var WidgetRenderer = React.createClass({
                     if (!!prop.converter && !!bindingProps.converter.compiled) {
                         converter = eval(bindingProps.converter.compiled);
                     }
-                    var binding = this.bindTo(dataBinder, bindingProps.path, converter);
+                    var binding = this.bindTo(dataBinder, bindingProps.path, converter,bindingProps.converterArgs);
 
                     //if (dataSources !==undefined){
                     //    var pos = bindingProps.path.indexOf('.');
@@ -144,6 +144,7 @@ var WidgetRenderer = React.createClass({
         var widgetStyle = _.cloneDeep(widget.metaData && widget.metaData.props || {});
         if (customStyle !== undefined) widgetStyle = _.merge(widgetStyle,customStyle);
         var props = _.merge(widgetStyle,box.props);
+        if (this.props.customCode !== undefined) props.customCode = this.props.customCode;
 
         var fragments;
         if (this.props.dataBinder !== undefined) fragments=this.applyBinding(props,this.props.dataBinder,this.bindTo(this.props.dataBinder, "dataSources").value);

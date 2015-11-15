@@ -17,7 +17,8 @@ var App = React.createClass({
     },
     render: function () {
         var style = {margin: 0, padding: 0};
-        var pageOptions = {top: 31, bottom: 31};
+        var pageOptions = this.props.pageOptions || {};
+        pageOptions.border = 'none';
         //var pageOptions = {width:300,height:1000,margin:{top:-31,left:-31,right:31,bottom:31},border:'none'};
         var schema = this.props.schema;
         var data = this.props.data || schema.data;

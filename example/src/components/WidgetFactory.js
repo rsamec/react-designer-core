@@ -31,6 +31,7 @@ var Widgets = {
     'Shapes.Polyline': Shapes.Polyline,
     'Shapes.CornerBox': Shapes.CornerBox,
     'Shapes.Triangle':Shapes.Triangle,
+    'Shapes.Dimension':Shapes.Dimension,
 
     'Chart.Pie': Chart.Pie,
     'Chart.Bar': Chart.Bar,

@@ -24,7 +24,7 @@ var idKey = 'cisloFaktury';
 
 csvToJson.on("record_parsed",function(input){
     input  = normalize( _.object(_.map(input,function(val,key){return [removeDiacritics(key),val]})),'camel');
-    //if (counter === 0) console.log(input);
+    if (counter === 0) console.log(input);
     counter++;
     var keyValue =input[idKey];
     yearInvoices.invoicesById[keyValue] = input;

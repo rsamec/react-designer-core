@@ -54,6 +54,17 @@ var Workplace = React.createClass({
         var style = this.props.current.node.style || {};
         var transform = _.merge(_.clone(defaultTransform),style.transform);
 
+        var ctx = (this.props.schema.props && this.props.schema.props.context) || {};
+        var customStyles = ctx['styles'] || {};
+        var code = ctx['code'] && ctx['code'].code;
+        var customCode = !!code? new Function(code)():undefined;
+
+        var context = {
+            styles:customStyles,
+            customCode:customCode
+        };
+
+
         var component =
             <Container
                 containers={this.props.schema.containers}
@@ -63,7 +74,7 @@ var Workplace = React.createClass({
                 handleClick={handleClick}
                 isRoot={true}
                 dataBinder={dataContext}
-                ctx={this.props.schema.props.context || {}}
+                ctx={context}
                 widgets={this.props.widgets}
                 />;
 

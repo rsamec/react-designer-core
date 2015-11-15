@@ -8,18 +8,24 @@ export default {
                 title: undefined,
                 defaultData:undefined,
                 dataSources:undefined,
+                defaultPageSize:undefined,
+                tour:undefined,
                 context:{
-                    styles:undefined
+                    styles:undefined,
+                    code:undefined,
                 }
             },
             settings: {
                 fields: {
                     defaultData: {type: 'plainJsonEditor'},
+                    defaultPageSize: {type: 'select', settings: {options: ['A4','A3','A2','A5','A6','Tabloid','Letter']}},
                     dataSources: {type: 'plainJsonEditor'},
+                    tour:{type:'plainJsonEditor'},
                     context: {
                         fields:{
                             intlData: {type: 'plainJsonEditor'},
-                            styles:{type:'widgetStyleEditor'}
+                            styles:{type:'widgetStyleEditor'},
+                            code:{type:'codeEditor'}
                         }
                     }
                 }
