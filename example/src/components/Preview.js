@@ -8,7 +8,7 @@ import Transmit from 'react-transmit';
 import {HtmlPagesRenderer,BootstrapPublisher,BindingUtil,GraphicUtil} from 'react-page-renderer';
 
 var iterate = function (current,fce) {
-    var children = current.containers;
+    var children = current.containers || [];
 
     //iterate through containers
     var containers = [];
@@ -20,13 +20,14 @@ var iterate = function (current,fce) {
 var Preview = React.createClass({
     mixins: [BindToMixin],
     getInitialState:function() {
-
-        var dataSources = _.reduce(this.props.schema.props.dataSources,function(memo,value,key){
+        var dataSourcesProp = this.props.schema.props && this.props.schema.props.dataSources;
+        var dataSources = _.reduce(dataSourcesProp,function(memo,value,key){
             memo[key] = new falcor.Model({source: new falcorDataSource(value, {crossDomain: true,
                 withCredentials: false})});
             return memo;
         },{});
-        return {data:_.extend({dataSources:dataSources}, _.cloneDeep(this.props.schema.props.defaultData))};
+        var defaultData = this.props.schema.props && this.props.schema.props.defaultData;
+        return {data:_.extend({dataSources:dataSources}, _.cloneDeep(defaultData))};
     },
     bindToRepeater(schema,dataSources){
 
@@ -77,8 +78,9 @@ var Preview = React.createClass({
         var schema = BindingUtil.bindToSchema(_.cloneDeep(this.props.schema), this.state.data); //_.cloneDeep(this.props.schema);
         var dataContext = this.bindToState('data');
 
+
         //obtain default page options
-        var defaultPageSizes = GraphicUtil.PageSizes[schema.props.defaultPageSize || 'A4'];
+        var defaultPageSizes = GraphicUtil.PageSizes[schema.props && schema.props.defaultPageSize || 'A4'];
         var defaultPageOptions = {height: defaultPageSizes[1], width: defaultPageSizes[0]};
 
         return (
