@@ -36,8 +36,11 @@ var Workplace = React.createClass({
         this.props.currentChanged(updated);
     },
     componentWillReceiveProps: function (newProps) {
-        if (this.props.schema.props.defaultData !== newProps.schema.props.defaultData) {
-            this.setState({data: _.cloneDeep(newProps.schema.props.defaultData)});
+        var defaultData = this.props.schema.props && this.props.schema.props.defaultData;
+        var newDefautData = newProps.schema.props && newProps.schema.props.defaultData;
+
+        if (defaultData !== newDefautData) {
+            this.setState({data: _.cloneDeep(newDefautData)});
         }
     },
     currentChanged(node,domEl){
@@ -64,6 +67,32 @@ var Workplace = React.createClass({
             customCode:customCode
         };
 
+        var bgStyle = {};
+        var bg = (this.props.schema.props && this.props.schema.props.background) || {};
+        if (!!bg.color) bgStyle.backgroundColor = bg.color;
+        if (!!bg.image) bgStyle.backgroundImage = 'url(' + bg.image + ')';
+        if (!!bg.position) bgStyle.backgroundPosition = bg.position;
+        if (!!bg.repeat) bgStyle.backgroundRepeat = bg.repeat;
+        if (!!bg.attachment) bgStyle.backgroundAttachment = bg.attachment;
+
+        var filter = bg.filter || {};
+        var cssFilter = "";
+        if (!!filter.blur) cssFilter += ' blur(' +  filter.blur +  'px)';
+        if (!!filter.brightness) cssFilter += ' brightness(' +  filter.brightness +  '%)';
+        if (!!filter.contrast) cssFilter += ' contrast(' +  filter.contrast +  '%)';
+        if (!!filter.grayscale) cssFilter += ' grayscale(' +  filter.grayscale +  '%)';
+        if (!!filter.hueRotate) cssFilter += ' hue-rotate(' +  filter.hueRotate +  'deg)';
+        if (!!filter.invert) cssFilter += ' invert(' +  filter.invert +  '%)';
+        if (!!filter.opacity) cssFilter += ' opacity(' +  filter.opacity +  '%)';
+        if (!!filter.saturate) cssFilter += ' saturate(' +  filter.saturate +  '%)';
+        if (!!filter.sepia) cssFilter += ' sepia(' +  filter.sepia +  '%)';
+
+        bgStyle.WebkitFilter = cssFilter;
+        bgStyle.filter = cssFilter;
+        bgStyle.position = 'absolute';
+        bgStyle.width = '100%';
+        bgStyle.height = '100%';
+        bgStyle.zIndex = -1;
 
         var component =
             <Container
@@ -79,6 +108,7 @@ var Workplace = React.createClass({
                 />;
 
         return ( <div className="cWorkplace">
+            <div style={bgStyle}></div>
             {component}
             {this.state.currentDOMNode!==undefined?<CSSTranshand  transform = {transform} deTarget = {this.state.currentDOMNode} onChange = {this.handleChange}/>:null}
         </div>);

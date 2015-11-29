@@ -5,6 +5,8 @@
   //    background-image: url("../../assets/images/grid.png");
   //    background-repeat: repeat;
   border:solid 0px blue;
+  position:absolute;
+  width:100%;
 }
 
 .con{
@@ -15,12 +17,10 @@
   overflow:visible;
 }
 .con.selected {
-  border-width: 3px;
-  border-color: red;
+  border: 1px solid red;
 }
 .con.parentSelected {
-  border-width: 3px;
-  border-color: deeppink;
+  border: 1px solid darkviolet;
 }
 .con.root {
   background-image: url("grid.png");
@@ -35,8 +35,7 @@
   padding: 0.5rem;
 }
 .box.selected {
-  border-width: 3px;
-  border-color: red;
+  border: 1px dashed red;
 }
 
 .cBox{

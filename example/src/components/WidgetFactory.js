@@ -19,10 +19,12 @@ var Widgets = {
     'Core.HtmlBox': Core.HtmlBox,
     'Core.ImageBox': Core.ImageBox,
     'Core.ImagePanel': Core.ImagePanel,
+    'Core.ImageCarousel': Core.ImageCarousel,
     'Core.Flipper': Core.Flipper,
     'Core.TangleNumberText': Core.TangleNumberText,
     'Core.TangleBoolText': Core.TangleBoolText,
     'Core.PivotTable':Core.Pivot,
+
 
     'Shapes.Rectangle': Shapes.Rectangle,
     'Shapes.Ellipse': Shapes.Ellipse,

@@ -147,7 +147,8 @@ ToolBox.defaultProps = {
             controls: [
 
                 {name: 'Core.ImageBox', label: 'ImageBox'},
-                {name: 'Core.ImagePanel', label: 'ImagePanel'}
+                {name: 'Core.ImagePanel', label: 'ImagePanel'},
+                {name: 'Core.ImageCarousel', label: 'ImageCarousel'}
             ]
         },
         {

@@ -33,7 +33,7 @@ export default class ObjectPropertyGrid extends React.Component
         var elementName = currentNode.elementName;
 
         var isContainer = (elementName === "Container" || elementName === "Repeater" || elementName === "ObjectSchema");
-        var metaData = isContainer? ComponentMetaData[elementName].metaData:this.props.widgets[elementName].metaData;
+        var metaData = isContainer? ComponentMetaData[elementName].metaData:this.props.widgets[elementName] && this.props.widgets[elementName].metaData;
 
         //props
         var metaDataProps = metaData && metaData.props || {};

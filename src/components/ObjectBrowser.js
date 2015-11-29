@@ -103,9 +103,11 @@ var TreeNode = React.createClass({
         //return this.props.filterText != nextProps.filterText ||  this.props.nodes != nextProps.nodes || (current!==undefined && nextCurrent !==undefined && current.name != nextCurrent.name);
     },
     render() {
+        var containers = this.props.node.containers || [];
+
         return (
             <div>
-        {this.props.node.containers.map(function (node, i) {
+        {containers.map(function (node, i) {
             if (this.hideNode(node,this.props.filterText)) return;
 
             var onDragStart = function(e) {

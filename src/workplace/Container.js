@@ -9,7 +9,8 @@ import cx from 'classnames';
 import Box from './Box.js';
 import ResizableHandle from './ResizableHandle.js';
 import ResizeContainer from './ResizeContainer.js';
-import If from './../util/If';
+import If from '../util/If';
+import ComponentMetaData from '../util/ComponentMetaData.js'
 
 var handle = 30;
 const target = {
@@ -89,13 +90,13 @@ class Container extends React.Component {
             'root': this.props.isRoot
         });
 
-        var styles = {
+        var styles = _.extend(ComponentMetaData.ContainerStyle.metaData.props,{
             left: this.props.left,
             top: this.props.top,
             height: this.props.height,
             width: this.props.width,
             position: this.props.position
-        };
+        });
 
         //resize handle position
 
@@ -126,7 +127,7 @@ class Container extends React.Component {
                                               top={top}
                                               height={container.style.height}
                                               width={container.style.width}
-                                              position={container.style.position}
+                                              position={container.style.position || 'relative'}
                                               boxes={container.boxes}
                                               containers={container.containers}
                                               currentChanged={this.props.currentChanged}

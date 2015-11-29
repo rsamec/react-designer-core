@@ -3,7 +3,7 @@ import BindToMixin from 'react-binding';
 import _ from 'lodash';
 import falcor from 'falcor';
 import falcorDataSource from 'falcor-http-datasource';
-
+import Transmit from 'react-transmit';
 
 import {HtmlPagesRenderer,BootstrapPublisher,BindingUtil,GraphicUtil} from 'react-page-renderer';
 
@@ -22,7 +22,8 @@ var Preview = React.createClass({
     getInitialState:function() {
 
         var dataSources = _.reduce(this.props.schema.props.dataSources,function(memo,value,key){
-            memo[key] = new falcor.Model({source: new falcorDataSource(value)});
+            memo[key] = new falcor.Model({source: new falcorDataSource(value, {crossDomain: true,
+                withCredentials: false})});
             return memo;
         },{});
         return {data:_.extend({dataSources:dataSources}, _.cloneDeep(this.props.schema.props.defaultData))};
@@ -66,7 +67,6 @@ var Preview = React.createClass({
                         if (response !== undefined) binding.value = new Array(response);
                     });
                 }
-
             }
         });
     },
@@ -85,7 +85,7 @@ var Preview = React.createClass({
             <div>
                 <HtmlPagesRenderer widgets={this.props.widgets} schema={schema} data={this.state.data}
                                    intlData={schema.intlData} dataContext={dataContext}
-                                   pageOptions={defaultPageOptions}/>
+                                   pageOptions={defaultPageOptions} asyncRenderer={Transmit}/>
             </div>
         );
 
