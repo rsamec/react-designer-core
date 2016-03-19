@@ -1,11 +1,9 @@
 {
   "name": "react-designer-core",
-  "version": "0.0.4",
-  "private": false,
-  "description": "React desiginer core components.",
+  "version": "1.0.0",
+  "description": "Designer",
   "main": "lib/Designer.js",
-  "author": "Roman Samec (roman.samec2@gmail.com)",
-  "license": "MIT",
+  "author": "Roman Samec",
   "homepage": "https://github.com/rsamec/react-designer-core",
   "repository": {
     "type": "git",
@@ -15,65 +13,49 @@
     "url": "https://github.com/rsamec/react-designer-core/issues"
   },
   "dependencies": {
-    "classnames": "^2.1.3",
+    "classnames": "^2.2.3",
+    "draft-js": "^0.2.2",
     "lodash": "^3.10.1",
-    "react": "^0.13.3",
-    "react-binding": "^0.6.4",
-    "react-dnd": "^1.1.8",
-    "react-property-editor": "^0.2.5",
+    "react-binding": "^0.7.3",
+    "react-dnd": "^2.0.2",
     "react-treeview": "^0.4.2",
-    "reactify": "^1.1.1",
-    "transhand": "0.1.18"
+    "transhand": "^0.1.23"
   },
   "devDependencies": {
-    "babel-core": "^5.8.25",
-    "babel-runtime": "^5.8.24",
-    "babelify": "^6.3.0",
-    "body-parser": "^1.14.0",
-    "compression": "^1.6.0",
-    "csvtojson": "^0.4.3",
-    "diacritics": "^1.2.2",
-    "express": "^4.13.3",
-    "falcor-express": "^0.1.2",
-    "falcor-http-datasource": "^0.1.2",
-    "falcor-router": "^0.2.9",
-    "freezer-js": "^0.7.1",
-    "fs": "0.0.2",
-    "griddle-react": "^0.2.14",
-    "gulp": "^3.8.10",
-    "html-pdf": "^1.4.0",
-    "morgan": "^1.6.1",
-    "node-jsx": "^0.13.3",
-    "normalize-object": "^1.1.3",
-    "path": "^0.12.7",
-    "radium": "^0.14.1",
-    "react-bootstrap": "^0.25.2",
-    "react-component-gulp-tasks": "^0.7.0",
-    "react-designer-widgets": "^0.1.34",
+    "babel-eslint": "^4.1.3",
+    "backdraft-js": "0.0.1",
+    "eslint": "^1.6.0",
+    "eslint-plugin-react": "^3.5.1",
+    "freezer-js": "^0.9.4",
+    "gulp": "^3.9.0",
+    "react-component-gulp-tasks": "^0.7.6",
+    "react-dnd-html5-backend": "^2.0.2",
     "react-dock": "^0.2.3",
-    "react-inlinesvg": "^0.4.2",
-    "react-overlays": "^0.4.4",
-    "react-page-renderer": "0.0.41",
-    "react-pathjs-chart": "^0.2.5",
-    "react-pivot": "^1.12.1",
-    "react-shapes": "0.0.5",
-    "react-split-pane": "^0.1.10",
-    "react-transmit": "^3.0.8",
-    "request": "^2.65.0",
-    "underscore": "^1.8.3"
+    "react-gmaps": "^1.4.3",
+    "react-html-pages-renderer": "^1.4.0",
+    "react-pathjs-chart": "^0.3.4",
+    "react-photo-widget-factory": "^1.2.2",
+    "react-property-editor": "^1.0.1",
+    "react-router": "^2.0.1",
+    "react-shapes": "^0.1.0",
+    "react-split-pane": "^0.1.22"
   },
-  "peerDependencies": {},
-  "browserify": {
-    "transform": [
-      "reactify"
-    ]
+  "peerDependencies": {
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0"
   },
-  "browser": "lib/Designer.js",
   "browserify-shim": {
     "react": "global:React"
   },
   "scripts": {
-    "test": "echo \"no tests yet\" && exit 0"
+    "build": "gulp clean && NODE_ENV=production gulp build",
+    "examples": "gulp dev:server",
+    "lint": "eslint ./; true",
+    "publish:site": "NODE_ENV=production gulp publish:examples",
+    "release": "NODE_ENV=production gulp release",
+    "start": "gulp dev",
+    "test": "echo \"no tests yet\" && exit 0",
+    "watch": "gulp watch:lib"
   },
   "keywords": [
     "react"

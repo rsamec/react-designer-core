@@ -4,9 +4,10 @@ import ItemTypes  from '../util/ItemTypes.js';
 
 import _ from 'lodash';
 import cx from 'classnames';
-import WidgetRenderer from '../components/WidgetRenderer.js';
 import {Transhand} from 'transhand';
 import ResizeContainer from './ResizeContainer.js';
+import RichTextEditor from '../workplace/RichTextEditor';
+
 /**
  * Implements the drag source contract.
  */
@@ -53,11 +54,14 @@ class Box extends React.Component
         // it does not need it. This is a huge gain in performance.
         var box = this.props.node;
         var update =this.props.node !== nextProps.node ||  this.props.selected != nextProps.selected;
-        if (update) return update;
-
+		//console.log(nextProps.node.name + ' : ' + update);
+		if (update) return update;
+		
         var propsStyles = this.props.ctx.styles;
         var nextPropsStyles = nextProps.ctx.styles;
-        return (propsStyles && propsStyles[box.elementName]) !== (nextPropsStyles && nextPropsStyles[box.elementName]);
+        update = (propsStyles && propsStyles[box.elementName]) !== (nextPropsStyles && nextPropsStyles[box.elementName]);
+		
+		return update;
     }
     generateCssTransform(transform) {
         var cssTransform = '';
@@ -71,7 +75,7 @@ class Box extends React.Component
         return cssTransform
     }
     render() {
-        //prepare styles
+		//prepare styles
         var classes = cx({
             'box':true,
             'selected':this.props.selected
@@ -88,25 +92,21 @@ class Box extends React.Component
         if (!box.props.width && !!box.style.width) box.props.width = box.style.width;
         if (!box.props.height&& !!box.style.height) box.props.height = box.style.height;
 
-        var boxComponent = <WidgetRenderer widget={widgets[box.elementName]} node={box} dataBinder={this.props.dataBinder} customStyle={customStyle} customCode={ctx['customCode']} designer={true} />;
+		var WidgetRenderer = this.props.widgetRenderer;
+
+		var boxComponent = WidgetRenderer !== undefined?<WidgetRenderer widget={widgets[box.elementName]} node={box} dataBinder={this.props.dataBinder} customStyle={customStyle} customCode={ctx['customCode']} designer={true} />:<div>No widget renderer provided</div>
         const { isDragging, connectDragSource, item } = this.props;
 
 
-        var styles = box.style;
-        //var styles = {
-        //    left: this.props.left,
-        //    top: this.props.top,
-        //    height: this.props.height,
-        //    width: this.props.width,
-        //    position: this.props.position,
-        //};
-        if (box.style.transform !== undefined) styles['transform']=this.generateCssTransform(box.style.transform);
+        var styles = _.omit(box.style,['width','height']);
+		
+		if (box.style.transform !== undefined) styles['transform']=this.generateCssTransform(box.style.transform);
 
         return connectDragSource(
             <div style={styles} className={classes} onClick={this.handleClick.bind(this)}>
                 <div onDoubleClick={this.handleDoubleClick.bind(this)}>
                     <ResizeContainer node={this.props.node} currentChanged={this.props.currentChanged}>
-                        {boxComponent}
+						{this.props.selected && box.elementName === "Core.RichTextContent"?<RichTextEditor font={box.props.font} current={this.props.node} currentChanged={this.props.currentChanged} content={box.props.content}/>:boxComponent}
                     </ResizeContainer>
                 </div>
             </div>

@@ -37,7 +37,7 @@ class ResizableHandle extends React.Component {
     render() {
         const { isDragging, connectDragSource, item } = this.props;
         return connectDragSource(
-            <div className="resizable-handle" style={{left: this.props.left,top: this.props.top,position:'absolute'}}>
+            <div className="resizable-handle">
             </div>
         );
     }

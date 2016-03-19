@@ -1,22 +1,23 @@
 react-designer-core
 =======================
 
-Warning - it is prototype and work in progress.
-
 React designer is WYSIWYG editor for **easy content creation** (legal contracts, business forms, marketing leaflets, technical guides, visual reports, rich dashboards, tutorials and other content, etc.).
 
 [Live demo](http://rsamec.github.io/react-designer-core/)
 
-It is based on separation between
-
-+   logical component tree - JSON simple document description - [Page Transform Tree (PTT)](https://github.com/rsamec/ptt) - it is framework agnostic definition
-+   visual component tree - [React virtual DOM](http://facebook.github.io/react) - rendering to DOM so that it maps each component (terminal node) from logical tree to react component and its properties
-
 ## Main goals 
 
-+   it is aimed for developers - to use it in their own solutions  
-+   it is free and open source
-+   it is simple by design - minimal JSON framework agnostic definition maps directly to React components       
++   it is for developers - to use it in your own solutions with your own widgets (components)  
++   it is based on simple principals
+ 	+	minimal JSON framework agnostic definition maps directly to React components
+ 	+	indepedent of react components - you can use various widgets frameworks (react-bootstrap, material-design, your company made widgets, etc.)
++ 	offers standard design components (Workplace, Container, Box, PropertyEditor,ObjectBrowser) and features
+	+	layouting - moving positions, resizing, moving up/down in component hieararchy, copying, deleting, etc.
+ 	+	component editing - property editors, inline editing - using [draftjs](https://facebook.github.io/draft-js/), streching, rotating, transforming [transhand](https://github.com/azazdeaz/transhand),etc.
+ 	+	workplace - selecting, undo/redo, previewing, import/export, etc.
+ 	  	 	
+ 	       
+**Warning**: Nevertheless, i must repeatedly stress that it is still a prototype and work in progress.
 
 ## Features
 
@@ -36,12 +37,17 @@ It is based on separation between
     +   simple comparison is fast because of using immutable data structure
 +   undo/redo functionality
 
-
 It comes with core components typical for WYSIWYG designers
 
 +   Workplace - main working area for drawing documents
 +   PropertyGrid - component properties editors (html editors, color pickers, json editors, etc.)
 +   ObjectTree - logical component tree - enables to search and move components between nodes
+
+
+Document definition is done in JSON - uses PPT that follows the separation between      
+
++   logical component tree - JSON simple document description - [Page Transform Tree (PTT)](https://github.com/rsamec/ptt) - it is framework agnostic definition
++   visual component tree - [React virtual DOM](http://facebook.github.io/react) - rendering to DOM so that it maps each component (terminal node) from logical tree to react component and its properties
 
 
 ### Logical component tree - [PTT](https://github.com/rsamec/ptt)
@@ -133,7 +139,14 @@ See the example folder.
 
 ## Roadmap
 
++   support for more positioning schemas (especially to support for responsive design)
+	+	[Responsive grid system] (http://getbootstrap.com/css/#grid)
+	+	[CSS Flex box](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Using_CSS_flexible_boxes)
+	+	[Grid Style Sheets](http://gridstylesheets.org/)
 +   support for typography (vertical rhythm, modular scale, web fonts, etc.)
++   support for print (PDF) - 300 DPI pixel perfect print
+	+	support html fragments -> to pdf (using html parser)
+	+	custom PDF rendering - (no dependency on PhantomJS or Electron)
 +   improve designer experience
     +   move objects in object browser
     +   disabled add widget when box is selected
@@ -144,9 +157,6 @@ See the example folder.
 +   data binding refactoring    
     +   support for binding to remote stores (consider falcor)
     +   data watchers - if some data changes, it changes on the other site
-+   support for more positioning schemas - flex, grid, ...
-+   better support for PDF
-    +   better support html fragments -> to pdf (using html parser) - consider using pdfmake
 
 ### License
 

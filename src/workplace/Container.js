@@ -5,14 +5,19 @@ import { DropTarget } from 'react-dnd';
 import _ from 'lodash';
 import cx from 'classnames';
 
-//import TransformContainer from './TransformContainer.js';
 import Box from './Box.js';
 import ResizableHandle from './ResizableHandle.js';
 import ResizeContainer from './ResizeContainer.js';
-import If from '../util/If';
-import ComponentMetaData from '../util/ComponentMetaData.js'
+import backgroundStyle from '../util/backgroundStyle'
 
-var handle = 30;
+const HANDLE_OFFSET = 8;
+
+let snapToGrid = function(grid,deltaX,deltaY){
+	let x = Math.round(deltaX/grid[0]) * grid[0];
+	let y = Math.round(deltaY/grid[1]) * grid[1];
+	return [x,y];
+}
+
 const target = {
     drop(props, monitor, component) {
         if (monitor.didDrop()) {
@@ -32,19 +37,18 @@ const target = {
         if (monitor.getItemType() === ItemTypes.BOX) {
             var left = Math.round(isNaN(item.left) ? 0 : parseInt(item.left, 10) + delta.x);
             var top = Math.round(isNaN(item.top) ? 0 : parseInt(item.top, 10) + delta.y);
+			
             component.moveBox(item.index, left, top);
         }
-        ;
 
         if (monitor.getItemType() === ItemTypes.RESIZABLE_HANDLE) {
-            var left = Math.round(delta.x);
-            var top = Math.round(delta.y);
-
-            component.resizeContainer(item.parent, left, top);
+            var left = Math.round(delta.x<0?delta.x + HANDLE_OFFSET: delta.x - HANDLE_OFFSET);
+            var top = Math.round(delta.y<0?delta.y + HANDLE_OFFSET: delta.y - HANDLE_OFFSET);
+            component.resizeContainer(item.parent, left,top);
         }
-        ;
     }
 };
+
 class Container extends React.Component {
     moveBox(index, left, top) {
         var boxes = this.props.boxes;
@@ -52,7 +56,8 @@ class Container extends React.Component {
         var box = boxes[index];
         if (box === undefined) return;
 
-        var updated = box.set({'style': _.merge(_.clone(box.style),{'top': top, 'left': left})});
+		var deltas = snapToGrid(this.context.snapGrid,left, top);
+        var updated = box.set({'style': _.merge(_.clone(box.style),{'left': deltas[0],'top': deltas[1],})});
         //var updated = box.set({'style': {'top': top, 'left': left,'height':box.style.height,'width':box.style.width}});
         this.props.currentChanged(updated);
     }
@@ -62,9 +67,15 @@ class Container extends React.Component {
 
         //TODO: use merge instead of clone
         var style = _.clone(container.style);
-        style.width += deltaWidth;
-        style.height += deltaHeight;
-
+		var newWidth = style.width + deltaWidth;
+		if (newWidth <0)return;
+		var newHeight = style.height + deltaHeight;
+		if (newHeight <0)return; 
+		
+		var deltas = snapToGrid(this.context.snapGrid,newWidth,newHeight );
+        style.width = deltas[0];
+        style.height = deltas[1];
+		
         //var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
         var updated = container.set({'style': style});
         this.props.currentChanged(updated);
@@ -90,19 +101,31 @@ class Container extends React.Component {
             'root': this.props.isRoot
         });
 
-        var styles = _.extend(ComponentMetaData.ContainerStyle.metaData.props,{
+        var styles = {
             left: this.props.left,
             top: this.props.top,
             height: this.props.height,
             width: this.props.width,
-            position: this.props.position
-        });
+            position: this.props.position || 'relative'
+        };
 
-        //resize handle position
+		var selfNode =  this.props.parent;
+		var selfProps = selfNode && selfNode.props || {};
+		var selfBindings = selfNode && selfNode.bindings || {};
 
-        var resizeHandlePosition = {top: (this.props.top + this.props.height - handle), left: (this.props.left + this.props.width - handle)};
+		
+		if (selfProps.background !== undefined || selfBindings.background !== undefined) {
+			
+			if (this.props.dataBinder !== undefined)
+				selfProps = this.props.widgetRenderer.bindProps(_.cloneDeep(selfProps),  selfNode.bindings, this.props.dataBinder, true);
+			
 
-
+			styles = _.extend(styles, backgroundStyle(selfProps.background, {
+				width: this.props.width,
+				height: this.props.height
+			}))
+		}
+		
         const { canDrop, isOver, connectDropTarget } = this.props;
 
         return connectDropTarget(
@@ -140,6 +163,7 @@ class Container extends React.Component {
                                               intlData={this.props.intlData}
                                               ctx={this.props.ctx}
                                               widgets={this.props.widgets}
+											  widgetRenderer={this.props.widgetRenderer}
                                 />
                         );
                     }, this)
@@ -164,6 +188,7 @@ class Container extends React.Component {
                                          node={box} dataBinder={this.props.dataBinder}
                                          ctx={this.props.ctx}
                                          widgets={this.props.widgets}
+						                 widgetRenderer={this.props.widgetRenderer}
                                         >
                                     </Box>
 
@@ -171,15 +196,17 @@ class Container extends React.Component {
                     }, this)
                     }
                 </div>
-                <If test={this.props.isRoot?false:true}>
-                    <ResizableHandle left={resizeHandlePosition.left} top={resizeHandlePosition.top}
-                                     parent={this.props.parent}/>
-                </If>
+				{this.props.isRoot ?null:
+					<ResizableHandle parent={this.props.parent}/>
+				}
             </div>
         );
     }
-};
-//Container.propTypes = propTypes;
+}
+
+Container.contextTypes =  {
+	snapGrid: React.PropTypes.arrayOf(React.PropTypes.number)
+}
 
 var collect = (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),

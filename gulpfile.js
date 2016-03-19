@@ -1,24 +1,43 @@
-var gulp = require('gulp'),
-	initGulpTasks = require('react-component-gulp-tasks');
-
-
-/**
- * Task configuration is loaded from config.js
- * 
- * Make any changes to the source or distribution files
- * and directory configuration there
- */
-
-var config = require('./gulpconfig');
-
+var gulp = require('gulp');
+var initGulpTasks = require('react-component-gulp-tasks');
 
 /**
  * Tasks are added by the react-component-gulp-tasks package
- * 
+ *
  * See https://github.com/JedWatson/react-component-gulp-tasks
  * for documentation.
- * 
+ *
  * You can also add your own additional gulp tasks if you like.
  */
 
-initGulpTasks(gulp, config);
+var taskConfig = {
+
+	component: {
+		name: 'Designer',
+		dependencies: [
+			'classnames',
+			'react',
+			'react-dom'
+		],
+		lib: 'lib'
+	},
+
+	example: {
+		src: 'example/src',
+		dist: 'example/dist',
+		port: 8400,
+		files: [
+			'index.html',
+			'.gitignore'
+		],
+		scripts: [
+			'example.js'
+		],
+		less: [
+			'example.less'
+		]
+	}
+
+};
+
+initGulpTasks(gulp, taskConfig);
