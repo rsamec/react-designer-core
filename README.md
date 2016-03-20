@@ -22,13 +22,15 @@ React designer is WYSIWYG editor for **easy content creation** (legal contracts,
 ## Features
 
 +   directly manipulate the layout of a document without having to type or remember names of components, elements, properties or other layout commands.
-+   high-quality on-screen output and on-printer output
 +   precise visual layout that corresponds to an existing paper version
-    +   support for various output formats - html, pdf.
+    +   support for various output formats - html, pdf, ...
++   high-quality on-screen output and on-printer output
 +   comfortable user experience - basic WYSIWYG features
     +   support drag nad drop - resize object length, move object positions
     +   support manipulating objects -> copy, move, up, down objects in object schema hierarchy
     +   highlighting currently selected object and its parent
+	+   minimum input, maximum output
+	+	remove the barriers of entry
 +   build-in html content publishing (preview of html dynamic document)
 +   binding support using [react-binding](https://github.com/rsamec/react-binding) - experimental
 +   props inheritance - when rendering occurs -> the props value is resolved by using a value resolution strategy (Binding Value -> Local Value -> Style Value -> Default Value)
@@ -144,6 +146,7 @@ See the example folder.
 	+	[CSS Flex box](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Using_CSS_flexible_boxes)
 	+	[Grid Style Sheets](http://gridstylesheets.org/)
 +   support for typography (vertical rhythm, modular scale, web fonts, etc.)
++   support for more fonts (google fonts)
 +   support for print (PDF) - 300 DPI pixel perfect print
 	+	support html fragments -> to pdf (using html parser)
 	+	custom PDF rendering - (no dependency on PhantomJS or Electron)

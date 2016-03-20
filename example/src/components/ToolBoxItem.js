@@ -10,10 +10,13 @@ class ToolBoxItem extends React.Component {
             position: 'relative',
             backgroundImage: 'url(' + imgUrl + ')',
             backgroundRepeat: 'no-repeat',
+			//backgroundSize:'contain',
             width: container.style.width,
             height: container.style.height
         };
 
+		var containerWidth = container.style && container.style.width;
+		var containerHeight = container.style && container.style.height;
         return (
             <div style={divStyle}>
                 {
@@ -21,9 +24,9 @@ class ToolBoxItem extends React.Component {
 
                         var itemStyle = _.clone(item.style);
                         itemStyle.borderWidth = 1;
-                        itemStyle.minWidth = 20;
-                        itemStyle.minHeight = 20;
-                        itemStyle.width = item.style.width;
+                        itemStyle.minWidth = 20 ;
+                        itemStyle.minHeight = 40;
+                        itemStyle.width = item.style.width || containerWidth;
                         itemStyle.height = item.style.height;
                         itemStyle.position = 'absolute';
                         itemStyle[':hover'] = {

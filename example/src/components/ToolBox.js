@@ -13,7 +13,7 @@ let ToolBoxTexts = (props) => {
 	return (<div>
 			<h3>Titles</h3>
 			<hr/>
-			<ToolBoxItem imgUrl='toolbox/TextTitles.png' container={textTitles} addFce={props.add}/>
+			<ToolBoxItem imgUrl='toolbox/TextTitles.jpg' container={textTitles} addFce={props.add}/>
 			<h3>Paragraphs</h3>
 			<hr/>
 			<ToolBoxItem imgUrl='toolbox/TextParagraph.png' container={textParagraph} addFce={props.add}/>
@@ -56,7 +56,7 @@ let ToolBoxImages = (props) => {
 		<div>
 			<h3>Image boxes</h3>
 			<hr/>
-			<ToolBoxItem imgUrl='toolbox/Images.png' container={imagesCon} addFce={props.add}/>
+			<ToolBoxItem imgUrl='toolbox/Images.jpg' container={imagesCon} addFce={props.add}/>
 		</div>
 	)
 }
@@ -66,7 +66,7 @@ let ToolBoxCharts = (props) => {
 		<div>
 			<h3>Charts</h3>
 			<hr/>
-			<ToolBoxItem imgUrl='toolbox/Chart.png' container={chartCon} addFce={props.add}/>
+			<ToolBoxItem imgUrl='toolbox/Chart.jpg' container={chartCon} addFce={props.add}/>
 		</div>
 	)
 }

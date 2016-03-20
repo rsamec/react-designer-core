@@ -36,7 +36,7 @@ var Widgets = {
 	"Shapes.Ellipse":Ellipse,
 	"Shapes.Line":Line,
 	"Shapes.PolyLine":PolyLine,
-	"Shapes.Triangle ":Triangle,
+	"Shapes.Triangle":Triangle,
 	
 	"Chart.Bar":Bar,
 	"Chart.Pie":Pie,

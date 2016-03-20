@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import {MdTextFields,MdTextFormat, MdFontDownload,MdFormatListNumbered,MdFormatListBulleted,MdFormatShapes,MdCheckBoxOutlineBlank,MdCropOriginal,MdDeveloperMode,MdInsertChart,MdInsertPhoto,MdAddAPhoto,MdMap} from 'react-icons/lib/md';
+import {MdTextFields,MdTextFormat,MdChromeReaderMode,MdPolymer,MdFontDownload,MdFormatListNumbered,MdFormatListBulleted,MdFormatShapes,MdCheckBoxOutlineBlank,MdCropOriginal,MdDeveloperMode,MdInsertChart,MdInsertPhoto,MdAddAPhoto,MdMap} from 'react-icons/lib/md';
 
 const list = [
 	{
@@ -18,7 +18,7 @@ const list = [
 	{
 		name: "Core.HtmlContent",
 		title:'Html content',
-		icon: MdFormatListNumbered,
+		icon: MdPolymer,
 		desc: "Html markup"
 	},
 	{
@@ -48,7 +48,7 @@ const list = [
 	{
 		name: "Core.ArticleContent",
 		title:'Article content',
-		icon: MdMap,
+		icon: MdChromeReaderMode,
 		desc: "ParagrphsSimple text without formating"
 	},
 	{
@@ -72,7 +72,7 @@ const list = [
 	{
 		name: "react-gmaps.Gmaps",
 		title:'Google maps',
-		icon: MdAddAPhoto,
+		icon: MdMap,
 		desc: "Googel maps"
 	}
 ];

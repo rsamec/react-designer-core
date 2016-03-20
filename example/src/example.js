@@ -19,9 +19,9 @@ import {Modal} from 'react-overlays';
 import ModalStyles from './components/ModalStyles.js';
 
 
-const SERVICE_URL = 'http://photo-papermill.rhcloud.com';
+//const SERVICE_URL = 'http://photo-papermill.rhcloud.com';
 //const SERVICE_URL = 'http://render-pergamon.rhcloud.com';
-//const SERVICE_URL = 'http://localhost:8080';
+const SERVICE_URL = 'http://localhost:8080';
 
 /**
  * Number.prototype.format(n, x, s, c)
@@ -363,31 +363,31 @@ class Designer extends React.Component {
 		xmlhttp.send(this.schemaToJson());
 	}
 	saveChanges(){
-		if (this.props.schemaId === undefined) return;
-		console.log("Attempt to save changes .");
-		
-		var me = this;
-		var schema = this.schema();
-		var name = schema.name;
-		var schema = this.schemaToJson();
-		$.ajax({
-			type: "PUT",
-			url: SERVICE_URL + "/docs/" + this.props.schemaId,
-			data: {
-				schemaTemplate: schema,
-				customData: {pageOptions: {}},
-				name: name,
-				owner: '56b1147e42dea27c23ba397e'
-			},
-			dataType: 'json',
-			success: function (data) {
-				console.log("Save success.");
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				console.log("Save failure.");
-				alert("failed");
-			}
-		})
+		//if (this.props.schemaId === undefined) return;
+		//console.log("Attempt to save changes .");
+		//
+		//var me = this;
+		//var schema = this.schema();
+		//var name = schema.name;
+		//var schema = this.schemaToJson();
+		//$.ajax({
+		//	type: "PUT",
+		//	url: SERVICE_URL + "/docs/" + this.props.schemaId,
+		//	data: {
+		//		schemaTemplate: schema,
+		//		customData: {pageOptions: {}},
+		//		name: name,
+		//		owner: '56b1147e42dea27c23ba397e'
+		//	},
+		//	dataType: 'json',
+		//	success: function (data) {
+		//		console.log("Save success.");
+		//	},
+		//	error: function (xhr, ajaxOptions, thrownError) {
+		//		console.log("Save failure.");
+		//		alert("failed");
+		//	}
+		//})
 	}
 	publish() {
 		var me = this;
