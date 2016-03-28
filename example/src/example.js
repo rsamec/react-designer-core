@@ -18,10 +18,11 @@ import { Router, Route, Link, IndexRoute, hashHistory } from 'react-router';
 import {Modal} from 'react-overlays';
 import ModalStyles from './components/ModalStyles.js';
 
-
-//const SERVICE_URL = 'http://photo-papermill.rhcloud.com';
+const BASE_SERVICE_URL = 'http://www.paperify.io'
+let SERVICE_URL = BASE_SERVICE_URL + '/api';
+//const SERVICE_URL = 'http://photo-papermill.rhcloud.com/api';
 //const SERVICE_URL = 'http://render-pergamon.rhcloud.com';
-const SERVICE_URL = 'http://localhost:8080';
+//const SERVICE_URL = 'http://localhost:8080/api';
 
 /**
  * Number.prototype.format(n, x, s, c)
@@ -36,14 +37,8 @@ var emptyObjectSchema = {
 	name: 'rootContainer',
 	containers: [],
 	props: {
-		title: undefined,
-		defaultData: undefined,
-		defaultPageSize: undefined,
-		doublePage:undefined,
-		context: {
-			styles: undefined
-		}
-
+		pageOptions:{width: 794,height:1123},
+		context: {}
 	}
 };
 
@@ -229,8 +224,6 @@ class Designer extends React.Component {
 
 	currentChanged(currentNode) {
 		if (currentNode === undefined) return;
-			
-		
 		
 		if (currentNode.elementName === "Draft.Draft.RichEditorRenderer") {
 			//var updated = current.set({"props": updatedValue.props, "bindings":updatedValue.binding});
@@ -363,31 +356,33 @@ class Designer extends React.Component {
 		xmlhttp.send(this.schemaToJson());
 	}
 	saveChanges(){
-		//if (this.props.schemaId === undefined) return;
-		//console.log("Attempt to save changes .");
-		//
-		//var me = this;
-		//var schema = this.schema();
-		//var name = schema.name;
-		//var schema = this.schemaToJson();
-		//$.ajax({
-		//	type: "PUT",
-		//	url: SERVICE_URL + "/docs/" + this.props.schemaId,
-		//	data: {
-		//		schemaTemplate: schema,
-		//		customData: {pageOptions: {}},
-		//		name: name,
-		//		owner: '56b1147e42dea27c23ba397e'
-		//	},
-		//	dataType: 'json',
-		//	success: function (data) {
-		//		console.log("Save success.");
-		//	},
-		//	error: function (xhr, ajaxOptions, thrownError) {
-		//		console.log("Save failure.");
-		//		alert("failed");
-		//	}
-		//})
+		
+		if (this.props.schemaId === undefined) return;
+		console.log("Attempt to save changes .");
+
+		return;
+		
+		var me = this;
+		var schema = this.schema();
+		var name = schema.name;
+		var schema = this.schemaToJson();
+		$.ajax({
+			type: "PUT",
+			url: SERVICE_URL + "/docs/" + this.props.schemaId,
+			data: {
+				schemaTemplate: schema,
+				name: name,
+				owner: '56b1147e42dea27c23ba397e'
+			},
+			dataType: 'json',
+			success: function (data) {
+				console.log("Save success.");
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				console.log("Save failure.");
+				alert("failed");
+			}
+		})
 	}
 	publish() {
 		var me = this;
@@ -400,7 +395,6 @@ class Designer extends React.Component {
 			url: SERVICE_URL + "/docs",
 			data: {
 				schemaTemplate: schema,
-				customData: {pageOptions: {}},
 				name: name,
 				owner: '56b1147e42dea27c23ba397e'
 			},
@@ -410,7 +404,7 @@ class Designer extends React.Component {
 					published: true,
 					publishInfo: {
 						name: data.name,
-						url: 'http://rsamec.github.io/react-html-pages-renderer/#/' + "/book/" + data._id
+						url:  BASE_SERVICE_URL + '/view/#/' + data._id
 					}
 				})
 			},

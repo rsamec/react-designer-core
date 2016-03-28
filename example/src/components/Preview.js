@@ -14,9 +14,11 @@ export default class Preview  extends React.Component
         var schema = _.cloneDeep(this.props.schema);
         var dataContext = Binder.bindToState(this,'data');
 		
+		var pageOptions = schema.props && schema.props.pageOptions || {};
+		
         return (
             <div>
-                <HtmlPagesRenderer widgets={this.props.widgets} schema={schema} dataContext={dataContext} doublePage={schema.props.doublePage}/>
+                <HtmlPagesRenderer widgets={this.props.widgets} schema={schema} dataContext={dataContext} pageOptions={pageOptions}/>
             </div>
         );
 

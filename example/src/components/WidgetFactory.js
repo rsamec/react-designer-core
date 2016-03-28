@@ -394,6 +394,75 @@ _.extend(Widgets['react-bootstrap.Input'], {
 //_.extend(Widgets['react-bootstrap.Alert'],extendBootstrapFields(bootstrapSettings,{ content: {type:'htmlEditor'}}));
 //_.extend(Widgets['react-bootstrap.Input'],extendBootstrapFields(bootstrapSettings,{ type: {type:'string'},placeholder: {type:'string'},label: {type:'string'},help: {type:'string'}}));
 //
+
+_.merge(Bar, {
+		metaData: {
+			settings: {
+				fields: {
+					data: {
+						type: 'gridEditor',
+						settings: {
+							config: {
+								// True if the first column in each row is a header (th)
+								hasHeadColumn: true,
+								// True if the data for the first column is just a string.
+								// Set to false if you want to pass custom DOM elements.
+								isHeadColumnString: true,
+								// True if the first row is a header (th)
+								hasHeadRow: true,
+								// True if the data for the cells in the first row contains strings.
+								// Set to false if you want to pass custom DOM elements.
+								isHeadRowString: true,
+								// True if the user can add rows (by navigating down from the last row)
+								canAddRow: true,
+								// True if the user can add columns (by navigating right from the last column)
+								canAddColumn: true,
+								// Override the display value for an empty cell
+								emptyValueSymbol: '-',
+								// Fills the first column with index numbers (1...n) and the first row with index letters (A...ZZZ)
+								hasLetterNumberHeads: false
+							},
+							initialData: {
+								rows: [
+									['Key', 'AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'FFF', 'GGG'],
+									['COM', '0,0', '0,1', '0,2', '0,3', '0,4', '0,5', '0,6'],
+									['DIV', '1,0', '1,1', '1,2', '1,3', '1,4', '1,5', '1,6'],
+									['DEV', '2,0', '2,1', '2,2', '2,3', '2,4', '2,5', '2,6'],
+									['ACC', '3,0', '3,1', '3,2', '3,3', '3,4', '3,5', '3,6']
+								]
+							},
+							converter: {
+								parse: function (value) {
+									return _.map(_.rest(value.rows, 1), function (row, r) {
+										var name = row[0];
+										return _.map(_.rest(row, 1), function (cell, c) {
+											var c = _.isString(cell) ? cell.replace(",", ".") : cell;
+											var n = parseFloat(c);
+											return {name: name, v: isNaN(n) ? c : n};
+										})
+									})
+								},
+								format: function (value) {
+									var headRow = ['Key', 'AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'FFF', 'GGG'];
+									var columns = ["COM", "DIV", "DEV", "ACC"];
+
+									return {
+										rows: [headRow].concat(_.map(value, function (row, r) {
+											var name = columns[r];
+											return [name].concat(_.map(row, function (cell, c) {
+												return cell.v;
+											}))
+										}))
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+)
 _.extend(Gmaps,{  metaData: {
 	settings: {
 		fields: {

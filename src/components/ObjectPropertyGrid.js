@@ -38,8 +38,7 @@ let COMPONENT_METADATA = {
 				fields: {
 					defaultData: {type: 'plainJsonEditor'},
 					background: {type:'bgEditor'},
-					defaultPageSize: {type: 'select', settings: {options: ['A4','A3','A2','A5','A6','Tabloid','Letter']}},
-					doublePage:{type:'boolean'},
+					pageOptions:{type:'pageOptionsEditor'},
 					context: {
 						fields:{
 							intlData: {type: 'plainJsonEditor'},
