@@ -67,7 +67,7 @@ let COMPONENT_METADATA = {
 		metaData: {
 			settings: {
 				fields: {
-					binding: {type: 'array'},
+					binding: {type: 'plainJsonEditor'},
 					startOnNewPage: {type: 'boolean'},
 					unbreakable: {type: 'boolean'}
 				}

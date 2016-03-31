@@ -74,6 +74,24 @@ const list = [
 		title:'Google maps',
 		icon: MdMap,
 		desc: "Googel maps"
+	},
+	{
+		name: "Chart.HBar",
+		title:'Horizontal bars',
+		icon: MdMap,
+		desc: "Horizontal bars"
+	},
+	{
+		name: "react-input-range.InputRange",
+		title:'Input range slider',
+		icon: MdMap,
+		desc: "Input range slider"
+	},
+	{
+		name: "Repeater",
+		title:'Repeater',
+		icon: MdMap,
+		desc: "Repeater"
 	}
 ];
 

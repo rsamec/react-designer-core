@@ -8,6 +8,8 @@ import {Bar, Pie, Tree, SmoothLine, StockLine, Scatterplot, Radar} from 'react-p
 import * as md from 'react-icons/lib/md';
 import {Input,Panel,Button,Alert,Glyphicon} from 'react-bootstrap';
 import Gmaps from '../widgets/Gmaps';
+import HBar from '../widgets/HBar';
+import InputRange from '../widgets/InputRange';
 
 var Widgets = {
 	"Core.TextContent":WidgetFactory.TextContent,
@@ -52,7 +54,10 @@ var Widgets = {
 	"react-bootstrap.Alert":Alert,
 	"react-bootstrap.Glyphicon":Glyphicon,
 	
-	"react-gmaps.Gmaps":Gmaps
+	"react-input-range.InputRange":InputRange,
+	
+	"react-gmaps.Gmaps":Gmaps,
+	"Chart.HBar":HBar
 
 };
 
@@ -476,4 +481,35 @@ _.extend(Gmaps,{  metaData: {
 	}
 }});
 
+_.extend(HBar,{  metaData: {
+	settings: {
+		fields: {
+			width:{type:'number'},
+			height:{type:'number'},
+			item:{fields:{
+				width:{type:'number'},
+				height:{type:'number'},
+				count:{type:'number'}				
+			}},
+			icon: {
+				type: 'select',
+				settings: {options: iconKeys}
+			},
+			color:{type:'colorPicker'},
+			selectColor: {type: 'colorPicker'},
+			value:{type:'number'},
+		}
+	}
+}});
+
+_.extend(InputRange,{  metaData: {
+	settings: {
+		fields: {
+			maxValue:{type:'number'},
+			minValue:{type:'number'},
+			value:{type:'number'},
+			font:{type:'fontEditor'},
+		}
+	}
+}});
 export default Widgets;

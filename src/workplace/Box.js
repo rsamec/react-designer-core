@@ -98,7 +98,8 @@ class Box extends React.Component
         const { isDragging, connectDragSource, item } = this.props;
 
 
-        var styles = _.omit(box.style,['width','height']);
+        //var styles = _.omit(box.style,['width','height']);
+		var styles = box.style;
 		
 		if (box.style.transform !== undefined) styles['transform']=this.generateCssTransform(box.style.transform);
 

@@ -360,7 +360,7 @@ class Designer extends React.Component {
 		if (this.props.schemaId === undefined) return;
 		console.log("Attempt to save changes .");
 
-		return;
+		//return;
 		
 		var me = this;
 		var schema = this.schema();

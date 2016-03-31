@@ -33,6 +33,7 @@
     "react-dock": "^0.2.3",
     "react-gmaps": "^1.4.3",
     "react-html-pages-renderer": "^1.4.0",
+    "react-input-range": "^0.6.2",
     "react-pathjs-chart": "^0.3.4",
     "react-photo-widget-factory": "^1.2.2",
     "react-property-editor": "^1.0.1",
