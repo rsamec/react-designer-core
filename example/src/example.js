@@ -114,7 +114,7 @@ class ToolbarActions extends React.Component {
 	}
 
 	isContainer() {
-		return this.props.current.node !== undefined && (this.props.current.node.elementName === "Container" || this.props.current.node.elementName === "Repeater")
+		return this.props.current.node !== undefined && (this.props.current.node.elementName === "Container" || this.props.current.node.elementName === "Row" || this.props.current.node.elementName === "Repeater")
 	}
 
 	render() {
@@ -250,7 +250,7 @@ class Designer extends React.Component {
 		if (current === undefined) return;
 
 
-		var isContainer = (elName === "Container" || elName === "Repeater");
+		var isContainer = (elName === "Container" || elName === "Row" || elName === "Repeater");
 		var normalizeElName = elName;
 		if (!isContainer) {
 			var position = elName.indexOf('.');
@@ -258,7 +258,7 @@ class Designer extends React.Component {
 		}
 		var items = isContainer ? current.containers : current.boxes;
 		var defaultNewItem = isContainer ? {
-			name: "container",
+			name: "Container",
 			elementName: elName,
 			style: {
 				top: 0,

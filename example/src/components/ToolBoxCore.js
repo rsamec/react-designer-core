@@ -92,6 +92,12 @@ const list = [
 		title:'Repeater',
 		icon: MdMap,
 		desc: "Repeater"
+	},
+	{
+		name: "Row",
+		title:'Row',
+		icon: MdMap,
+		desc: "Row"
 	}
 ];
 

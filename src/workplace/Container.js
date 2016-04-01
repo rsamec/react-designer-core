@@ -5,7 +5,8 @@ import { DropTarget } from 'react-dnd';
 import _ from 'lodash';
 import cx from 'classnames';
 
-import Box from './Box.js';
+import Box from './Box';
+import Row from './Row';
 import ResizableHandle from './ResizableHandle.js';
 import ResizeContainer from './ResizeContainer.js';
 import backgroundStyle from '../util/backgroundStyle'
@@ -89,7 +90,10 @@ class Container extends React.Component {
     }
 
     render() {
-
+		var elName = this.props.elementName;
+		if (!!elName && elName === "Row") return (<Row {...this.props} />)
+		
+		
         var containers = this.props.containers || [];
         var boxes = this.props.boxes || [];
 
@@ -128,6 +132,7 @@ class Container extends React.Component {
 		
         const { canDrop, isOver, connectDropTarget } = this.props;
 
+		
         return connectDropTarget(
             <div className={classes} style={styles} onClick={this.handleClick.bind(this)}>
                 <div>
@@ -144,7 +149,8 @@ class Container extends React.Component {
                         var left = container.style.left === undefined ? 0 : parseInt(container.style.left, 10);
                         var top = container.style.top === undefined ? 0 : parseInt(container.style.top, 10);
                         return (
-                            <WrappedContainer key={key}
+                            <WrappedContainer elementName={container.elementName}
+								              key={key}
                                               index={index}
                                               left={left}
                                               top={top}

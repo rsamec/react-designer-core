@@ -73,7 +73,17 @@ let COMPONENT_METADATA = {
 				}
 			}
 		}
-	}
+	},
+	Row:{
+		metaData: {
+			settings: {
+				fields: {
+					visibility: {type: 'boolean'},
+					column:{type:'number'}
+				}
+			}
+		}
+	},
 };
 
 
@@ -101,7 +111,7 @@ export default class ObjectPropertyGrid extends React.Component
         var currentNode = this.props.current.node;
         var elementName = currentNode.elementName;
 
-        var isContainer = (elementName === "Container" || elementName === "Repeater" || elementName === "ObjectSchema");
+        var isContainer = (elementName === "Container" || elementName === "Row" || elementName === "Repeater" || elementName === "ObjectSchema");
 		
         var metaData = isContainer? COMPONENT_METADATA[elementName].metaData:this.props.widgets[elementName] && this.props.widgets[elementName].metaData;
 		
