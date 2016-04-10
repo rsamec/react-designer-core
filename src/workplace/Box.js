@@ -105,8 +105,8 @@ class Box extends React.Component {
 
 
 		//var styles = _.omit(box.style,['width','height']);
-		var styles = box.style;
-
+		var styles = _.extend({position:this.props.position},box.style);
+		
 		if (box.style.transform !== undefined) styles['transform'] = this.generateCssTransform(box.style.transform);
 
 		var isInlineEdit = this.props.selected && box.elementName === "Core.RichTextContent";
@@ -125,8 +125,7 @@ class Box extends React.Component {
 			</div>
 		);
 	}
-}
-;
+};
 
 Box.propTypes = propTypes;
 

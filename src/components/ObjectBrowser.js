@@ -2,6 +2,7 @@ import React from 'react';
 import TreeView from 'react-treeview';
 import _ from 'lodash';
 import cx from 'classnames';
+import {ContainerKeys} from '../util/containerMetadata';
 
 export default class ObjectBrowser extends React.Component {
 	constructor(props) {
@@ -31,8 +32,8 @@ export default class ObjectBrowser extends React.Component {
 
         //find source
         var source = from.node;
-        var isContainer = source.elementName === "Container";
-
+        var isContainer = _.contains(ContainerKeys,source.elementName);
+		
         //move source to target - do it in transaction
         var targetArray = isContainer? to.node.containers:to.node.boxes;
         targetArray.transact().push(from.node);
@@ -53,11 +54,16 @@ export default class ObjectBrowser extends React.Component {
         //trans[0] = 1000; // [1000, 1, 2, ..., 999]
     }
     render() {
+		var classes = cx({
+			'node': true,
+			'selected': this.props.current.node === this.props.rootNode
+		});
         return (
             <div>
                 <div className="form-group">
                      <input type="search" className="form-control" placeholder="Search for..." onChange={this.handleUserInput.bind(this)} />
                 </div>
+				<div className={classes} onClick={(e)=>this.props.currentChanged(this.props.rootNode)}>{this.props.rootNode.name}</div>
                 {this.props.rootNode.containers.length === 0 ? <span>No objects to show.</span> :
                     <TreeNode key="root" node={this.props.rootNode} current={this.props.current}
                               currentChanged={this.props.currentChanged.bind(this)} filterText={this.state.filterText}
@@ -67,6 +73,10 @@ export default class ObjectBrowser extends React.Component {
         );
     }
 };
+
+
+
+
 class TreeNode extends React.Component
 {
     handleClick(node) {

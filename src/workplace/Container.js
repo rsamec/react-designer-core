@@ -6,10 +6,10 @@ import _ from 'lodash';
 import cx from 'classnames';
 
 import Box from './Box';
-import Row from './Row';
+//import Row from './Row';
 import ResizableHandle from './ResizableHandle.js';
-import ResizeContainer from './ResizeContainer.js';
-import backgroundStyle from '../util/backgroundStyle'
+import backgroundStyle from '../util/backgroundStyle';
+import styleBorder from '../util/border';
 
 const HANDLE_OFFSET = 8;
 
@@ -18,6 +18,7 @@ let snapToGrid = function(grid,deltaX,deltaY){
 	let y = Math.round(deltaY/grid[1]) * grid[1];
 	return [x,y];
 }
+
 
 const target = {
     drop(props, monitor, component) {
@@ -51,164 +52,200 @@ const target = {
 };
 
 class Container extends React.Component {
-    moveBox(index, left, top) {
-        var boxes = this.props.boxes;
-        if (boxes === undefined) return;
-        var box = boxes[index];
-        if (box === undefined) return;
+	shouldComponentUpdate(nextProps) {
 
-		var deltas = snapToGrid(this.context.snapGrid,left, top);
-        var updated = box.set({'style': _.merge(_.clone(box.style),{'left': deltas[0],'top': deltas[1],})});
-        //var updated = box.set({'style': {'top': top, 'left': left,'height':box.style.height,'width':box.style.width}});
-        this.props.currentChanged(updated);
-    }
-
-    resizeContainer(container, deltaWidth, deltaHeight) {
-        if (container === undefined) return;
-
-        //TODO: use merge instead of clone
-        var style = _.clone(container.style);
-		var newWidth = style.width + deltaWidth;
-		if (newWidth <0)return;
-		var newHeight = style.height + deltaHeight;
-		if (newHeight <0)return; 
+		return true;
 		
-		var deltas = snapToGrid(this.context.snapGrid,newWidth,newHeight );
-        style.width = deltas[0];
-        style.height = deltas[1];
+		// The comparison is fast, and we won't render the component if
+		// it does not need it. This is a huge gain in performance.
+		var box = this.props.node;
+		var update = this.props.node !== nextProps.node || this.props.selected != nextProps.selected;
+		//console.log(nextProps.node.name + ' : ' + update);
+		if (update) return update;
+
+		//var propsStyles = this.props.ctx.styles;
+		//var nextPropsStyles = nextProps.ctx.styles;
+		//update = (propsStyles && propsStyles[box.elementName]) !== (nextPropsStyles && nextPropsStyles[box.elementName]);
+
+		return update;
+	}
+	moveBox(index, left, top) {
+		var boxes = this.props.boxes;
+		if (boxes === undefined) return;
+		var box = boxes[index];
+		if (box === undefined) return;
+
+		var deltas = snapToGrid(this.context.snapGrid, left, top);
+		var updated = box.set({'style': _.merge(_.clone(box.style), {'left': deltas[0], 'top': deltas[1],})});
+		//var updated = box.set({'style': {'top': top, 'left': left,'height':box.style.height,'width':box.style.width}});
+		this.props.currentChanged(updated);
+	}
+
+	resizeContainer(container, deltaWidth, deltaHeight) {
+		if (container === undefined) return;
+
+		//TODO: use merge instead of clone
+		var style = _.clone(container.style);
+		var newWidth = (style.width || 0) + deltaWidth;
+		if (newWidth < 0)return;
+		var newHeight = (style.height || 0) + deltaHeight;
+		if (newHeight < 0)return;
+
+		var deltas = snapToGrid(this.context.snapGrid, newWidth, newHeight);
+		style.width = deltas[0];
+		style.height = deltas[1];
+
+		//var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
+		var updated = container.set({'style': style});
+		this.props.currentChanged(updated);
+		//currentChanged(updated);
+
+	}
+
+	handleClick(e) {
+		e.stopPropagation();
+		if (this.props.handleClick !== undefined) this.props.handleClick();
+	}
+
+	
+	
+	
+	
+	
+	render() {
+		let { elementName, ctx,widgets, node, parent, dataBinder} = this.props;
+		const { canDrop, isOver, connectDropTarget } = this.props;
+
+		var containers = this.props.containers || [];
+		var boxes = this.props.boxes || [];
+
+		//styles
+		var classes = cx({
+			'con': true,
+			'selected': this.props.selected,
+			'parentSelected': this.props.parentSelected,
+			'root': this.props.isRoot
+		});
+
+		var styles = {
+			left: this.props.left,
+			top: this.props.top,
+			height: this.props.height,
+			width: this.props.width,
+			position: this.props.position || 'relative'
+		};
+
+
+		var nodeProps = node.props;
+		var nodeBindings = node.bindings || {};
 		
-        //var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
-        var updated = container.set({'style': style});
-        this.props.currentChanged(updated);
-        //currentChanged(updated);
+		//apply custom styles
+		var customStyle = ctx["styles"] && ctx["styles"][elementName];
+		if (customStyle !== undefined) nodeProps = _.merge(_.cloneDeep(customStyle), nodeProps)
 
-    }
+		//apply node props
+		if (this.props.dataBinder !== undefined)nodeProps = this.props.widgetRenderer.bindProps(_.cloneDeep(nodeProps), nodeBindings.bindings, this.props.dataBinder, true);
 
-    handleClick(e) {
-        e.stopPropagation();
-        if (this.props.handleClick !== undefined) this.props.handleClick();
-    }
 
-    render() {
-		var elName = this.props.elementName;
-		if (!!elName && elName === "Row") return (<Row {...this.props} />)
-		
-		
-        var containers = this.props.containers || [];
-        var boxes = this.props.boxes || [];
+		var containerComponent = widgets[elementName] || 'div';
 
-        //styles
-        var classes = cx({
-            'con': true,
-            'selected': this.props.selected,
-            'parentSelected': this.props.parentSelected,
-            'root': this.props.isRoot
-        });
+		return connectDropTarget(
+			<div className={classes} style={styles} onClick={this.handleClick.bind(this)}>
+				<div>
+					{containers.length !== 0 ? React.createElement(containerComponent, nodeProps, containers.map(function (container, index) {
 
-        var styles = {
-            left: this.props.left,
-            top: this.props.top,
-            height: this.props.height,
-            width: this.props.width,
-            position: this.props.position || 'relative'
-        };
+						var selected = container === this.props.current.node;
+						var parentSelected = container === this.props.current.parentNode;
+						var key = container.name + index;
 
-		var selfNode =  this.props.parent;
-		var selfProps = selfNode && selfNode.props || {};
-		var selfBindings = selfNode && selfNode.bindings || {};
+						var handleClick = function () {
+							if (this.props.currentChanged !== undefined) this.props.currentChanged(container);
+						}.bind(this);
 
-		
-		if (selfProps.background !== undefined || selfBindings.background !== undefined) {
-			
-			if (this.props.dataBinder !== undefined)
-				selfProps = this.props.widgetRenderer.bindProps(_.cloneDeep(selfProps),  selfNode.bindings, this.props.dataBinder, true);
-			
+						var left = container.style.left === undefined ? 0 : parseInt(container.style.left, 10);
+						var top = container.style.top === undefined ? 0 : parseInt(container.style.top, 10);
 
-			styles = _.extend(styles, backgroundStyle(selfProps.background, {
-				width: this.props.width,
-				height: this.props.height
-			}))
-		}
-		
-        const { canDrop, isOver, connectDropTarget } = this.props;
+						//je potreba merge
+						var childProps = _.cloneDeep(container.props) || {};
+						var childBindings = container.bindings || {};
 
-		
-        return connectDropTarget(
-            <div className={classes} style={styles} onClick={this.handleClick.bind(this)}>
-                <div>
-                    {containers.map(function (container, index) {
+						//apply custom styles
+						var childCustomStyle = ctx["styles"] && ctx["styles"][container.elementName];
+						if (childCustomStyle !== undefined) childProps = _.merge(_.cloneDeep(childCustomStyle), childProps)
 
-                        var selected = container === this.props.current.node;
-                        var parentSelected = container === this.props.current.parentNode;
-                        var key = container.name + index;
+						//apply node props
+						if (dataBinder !== undefined)childProps = this.props.widgetRenderer.bindProps(childProps, childBindings.bindings, dataBinder, true);
 
-                        var handleClick = function () {
-                            if (this.props.currentChanged !== undefined) this.props.currentChanged(container);
-                        }.bind(this);
 
-                        var left = container.style.left === undefined ? 0 : parseInt(container.style.left, 10);
-                        var top = container.style.top === undefined ? 0 : parseInt(container.style.top, 10);
-                        return (
-                            <WrappedContainer elementName={container.elementName}
-								              key={key}
-                                              index={index}
-                                              left={left}
-                                              top={top}
-                                              height={container.style.height}
-                                              width={container.style.width}
-                                              position={container.style.position || 'relative'}
-                                              boxes={container.boxes}
-                                              containers={container.containers}
-                                              currentChanged={this.props.currentChanged}
-                                              current={this.props.current}
-                                              handleClick={handleClick}
-                                              parent={container}
-                                              parentSelected={parentSelected}
-                                              selected={selected}
-                                              dataBinder={this.props.dataBinder}
-                                              intlData={this.props.intlData}
-                                              ctx={this.props.ctx}
-                                              widgets={this.props.widgets}
+						//propagete width and height to child container props
+						if (!childProps.width && !!container.style.width) childProps.width = container.style.width;
+						if (!childProps.height && !!container.style.height) childProps.height = container.style.height;
+
+
+
+						var childComponent = widgets[container.elementName] || 'div';
+
+						return (React.createElement(childComponent, _.extend(childProps,{child:true,key: key}),
+							<WrappedContainer elementName={container.elementName}
+											  index={index}
+											  left={left}
+											  top={top}
+											  height={container.style.height}
+											  width={container.style.width}
+											  position={container.style.position || 'relative'}
+											  boxes={container.boxes}
+											  containers={container.containers}
+											  node={container}
+											  parent={this.props.parent}
+											  currentChanged={this.props.currentChanged}
+											  current={this.props.current}
+											  handleClick={handleClick}
+											  parentSelected={parentSelected}
+											  selected={selected}
+											  dataBinder={this.props.dataBinder}
+											  ctx={this.props.ctx}
+											  widgets={widgets}
 											  widgetRenderer={this.props.widgetRenderer}
-                                />
-                        );
-                    }, this)
-                    }
+							/>
+						));
+					}, this)) : null}
 
-                    {boxes.map(function (box, index) {
+					{boxes.map(function (box, index) {
 
-                        var selected = box === this.props.current.node;
-                        var key = box.name + index;
+						var selected = box === this.props.current.node;
+						var key = box.name + index;
 
-                        var left = box.style.left === undefined ? 0 : parseInt(box.style.left, 10);
-                        var top = box.style.top === undefined ? 0 : parseInt(box.style.top, 10);
-                        return (
+						var left = box.style.left === undefined ? 0 : parseInt(box.style.left, 10);
+						var top = box.style.top === undefined ? 0 : parseInt(box.style.top, 10);
+						return (
 
-                                    <Box key={key}
-                                         index={index}
-                                         left={left}
-                                         top={top}
-                                         selected={selected}
-                                         hideSourceOnDrag={this.props.hideSourceOnDrag}
-                                         currentChanged={this.props.currentChanged}
-                                         node={box} dataBinder={this.props.dataBinder}
-                                         ctx={this.props.ctx}
-                                         widgets={this.props.widgets}
-						                 widgetRenderer={this.props.widgetRenderer}
-                                        >
-                                    </Box>
+							<Box key={key}
+								 index={index}
+								 left={left}
+								 top={top}
+								 position={elementName ==="Cell"?'relative':'absolute'}
+								 selected={selected}
+								 hideSourceOnDrag={this.props.hideSourceOnDrag}
+								 currentChanged={this.props.currentChanged}
+								 node={box} dataBinder={this.props.dataBinder}
+								 ctx={this.props.ctx}
+								 widgets={this.props.widgets}
+								 widgetRenderer={this.props.widgetRenderer}
+							>
+							</Box>
 
-                        );
-                    }, this)
-                    }
-                </div>
-				{this.props.isRoot ?null:
-					<ResizableHandle parent={this.props.parent}/>
+						);
+					}, this)
+					}
+				</div>
+				{this.props.isRoot || (this.props.width === undefined || this.props.height === undefined) ? null :
+					<ResizableHandle parent={this.props.node}/>
 				}
-            </div>
-        );
-    }
+			</div>
+		);
+	}
 }
+
 
 Container.contextTypes =  {
 	snapGrid: React.PropTypes.arrayOf(React.PropTypes.number)
@@ -222,5 +259,4 @@ var collect = (connect, monitor) => ({
 var WrappedContainer = DropTarget([ItemTypes.RESIZABLE_HANDLE, ItemTypes.BOX], target, collect)(Container);
 // Export the wrapped component:
 export default WrappedContainer;
-
 //module.exports = Container;

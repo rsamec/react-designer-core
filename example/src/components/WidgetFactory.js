@@ -11,7 +11,17 @@ import Gmaps from '../widgets/Gmaps';
 import HBar from '../widgets/HBar';
 import InputRange from '../widgets/InputRange';
 
+//import { Grid, Cell } from 'react-flexr';
+import BackgroundContainer from '../widgets/BackgroundContainer';
+import Grid from '../widgets/GridWrapper';
+import Cell from '../widgets/CellWrapper';
+
 var Widgets = {
+
+	"BackgroundContainer":BackgroundContainer,
+	"Grid":Grid,
+	"Cell":Cell,
+
 	"Core.TextContent":WidgetFactory.TextContent,
 	"Core.RichTextContent":WidgetFactory.RichTextContent,
 	"Core.HtmlContent": WidgetFactory.HtmlContent,
@@ -61,6 +71,64 @@ var Widgets = {
 
 };
 
+_.extend(BackgroundContainer,{
+	metaData: {
+		settings: {
+			fields: {
+				visibility: {type: 'boolean'},
+				startOnNewPage: {type: 'boolean'},
+				unbreakable: {type: 'boolean'},
+				width: {type: 'number'},
+				height: {type: 'number'},
+				background: {type:'bgEditor'},
+			}
+		}
+	}
+});
+_.extend(Grid,{
+	metaData: {
+		settings: {
+			fields: {
+				visibility: {type: 'boolean'},
+				align: {
+					type: 'select',
+						settings: {options: ['top', 'center', 'bottom']}
+				},
+				hAlign: {
+					type: 'select',
+						settings: {options: ['left', 'center', 'right']}
+				},
+				gutter: {type: 'string'},
+				flexCells:{type:'boolean'},
+				background: {type:'bgEditor'},
+				padding: {type: 'boxSizeEditor'},
+				border: {type: 'borderEditor'},
+			}
+		}
+	}
+});
+_.extend(Cell,{
+	metaData: {
+		settings: {
+			fields: {
+				align: {
+					type: 'select',
+						settings: {options: ['top', 'center', 'bottom']}
+				},
+				hAlign: {
+					type: 'select',
+						settings: {options: ['left', 'center', 'right']}
+				},
+				gutter: {type: 'string'},
+				flex:{type:'boolean'},
+				size:{type:'string'},
+				background: {type:'bgEditor'},
+				padding: {type: 'boxSizeEditor'},
+				border: {type: 'borderEditor'},
+			}
+		}
+	}
+});
 _.extend(WidgetFactory.HtmlContent,{metaData:{
 	settings: {
 		fields: {
@@ -99,7 +167,9 @@ _.extend(WidgetFactory.ImageBox,{metaData: {
 				type: 'select',
 				settings: {options: ['cover', 'fill', 'contain']}
 			},
-			clipPath:{type:'string'}
+			clipPath:{type:'string'},
+			width: {type: 'number'},
+			height: {type: 'number'}
 		}
 	}
 } });
@@ -152,7 +222,7 @@ _.extend(WidgetFactory.HtmlImageBox,{metaData:{
 			clipPath:{type:'string'},
 			imageAlign: {
 				type: 'select',
-				settings: {options: ['topLeft', 'topRight', 'bottomLeft', 'bottomRight']}
+					settings: {options: ['topLeft', 'topRight', 'bottomLeft', 'bottomRight']}
 			},
 			image: {
 				fields: {

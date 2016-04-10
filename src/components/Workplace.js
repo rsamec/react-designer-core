@@ -95,6 +95,7 @@ class Workplace extends React.Component {
 				current={this.props.current}
 				handleClick={handleClick}
 				isRoot={true}
+				node={this.props.schema}
 				dataBinder={dataContext}
 				ctx={context}
 				widgets={this.props.widgets}

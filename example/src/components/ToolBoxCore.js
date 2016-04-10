@@ -86,6 +86,19 @@ const list = [
 		title:'Input range slider',
 		icon: MdMap,
 		desc: "Input range slider"
+	}];
+var layoutList = [
+	{
+		name: "Container",
+		title:'Container',
+		icon: MdMap,
+		desc: "Container"
+	},
+	{
+		name: "BackgroundContainer",
+		title:'Background Container',
+		icon: MdMap,
+		desc: "BackgroundContainer"
 	},
 	{
 		name: "Repeater",
@@ -94,12 +107,24 @@ const list = [
 		desc: "Repeater"
 	},
 	{
-		name: "Row",
-		title:'Row',
+		name: "Grid",
+		title:'Grid',
 		icon: MdMap,
-		desc: "Row"
+		desc: "Grid"
+	},
+	{
+		name: "Cell",
+		title:'Cell',
+		icon: MdMap,
+		desc: "Cell"
 	}
 ];
+
+
+
+
+
+
 
 
 
@@ -120,6 +145,21 @@ let ToolBox = (props) => {
 					<span style={{fontSize:18}}>{item.title}</span>
 					</div>	
 			})}
+			<h3>Layout</h3>
+			<hr/>
+			{layoutList.map(function(item,i){
+				var addFce = (e)=> {
+					props.add({
+						elementName: item.name,
+						props: {}
+					})
+				}
+				return <div key={'l' + i}  onClick={addFce}>
+					{React.createElement(item.icon,{width:60,height:60})}
+					<span style={{fontSize:18}}>{item.title}</span>
+				</div>
+			})}
+
 			<h3>Charts</h3>
 			<hr/>
 			{props.dataSource.Charts.controls.map(function(item,i){

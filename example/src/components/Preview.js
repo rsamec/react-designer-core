@@ -1,7 +1,6 @@
 import React from 'react';
 import Binder from 'react-binding';
 import _ from 'lodash';
-
 import HtmlPagesRenderer from 'react-html-pages-renderer';
 
 export default class Preview  extends React.Component 

@@ -19,11 +19,10 @@ import {Modal} from 'react-overlays';
 import ModalStyles from './components/ModalStyles.js';
 
 const BASE_SERVICE_URL = 'http://www.paperify.io'
+//const BASE_SERVICE_URL = 'http://photo-papermill.rhcloud.com';
+//const BASE_SERVICE_URL = 'http://render-pergamon.rhcloud.com';
+//const BASE_SERVICE_URL = 'http://localhost:8080';
 let SERVICE_URL = BASE_SERVICE_URL + '/api';
-//const SERVICE_URL = 'http://photo-papermill.rhcloud.com/api';
-//const SERVICE_URL = 'http://render-pergamon.rhcloud.com';
-//const SERVICE_URL = 'http://localhost:8080/api';
-
 /**
  * Number.prototype.format(n, x, s, c)
  *
@@ -41,7 +40,7 @@ var emptyObjectSchema = {
 		context: {}
 	}
 };
-
+var isContainerFce = (elementName) => {return (elementName === "Container"  || elementName === "BackgroundContainer"  || elementName === "Grid" || elementName === "Cell" || elementName === "Repeater") }
 // Create a Freezer store
 var frozen = new Freezer({schema: emptyObjectSchema});
 
@@ -114,7 +113,7 @@ class ToolbarActions extends React.Component {
 	}
 
 	isContainer() {
-		return this.props.current.node !== undefined && (this.props.current.node.elementName === "Container" || this.props.current.node.elementName === "Row" || this.props.current.node.elementName === "Repeater")
+		return this.props.current.node !== undefined && isContainerFce(this.props.current.node.elementName);
 	}
 
 	render() {
@@ -248,9 +247,9 @@ class Designer extends React.Component {
 	addNewCtrl(elName, itemToAdd) {
 		var current = this.state.current.node;
 		if (current === undefined) return;
+		
 
-
-		var isContainer = (elName === "Container" || elName === "Row" || elName === "Repeater");
+		var isContainer = isContainerFce(elName);
 		var normalizeElName = elName;
 		if (!isContainer) {
 			var position = elName.indexOf('.');
@@ -260,13 +259,13 @@ class Designer extends React.Component {
 		var defaultNewItem = isContainer ? {
 			name: "Container",
 			elementName: elName,
-			style: {
+			style: (elName ==="Container" || elName==="Repater" || elName==="BackgroundContainer")?{
 				top: 0,
 				left: 0,
 				height: 200,
 				width: 740,
 				position: 'relative'
-			},
+			}:{},
 			props: {},
 			boxes: [],
 			containers: []

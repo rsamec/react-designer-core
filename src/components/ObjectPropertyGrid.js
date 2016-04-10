@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import PropertyEditor from 'react-property-editor';
 import toEmptyProps from '../util/toEmptyProps';
+import {ContainerMetadata,ContainerKeys} from '../util/containerMetadata';
 
 const BOX_EMPTY_STYLE = {
 	top: undefined,
@@ -31,62 +32,6 @@ const EMPTY_BINDING_PROPS ={
 	converterArgs:undefined
 };
 
-let COMPONENT_METADATA = {
-	ObjectSchema: {
-		metaData: {
-			settings: {
-				fields: {
-					defaultData: {type: 'plainJsonEditor'},
-					background: {type:'bgEditor'},
-					pageOptions:{type:'pageOptionsEditor'},
-					context: {
-						fields:{
-							intlData: {type: 'plainJsonEditor'},
-							styles:{type:'widgetStyleEditor'},
-							code:{type:'codeEditor'}
-						}
-					},
-					
-				}
-			}
-		}
-	},
-	Container:{
-		metaData: {
-			settings: {
-				fields: {
-					visibility: {type: 'boolean'},
-					startOnNewPage: {type: 'boolean'},
-					unbreakable: {type: 'boolean'}
-
-				}
-			}
-		}
-	},
-	Repeater:{
-		metaData: {
-			settings: {
-				fields: {
-					binding: {type: 'plainJsonEditor'},
-					startOnNewPage: {type: 'boolean'},
-					unbreakable: {type: 'boolean'}
-				}
-			}
-		}
-	},
-	Row:{
-		metaData: {
-			settings: {
-				fields: {
-					visibility: {type: 'boolean'},
-					column:{type:'number'}
-				}
-			}
-		}
-	},
-};
-
-
 
 export default class ObjectPropertyGrid extends React.Component
 {
@@ -111,9 +56,9 @@ export default class ObjectPropertyGrid extends React.Component
         var currentNode = this.props.current.node;
         var elementName = currentNode.elementName;
 
-        var isContainer = (elementName === "Container" || elementName === "Row" || elementName === "Repeater" || elementName === "ObjectSchema");
+        var isContainer = _.contains(ContainerKeys,elementName);
 		
-        var metaData = isContainer? COMPONENT_METADATA[elementName].metaData:this.props.widgets[elementName] && this.props.widgets[elementName].metaData;
+        var metaData = isContainer? ContainerMetadata[elementName].metaData:this.props.widgets[elementName] && this.props.widgets[elementName].metaData;
 		
 		if ( elementName === "ObjectSchema") metaData.settings.fields["context"].fields["styles"].settings = {widgets :this.props.widgets};
 		//only to remove freezer js -> thats is needed for react-json to refresh state when changing instance nodes
