@@ -49,15 +49,16 @@ class Workplace extends React.Component {
 			this.setState({data: _.cloneDeep(newDefautData)});
 		}
 	}
-
-	currentChanged(node, domEl) {
-		this.setState({currentDOMNode: domEl});
-		if (this.props.currentChanged !== undefined) this.props.currentChanged(node);
+	currentChanged(node,path,domEl) {
+		if (this.props.currentChanged !== undefined) this.props.currentChanged(node,path);
+		this.setState({
+			currentDOMNode: domEl
+		});
 	}
 
 	render() {
 		var handleClick = function () {
-			if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.schema);
+			if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.schema,this.props.path);
 		}.bind(this);
 
 		var dataContext = Binder.bindToState(this, 'data');
@@ -93,6 +94,7 @@ class Workplace extends React.Component {
 				boxes={this.props.schema.boxes}
 				currentChanged={this.currentChanged.bind(this)}
 				current={this.props.current}
+				path='schema'
 				handleClick={handleClick}
 				isRoot={true}
 				node={this.props.schema}

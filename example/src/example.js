@@ -159,6 +159,7 @@ let FixedHeader = (props) => {
 	</div>)
 }
 
+let staticCounter = 0;
 
 //Designer - top editor
 class Designer extends React.Component {
@@ -183,7 +184,7 @@ class Designer extends React.Component {
 			snapGrid: [10, 10]
 		};
 
-		this.saveChanges = _.debounce(this.saveChanges,5000);
+		this.saveChanges = _.debounce(this.saveChanges,10000);
 	}
 
 	undo() {
@@ -201,7 +202,9 @@ class Designer extends React.Component {
 	schema() {
 		return this.props.store.get().schema;
 	}
-
+	schemaToJS(){
+		return this.props.store.get().toJS().schema;
+	}
 	schemaToJson() {
 		return JSON.stringify(this.props.store.get().toJS().schema);
 	}
@@ -221,23 +224,49 @@ class Designer extends React.Component {
 		});
 	}
 
-	currentChanged(currentNode) {
+	currentChanged(currentNode,path) {
 		if (currentNode === undefined) return;
-		
-		if (currentNode.elementName === "Draft.Draft.RichEditorRenderer") {
-			//var updated = current.set({"props": updatedValue.props, "bindings":updatedValue.binding});
-			console.log();
-		}
 
+		//var state  = this.props.store.get()
+		//var mutableParent = state.schema.pivot();
+		
+		///currentNode.__.store.$selected = true;
+
+		
+		// var lastCurrent = this.state.current;
+		// if (lastCurrent !== undefined && currentNode !== lastCurrent.node) lastCurrent.node.set('$selected',staticCounter++);
+		
+		//var updatedCurrent = currentNode.set('$selected',true);
+		
+		var lastCurrentPath = this.state.current && this.state.current.path;
+		if (path === undefined) path = lastCurrentPath;
+		
+		console.log(path);
+		
 		var parent = currentNode.__.parents;
 		var parentNode = parent.length !== 0 ? parent[0].__.parents[0] : undefined;
 		this.setState({
 				current: {
 					node: currentNode,
-					parentNode: parentNode
+					parentNode: parentNode,
+					path:path
 				}
 			}
 		);
+	}
+
+	// Compact arrays with null entries; delete keys from objects with null value
+	removeSelected(obj) {
+		for (var k in obj) {
+			if (k === "$selected" && obj[k] === true) {
+				delete obj[k];
+			}
+			if (typeof obj[k] == "object"){
+				this.removeSelected(obj[k])
+			} else {
+				//console.log(obj[k]);
+			}
+		}
 	}
 
 	addNewContainer() {
@@ -303,8 +332,12 @@ class Designer extends React.Component {
 
 	componentDidMount() {
 		var me = this;
+		
+		this.props.store.on('beforeAll', function( eventName, arg1, arg2 ){
+			console.log( event, arg1, arg2 );
+		});
 
-		// We are going to update the props every time the store changes
+			// We are going to update the props every time the store changes
 		this.props.store.on('update', function (updated) {
 
 			var storeHistory, nextIndex;
@@ -362,9 +395,11 @@ class Designer extends React.Component {
 		//return;
 		
 		var me = this;
-		var schema = this.schema();
+		var schema = this.schemaToJS();
 		var name = schema.name;
-		var schema = this.schemaToJson();
+		this.removeSelected(schema);
+		var schema = JSON.stringify(schema);//this.schemaToJson();
+		
 		$.ajax({
 			type: "PUT",
 			url: SERVICE_URL + "/docs/" + this.props.schemaId,

@@ -40,13 +40,12 @@ const propTypes = {
 class Box extends React.Component {
 	handleDoubleClick(e) {
 		e.stopPropagation();
-		if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node, React.findDOMNode(this));
-
+		if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node, this.props.path, React.findDOMNode(this));
 	}
 
 	handleClick(e) {
 		e.stopPropagation();
-		if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node);
+		if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node,this.props.path);
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -78,6 +77,7 @@ class Box extends React.Component {
 	}
 
 	render() {
+		console.log(this.props.path);
 		//prepare styles
 		var classes = cx({
 			'box': true,

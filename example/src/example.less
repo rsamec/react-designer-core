@@ -29,6 +29,8 @@
 
 }
 
+
+
 .box {
   position: absolute;
   border: 0px dashed gray;
@@ -131,6 +133,44 @@
 
 .tree-view_arrow-empty {
   color: yellow;
+}
+
+
+.pageStyle {
+  border: 1px solid gray;
+  background-color: #ffffff;
+}
+
+.doublePageStyle {
+  display: flex;
+  display: -webkit-flex;
+}
+
+@media print {
+  body {
+	color: #000;
+	background: #fff;
+	margin: 0px;
+	padding: 0px;
+	boder:0px;
+	//display: inline-block;
+	-webkit-print-color-adjust: exact;
+	width: 100%;
+	height: 100%;
+  }
+
+  .pageStyle {
+	border-width: 0px;
+	background-color: #ffffff;
+  }
+
+  .doublePageStyle {
+	display: block;
+  }
+
+  .hidden-print {
+	display: none !important;
+  }
 }
 
 

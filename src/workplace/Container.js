@@ -52,15 +52,17 @@ const target = {
 };
 
 class Container extends React.Component {
-	shouldComponentUpdate(nextProps) {
+	shouldComponentUpdate(nextProps,nextState) {
 
-		return true;
+		//return true;
+		
 		
 		// The comparison is fast, and we won't render the component if
 		// it does not need it. This is a huge gain in performance.
-		var box = this.props.node;
-		var update = this.props.node !== nextProps.node || this.props.selected != nextProps.selected;
-		//console.log(nextProps.node.name + ' : ' + update);
+		//var box = this.props.node;
+		var update = this.props.node !== nextProps.node || (this.props.current && this.props.current.path) != (nextProps.current && nextProps.current.path);
+		
+//		if (update)	console.log(nextProps.node.name + ' : ' + update);
 		if (update) return update;
 
 		//var propsStyles = this.props.ctx.styles;
@@ -69,6 +71,26 @@ class Container extends React.Component {
 
 		return update;
 	}
+	
+	// componentWillReceiveProps(nextProps) {
+	// 	var current = this.props.node;
+	// 	var updatedCurrent = nextProps.node;
+	// 	console.log(nextProps.node.name);
+	// 	if (!updatedCurrent.$selected) return;
+	//	
+	//	
+	//	
+	// 	var parent = updatedCurrent.__.parents;
+	// 	var parentNode = parent.length !== 0 ? parent[0].__.parents[0] : undefined;
+	// 	this.setState({
+	// 			current: {
+	// 				node: updatedCurrent,
+	// 				parentNode: parentNode
+	// 			}
+	// 		}
+	// 	);
+	//}
+	
 	moveBox(index, left, top) {
 		var boxes = this.props.boxes;
 		if (boxes === undefined) return;
@@ -99,18 +121,13 @@ class Container extends React.Component {
 		var updated = container.set({'style': style});
 		this.props.currentChanged(updated);
 		//currentChanged(updated);
-
+		
 	}
 
 	handleClick(e) {
 		e.stopPropagation();
 		if (this.props.handleClick !== undefined) this.props.handleClick();
 	}
-
-	
-	
-	
-	
 	
 	render() {
 		let { elementName, ctx,widgets, node, parent, dataBinder} = this.props;
@@ -155,11 +172,11 @@ class Container extends React.Component {
 					{containers.length !== 0 ? React.createElement(containerComponent, nodeProps, containers.map(function (container, index) {
 
 						var selected = container === this.props.current.node;
-						var parentSelected = container === this.props.current.parentNode;
+						var parentSelected = false; //container === this.props.current.parentNode;
 						var key = container.name + index;
 
 						var handleClick = function () {
-							if (this.props.currentChanged !== undefined) this.props.currentChanged(container);
+							if (this.props.currentChanged !== undefined) this.props.currentChanged(container,this.props.path);
 						}.bind(this);
 
 						var left = container.style.left === undefined ? 0 : parseInt(container.style.left, 10);
@@ -181,10 +198,8 @@ class Container extends React.Component {
 						if (!childProps.width && !!container.style.width) childProps.width = container.style.width;
 						if (!childProps.height && !!container.style.height) childProps.height = container.style.height;
 
-
-
 						var childComponent = widgets[container.elementName] || 'div';
-
+						var path = `${this.props.path}.containers[${index}]`;  
 						return (React.createElement(childComponent, _.extend(childProps,{child:true,key: key}),
 							<WrappedContainer elementName={container.elementName}
 											  index={index}
@@ -196,6 +211,7 @@ class Container extends React.Component {
 											  boxes={container.boxes}
 											  containers={container.containers}
 											  node={container}
+											  path={path}
 											  parent={this.props.parent}
 											  currentChanged={this.props.currentChanged}
 											  current={this.props.current}
@@ -217,12 +233,15 @@ class Container extends React.Component {
 
 						var left = box.style.left === undefined ? 0 : parseInt(box.style.left, 10);
 						var top = box.style.top === undefined ? 0 : parseInt(box.style.top, 10);
+
+						var path = `${this.props.path}.boxes[${index}]`;
 						return (
 
 							<Box key={key}
 								 index={index}
 								 left={left}
 								 top={top}
+								 path={path}
 								 position={elementName ==="Cell"?'relative':'absolute'}
 								 selected={selected}
 								 hideSourceOnDrag={this.props.hideSourceOnDrag}
@@ -245,7 +264,6 @@ class Container extends React.Component {
 		);
 	}
 }
-
 
 Container.contextTypes =  {
 	snapGrid: React.PropTypes.arrayOf(React.PropTypes.number)

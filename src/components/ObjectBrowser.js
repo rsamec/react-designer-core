@@ -65,7 +65,7 @@ export default class ObjectBrowser extends React.Component {
                 </div>
 				<div className={classes} onClick={(e)=>this.props.currentChanged(this.props.rootNode)}>{this.props.rootNode.name}</div>
                 {this.props.rootNode.containers.length === 0 ? <span>No objects to show.</span> :
-                    <TreeNode key="root" node={this.props.rootNode} current={this.props.current}
+                    <TreeNode key="root" path='schema'  node={this.props.rootNode} current={this.props.current}
                               currentChanged={this.props.currentChanged.bind(this)} filterText={this.state.filterText}
                               executeAction={this.executeAction.bind(this)}/>
                 }
@@ -79,8 +79,8 @@ export default class ObjectBrowser extends React.Component {
 
 class TreeNode extends React.Component
 {
-    handleClick(node) {
-        this.props.currentChanged(node);
+    handleClick(node,path) {
+        this.props.currentChanged(node,path);
     }
 
     //TODO: optimize -> now each node starts its own tree traversal
@@ -159,8 +159,9 @@ class TreeNode extends React.Component
 
             var selected = this.props.current.node === node;
             var parentSelected = this.props.current.parentNode === node;
+			var path = `${this.props.path}.containers[${i}]`;
 
-            var classes = cx({
+			var classes = cx({
                 'node': true,
                 'selected': selected,
                 'parentSelected':this.props.parentSelected
@@ -168,11 +169,11 @@ class TreeNode extends React.Component
 
             var label = <span draggable="true" onDragEnter={onDragEnter}
                 onDragStart = {onDragStart}
-                onDragOver = {onDragOver} onDrop={onDrop} className={classes} onClick={this.handleClick.bind(this,node)}>{node.name}</span>;
+                onDragOver = {onDragOver} onDrop={onDrop} className={classes} onClick={this.handleClick.bind(this,node,path)}>{node.name}</span>;
             return (
 
                 <TreeView key={type + '|' + i} nodeLabel={label} defaultCollapsed={false}>
-                    <TreeNode key={node.name + '|' + i} node={node} current={this.props.current} currentChanged={this.props.currentChanged.bind(this)} filterText={this.props.filterText} executeAction={this.props.executeAction.bind(this)} />
+                    <TreeNode key={node.name + '|' + i} node={node} path={path} current={this.props.current} currentChanged={this.props.currentChanged.bind(this)} filterText={this.props.filterText} executeAction={this.props.executeAction.bind(this)} />
                       {boxes.map(function (box, j) {
 
                           var onDragStart1 = function(e) {
@@ -189,12 +190,12 @@ class TreeNode extends React.Component
                               return;
                           }
 
+						  var boxPath = `${path}.boxes[${j}]`;
                           var classes = cx({
                               'node': true,
                               'selected': this.props.current.node === box
                           });
-                          return (<div draggable="true"  className={classes} onDragStart = {onDragStart1} onClick={this.handleClick.bind(this,box)} key={box.name + j}><span>{box.name}</span></div>);
-
+                          return (<div draggable="true"  className={classes} onDragStart = {onDragStart1} onClick={this.handleClick.bind(this,box,boxPath)} key={box.name + j}><span>{box.name}</span></div>)
 
                       },this)}
 
@@ -204,4 +205,4 @@ class TreeNode extends React.Component
             </div>
         );
     }
-};
+}
