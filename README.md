@@ -9,9 +9,10 @@ React designer is WYSIWYG editor for **easy content creation** (legal contracts,
 
 +   it is for developers - to use it in your own solutions with your own widgets (components)  
 +   it is based on simple principals
- 	+	minimal JSON framework agnostic definition maps directly to React components
- 	+	indepedent of react components - you can use various widgets frameworks (react-bootstrap, material-design, your company made widgets, etc.)
-+ 	offers standard design components (Workplace, Container, Box, PropertyEditor,ObjectBrowser) and features
+ 	+	minimal JSON definition - [PTT](https://github.com/rsamec/ptt) - maps directly to React components
+ 	+	good performance even for big documents - due to usage of immutable structure
+ 	+	fully extensible by various css and widgets frameworks (react-bootstrap, material-design, your company made widgets, etc.) 	
++ 	offers standard design components (Workplace, Container, Box, PropertyEditor, ObjectBrowser) and features
 	+	layouting - moving positions, resizing, moving up/down in component hieararchy, copying, deleting, etc.
  	+	component editing - property editors, inline editing - using [draftjs](https://facebook.github.io/draft-js/), streching, rotating, transforming [transhand](https://github.com/azazdeaz/transhand),etc.
  	+	workplace - selecting, undo/redo, previewing, import/export, etc.
@@ -24,7 +25,7 @@ React designer is WYSIWYG editor for **easy content creation** (legal contracts,
 +   directly manipulate the layout of a document without having to type or remember names of components, elements, properties or other layout commands.
 +   precise visual layout that corresponds to an existing paper version
     +   support for various output formats - html, pdf, ...
-+   high-quality on-screen output and on-printer output
++   high-quality on-screen output and on-printer output (only partially implemented)
 +   comfortable user experience - basic WYSIWYG features
     +   support drag nad drop - resize object length, move object positions
     +   support manipulating objects -> copy, move, up, down objects in object schema hierarchy
@@ -46,7 +47,7 @@ It comes with core components typical for WYSIWYG designers
 +   ObjectTree - logical component tree - enables to search and move components between nodes
 
 
-Document definition is done in JSON - uses PPT that follows the separation between      
+Document definition is done in JSON - uses [PTT](https://github.com/rsamec/ptt) that follows the separation between      
 
 +   logical component tree - JSON simple document description - [Page Transform Tree (PTT)](https://github.com/rsamec/ptt) - it is framework agnostic definition
 +   visual component tree - [React virtual DOM](http://facebook.github.io/react) - rendering to DOM so that it maps each component (terminal node) from logical tree to react component and its properties
@@ -54,14 +55,14 @@ Document definition is done in JSON - uses PPT that follows the separation betwe
 
 ### Logical component tree - [PTT](https://github.com/rsamec/ptt)
 
-The PPT format is __framework agnostic__ document description. It enables to dynamically render pages in different sizes (A4,A3,Letter,...) and in various formats (html,pdf).
+The PPT format is __framework agnostic__ document description. It enables to dynamically render pages in different sizes (A4,A3,Letter,...),in various formats (html,pdf,...) and for various visual media (screen, papers).
 
 It is a simple component tree that consists of these two nodes
 
-+   **containers** - nodes that are invisible components - usable for logical grouping of reactive parts of document (sections)
-+   **boxes** - terminal nodes (leaf) that are visible components - (components, boxes, widgets) - it maps to props of component
++   **containers** - nodes that are containers for other components - visual and logical grouping of parts of document (sections, containers,grids, rows, cells, panels, etc. )
++   **boxes** - terminal nodes (leaf) that are visible components - (components, boxes, widgets) - renders to document (typically by simple mapings to props of component)
 
-There is an minimal 'Hello world' example. The logical tree consists of one container and one box with TextBox element.
+There is an minimal 'Hello world' example. The PTT consists of one container and one box with TextBox element.
 
 ```json
 {
@@ -69,20 +70,21 @@ There is an minimal 'Hello world' example. The logical tree consists of one cont
  "elementName": "PTTv1",
  "containers": [
     {
-     "name": "container",
+     "name": "My first container",
      "elementName": "Container",
-     "style": { "top": 0, "left": 0, "height": 200, "width": 740, "position": "relative" }
+     "style": { "top": 0, "left": 0, "height": 200, "width": 740, "position": "relative" },
      "boxes": [{
-        "name": "TextBox",
-        "elementName": "TextBox",
+        "name": "My first text",
+        "elementName": "TextContent",
         "style": { "top": 0, "left": 0 },
         "props":{
              "content": "Hello world"
             }
-        }],
+        }]
     }]
 }
 ```
+
 
 See the full [PTT specification](https://github.com/rsamec/ptt).
 
@@ -136,6 +138,8 @@ npm install react-designer-core --save
 ## Usage
 
 import {Workplace,ObjectBrowser,ObjectPropertyGrid} from 'react-designer-core';
+
+
 
 See the example folder.
 

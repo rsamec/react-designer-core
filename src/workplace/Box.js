@@ -77,7 +77,7 @@ class Box extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.path);
+		//console.log(this.props.path);
 		//prepare styles
 		var classes = cx({
 			'box': true,

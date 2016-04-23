@@ -62,7 +62,7 @@ class Container extends React.Component {
 		//var box = this.props.node;
 		var update = this.props.node !== nextProps.node || (this.props.current && this.props.current.path) != (nextProps.current && nextProps.current.path);
 		
-//		if (update)	console.log(nextProps.node.name + ' : ' + update);
+		//if (update)	console.log(nextProps.node.name + ' : ' + update);
 		if (update) return update;
 
 		//var propsStyles = this.props.ctx.styles;

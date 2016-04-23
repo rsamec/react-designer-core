@@ -202,9 +202,6 @@ class Designer extends React.Component {
 	schema() {
 		return this.props.store.get().schema;
 	}
-	schemaToJS(){
-		return this.props.store.get().toJS().schema;
-	}
 	schemaToJson() {
 		return JSON.stringify(this.props.store.get().toJS().schema);
 	}
@@ -226,22 +223,9 @@ class Designer extends React.Component {
 
 	currentChanged(currentNode,path) {
 		if (currentNode === undefined) return;
-
-		//var state  = this.props.store.get()
-		//var mutableParent = state.schema.pivot();
-		
-		///currentNode.__.store.$selected = true;
-
-		
-		// var lastCurrent = this.state.current;
-		// if (lastCurrent !== undefined && currentNode !== lastCurrent.node) lastCurrent.node.set('$selected',staticCounter++);
-		
-		//var updatedCurrent = currentNode.set('$selected',true);
 		
 		var lastCurrentPath = this.state.current && this.state.current.path;
 		if (path === undefined) path = lastCurrentPath;
-		
-		console.log(path);
 		
 		var parent = currentNode.__.parents;
 		var parentNode = parent.length !== 0 ? parent[0].__.parents[0] : undefined;
@@ -253,20 +237,6 @@ class Designer extends React.Component {
 				}
 			}
 		);
-	}
-
-	// Compact arrays with null entries; delete keys from objects with null value
-	removeSelected(obj) {
-		for (var k in obj) {
-			if (k === "$selected" && obj[k] === true) {
-				delete obj[k];
-			}
-			if (typeof obj[k] == "object"){
-				this.removeSelected(obj[k])
-			} else {
-				//console.log(obj[k]);
-			}
-		}
 	}
 
 	addNewContainer() {
@@ -333,9 +303,9 @@ class Designer extends React.Component {
 	componentDidMount() {
 		var me = this;
 		
-		this.props.store.on('beforeAll', function( eventName, arg1, arg2 ){
-			console.log( event, arg1, arg2 );
-		});
+		// this.props.store.on('beforeAll', function( eventName, arg1, arg2 ){
+		// 	console.log( event, arg1, arg2 );
+		// });
 
 			// We are going to update the props every time the store changes
 		this.props.store.on('update', function (updated) {
@@ -395,10 +365,10 @@ class Designer extends React.Component {
 		//return;
 		
 		var me = this;
-		var schema = this.schemaToJS();
+		var schema = this.schema();
 		var name = schema.name;
-		this.removeSelected(schema);
-		var schema = JSON.stringify(schema);//this.schemaToJson();
+		
+		schema = this.schemaToJson();
 		
 		$.ajax({
 			type: "PUT",
