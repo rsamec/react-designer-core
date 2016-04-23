@@ -1,6 +1,6 @@
 {
   "name": "react-designer-core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Designer",
   "main": "lib/Designer.js",
   "author": "Roman Samec",
@@ -19,9 +19,11 @@
     "lodash": "^3.10.1",
     "react-binding": "^0.7.3",
     "react-dnd": "^2.0.2",
+    "react-dnd-html5-backend": "^2.1.2",
     "react-flexr": "^2.1.0-beta",
     "react-treeview": "^0.4.2",
-    "transhand": "^0.1.23"
+    "transhand": "^0.1.23",
+    "react-overlays": "0.4.4"
   },
   "devDependencies": {
     "babel-eslint": "^4.1.3",
