@@ -6,10 +6,7 @@ import _ from 'lodash';
 import cx from 'classnames';
 
 import Box from './Box';
-//import Row from './Row';
 import ResizableHandle from './ResizableHandle.js';
-import backgroundStyle from '../util/backgroundStyle';
-import styleBorder from '../util/border';
 
 const HANDLE_OFFSET = 8;
 

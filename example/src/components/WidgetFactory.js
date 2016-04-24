@@ -16,11 +16,13 @@ import BackgroundContainer from '../widgets/BackgroundContainer';
 import Grid from '../widgets/GridWrapper';
 import Cell from '../widgets/CellWrapper';
 
-var Widgets = {
 
+var Widgets = {
+	
 	"BackgroundContainer":BackgroundContainer,
 	"Grid":Grid,
 	"Cell":Cell,
+	
 
 	"Core.TextContent":WidgetFactory.TextContent,
 	"Core.RichTextContent":WidgetFactory.RichTextContent,

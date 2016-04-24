@@ -2,7 +2,7 @@ import React from 'react';
 import TreeView from 'react-treeview';
 import _ from 'lodash';
 import cx from 'classnames';
-import {ContainerKeys} from '../util/containerMetadata';
+const  ContainerKeys  = ["ObjectSchema","Container","Repeater","Grid","Cell","BackgroundContainer"];
 
 export default class ObjectBrowser extends React.Component {
 	constructor(props) {

@@ -43,9 +43,8 @@ React designer is WYSIWYG editor for **easy content creation** (legal contracts,
 It comes with core components typical for WYSIWYG designers
 
 +   Workplace - main working area for drawing documents
-+   PropertyGrid - component properties editors (html editors, color pickers, json editors, etc.)
 +   ObjectTree - logical component tree - enables to search and move components between nodes
-
++   PropertyGrid - component properties editors (html editors, color pickers, json editors, etc.)
 
 Document definition is done in JSON - uses [PTT](https://github.com/rsamec/ptt) that follows the separation between      
 

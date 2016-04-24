@@ -6,7 +6,9 @@ import Freezer from 'freezer-js';
 import Binder from 'react-binding';
 import Dock from 'react-dock';
 import WidgetRenderer from './components/WidgetRenderer';
-import {Workplace,ObjectBrowser,ObjectPropertyGrid} from 'react-designer-core';
+import {Workplace,ObjectBrowser} from 'react-designer-core';
+
+import ObjectPropertyGrid from './components/ObjectPropertyGrid';
 import ToolBox from './components/ToolBox.js';
 
 import Widgets from './components/WidgetFactory.js';
