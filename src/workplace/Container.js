@@ -158,7 +158,7 @@ class Container extends React.Component {
 		if (customStyle !== undefined) nodeProps = _.merge(_.cloneDeep(customStyle), nodeProps)
 
 		//apply node props
-		if (this.props.dataBinder !== undefined)nodeProps = this.props.widgetRenderer.bindProps(_.cloneDeep(nodeProps), nodeBindings.bindings, this.props.dataBinder, true);
+		if (this.props.dataBinder !== undefined && this.props.widgetRenderer && this.props.widgetRenderer.bindProps)nodeProps = this.props.widgetRenderer.bindProps(_.cloneDeep(nodeProps), nodeBindings.bindings, this.props.dataBinder, true);
 
 
 		var containerComponent = widgets[elementName] || 'div';
@@ -172,8 +172,10 @@ class Container extends React.Component {
 						var parentSelected = false; //container === this.props.current.parentNode;
 						var key = container.name + index;
 
+						var path = `${this.props.path}.containers[${index}]`;
+						
 						var handleClick = function () {
-							if (this.props.currentChanged !== undefined) this.props.currentChanged(container,this.props.path);
+							if (this.props.currentChanged !== undefined) this.props.currentChanged(container,path);
 						}.bind(this);
 
 						var left = container.style.left === undefined ? 0 : parseInt(container.style.left, 10);
@@ -188,7 +190,7 @@ class Container extends React.Component {
 						if (childCustomStyle !== undefined) childProps = _.merge(_.cloneDeep(childCustomStyle), childProps)
 
 						//apply node props
-						if (dataBinder !== undefined)childProps = this.props.widgetRenderer.bindProps(childProps, childBindings.bindings, dataBinder, true);
+						if (dataBinder !== undefined && this.props.widgetRenderer && this.props.widgetRenderer.bindProps)childProps = this.props.widgetRenderer.bindProps(childProps, childBindings.bindings, dataBinder, true);
 
 
 						//propagete width and height to child container props
@@ -196,7 +198,7 @@ class Container extends React.Component {
 						if (!childProps.height && !!container.style.height) childProps.height = container.style.height;
 
 						var childComponent = widgets[container.elementName] || 'div';
-						var path = `${this.props.path}.containers[${index}]`;  
+						
 						return (React.createElement(childComponent, _.extend(childProps,{child:true,key: key}),
 							<WrappedContainer elementName={container.elementName}
 											  index={index}

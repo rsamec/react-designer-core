@@ -1,6 +1,6 @@
 {
   "name": "react-designer-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Designer",
   "main": "lib/Designer.js",
   "author": "Roman Samec",

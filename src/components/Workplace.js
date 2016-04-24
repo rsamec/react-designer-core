@@ -57,8 +57,9 @@ class Workplace extends React.Component {
 	}
 
 	render() {
+		let path = 'schema'
 		var handleClick = function () {
-			if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.schema,this.props.path);
+			if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.schema,path);
 		}.bind(this);
 
 		var dataContext = Binder.bindToState(this, 'data');
@@ -94,7 +95,7 @@ class Workplace extends React.Component {
 				boxes={this.props.schema.boxes}
 				currentChanged={this.currentChanged.bind(this)}
 				current={this.props.current}
-				path='schema'
+				path={path}
 				handleClick={handleClick}
 				isRoot={true}
 				node={this.props.schema}

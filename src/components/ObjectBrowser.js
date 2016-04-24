@@ -58,14 +58,15 @@ export default class ObjectBrowser extends React.Component {
 			'node': true,
 			'selected': this.props.current.node === this.props.rootNode
 		});
+		let path = 'schema';
         return (
             <div>
                 <div className="form-group">
                      <input type="search" className="form-control" placeholder="Search for..." onChange={this.handleUserInput.bind(this)} />
                 </div>
-				<div className={classes} onClick={(e)=>this.props.currentChanged(this.props.rootNode)}>{this.props.rootNode.name}</div>
+				<div className={classes} onClick={(e)=>this.props.currentChanged(this.props.rootNode,path)}>{this.props.rootNode.name}</div>
                 {this.props.rootNode.containers.length === 0 ? <span>No objects to show.</span> :
-                    <TreeNode key="root" path='schema'  node={this.props.rootNode} current={this.props.current}
+                    <TreeNode key="root" path={path} node={this.props.rootNode} current={this.props.current}
                               currentChanged={this.props.currentChanged.bind(this)} filterText={this.state.filterText}
                               executeAction={this.executeAction.bind(this)}/>
                 }
@@ -73,9 +74,6 @@ export default class ObjectBrowser extends React.Component {
         );
     }
 };
-
-
-
 
 class TreeNode extends React.Component
 {

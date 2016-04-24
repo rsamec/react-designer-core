@@ -87,7 +87,7 @@ There is an minimal 'Hello world' example. The PTT consists of one container and
 
 See the full [PTT specification](https://github.com/rsamec/ptt).
 
-### Visual componenet tree - using react
+### Visual componenet tree - PTT rendering in react
 
 To render react components specifies in react is really simple
 
