@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import WidgetFactory from 'react-photo-widget-factory';
 import {Rectangle,Circle,Ellipse,Line,PolyLine,Triangle} from 'react-shapes';
-import RichTextRenderer from '../widgets/RichTextRenderer';
-import TextRenderer from '../widgets/TextRenderer';
-import JsxRenderer from '../widgets/JsxRenderer';
+
+import RichText from '../widgets/RichTextEditor';
+
 import {Bar, Pie, Tree, SmoothLine, StockLine, Scatterplot, Radar} from 'react-pathjs-chart';
 import * as md from 'react-icons/lib/md';
 import {Input,Panel,Button,Alert,Glyphicon} from 'react-bootstrap';
@@ -17,6 +17,8 @@ import Grid from '../widgets/GridWrapper';
 import Cell from '../widgets/CellWrapper';
 
 
+
+
 var Widgets = {
 	
 	"BackgroundContainer":BackgroundContainer,
@@ -25,7 +27,7 @@ var Widgets = {
 	
 
 	"Core.TextContent":WidgetFactory.TextContent,
-	"Core.RichTextContent":WidgetFactory.RichTextContent,
+	"Core.RichTextContent":RichText,
 	"Core.HtmlContent": WidgetFactory.HtmlContent,
 	"Core.JsxContent": WidgetFactory.JsxContent,
 	"Core.ArticleContent": WidgetFactory.ArticleContent,
@@ -331,15 +333,6 @@ _.extend(WidgetFactory.IconMorphTransition,{  metaData: {
 	}
 }});
 
-_.extend(WidgetFactory.RichTextContent,{  metaData: {
-	settings: {
-		fields: {
-			content: {type: 'jsonEditor'},
-			font:{type:'fontEditor'}
-		}
-	}
-}});
-
 _.extend(WidgetFactory.TextContent,{  metaData: {
 	settings: {
 		fields: {
@@ -584,4 +577,14 @@ _.extend(InputRange,{  metaData: {
 		}
 	}
 }});
+
+_.extend(RichText,{  metaData: {
+	settings: {
+		fields: {
+			content: {type: 'jsonEditor'},
+			font:{type:'fontEditor'}
+		}
+	}
+}});
+
 export default Widgets;

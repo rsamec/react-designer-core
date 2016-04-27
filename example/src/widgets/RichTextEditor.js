@@ -4,7 +4,9 @@ import _ from 'lodash';
 import {Editor, EditorState,ContentState, RichUtils,convertToRaw,convertFromRaw,getDefaultKeyBinding,KeyBindingUtil} from 'draft-js';
 import {Overlay} from 'react-overlays';
 const {hasCommandModifier} = KeyBindingUtil;
+
 import Toolbox from './RichTextEditorToolbox';
+import RichTextRenderer from './RichTextRenderer';
 
 const styleFont = function (style, fontProps) {
 
@@ -25,7 +27,7 @@ var myKeyBindingFn = function(e) {
 	}
 	return getDefaultKeyBinding(e);
 }
-export default class RichEditor extends React.Component {
+class RichEditor extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -36,7 +38,7 @@ export default class RichEditor extends React.Component {
 		};
 
 		this.focus = () => this.refs.editor.focus();
-		this.saveChanges = _.debounce(this.saveChanges,1000);
+		this.saveChanges = _.debounce(this.saveChanges,500);
 		this.onChange = (editorState) => {this.setState({editorState}); this.saveChanges();};
 		
 
@@ -45,7 +47,8 @@ export default class RichEditor extends React.Component {
 		this.toggleInlineStyle = (style) => this._toggleInlineStyle(style);
 	}
 	componentWillMount(){
-		this.setState({editorState: this.props.content !==undefined? EditorState.createWithContent(ContentState.createFromBlockArray(convertFromRaw(this.props.content))):EditorState.createWithContent(ContentState.createFromText('Type your content'))});
+		var content = this.props.node && this.props.node.props && this.props.node.props.content;
+		this.setState({editorState: content !==undefined? EditorState.createWithContent(ContentState.createFromBlockArray(convertFromRaw(content))):EditorState.createWithContent(ContentState.createFromText('Type your content'))});
 	}
 	toolboxToggle(){
 		let show = this.state.show;
@@ -126,7 +129,7 @@ export default class RichEditor extends React.Component {
 
 	render() {
 		const {editorState} = this.state;
-
+		const {node} = this.props;
 		// If the user changes block type before entering any text, we can
 		// either style the placeholder or hide it. Let's just hide it now.
 		let className = 'RichEditor-editor';
@@ -138,7 +141,7 @@ export default class RichEditor extends React.Component {
 		}
 		var style = this.props.style || {};
 
-		styleFont(style, this.props.font);
+		styleFont(style, node.props && node.props.font);
 		
 		return (
 		<div>
@@ -277,3 +280,12 @@ const InlineStyleControls = (props) => {
 		</div>
 	);
 };
+
+
+let RichText = (props) => {
+	var box =props.designer?<RichEditor {...props}/>:<RichTextRenderer {...props}/>;
+	return box;
+}
+
+//RichEditorRenderer.defaultProps = {content:'type your content'};
+export default RichText; 

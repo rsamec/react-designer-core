@@ -8,7 +8,17 @@ var textParagraph = require('../toolbox/TextParagraph.json').containers[0];
 var textTitles = require('../toolbox/TextTitles.json').containers[0];
 var textLists = require('../toolbox/TextLists.json').containers[0];
 var textColumns = require('../toolbox/TextColumns.json').containers[0];
-
+// var uiTiles = require('../toolbox/UITiles.json').containers;
+//
+// let Layouts = (props) =>{
+// 	return (<div>
+// 		<h3>Titles</h3>
+// 		<hr/>
+// 		{uiTiles.map(function(item,index){
+// 			return <div key={'i' + index}><span style={{fontSize:18}}>{item.name}</span></div>
+// 		})}
+// 	</div>)		
+// }
 let ToolBoxTexts = (props) => {
 	return (<div>
 			<h3>Titles</h3>
@@ -70,7 +80,7 @@ let ToolBoxCharts = (props) => {
 		</div>
 	)
 }
-const tabs = ['Core','Texts', 'Bootstrap', 'Images', 'Shapes', 'Chart','Icons'];
+const tabs = ['Core','Texts', 'Bootstrap', 'Images', 'Shapes', 'Chart','Icons',];
 const tabContents = [ToolBoxCore,ToolBoxTexts, ToolBoxBootstrap, ToolBoxImages, ToolBoxShapes, ToolBoxCharts,ToolBoxIcons];
 
 export default class ToolBox extends React.Component {

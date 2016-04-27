@@ -2,6 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import {MdTextFields,MdTextFormat,MdChromeReaderMode,MdPolymer,MdFontDownload,MdFormatListNumbered,MdFormatListBulleted,MdFormatShapes,MdCheckBoxOutlineBlank,MdCropOriginal,MdDeveloperMode,MdInsertChart,MdInsertPhoto,MdAddAPhoto,MdMap} from 'react-icons/lib/md';
 
+var uiTiles = require('../toolbox/UITiles.json').containers;
+
 const list = [
 	{
 		name: "Core.TextContent",
@@ -87,7 +89,7 @@ const list = [
 		icon: MdMap,
 		desc: "Input range slider"
 	}];
-var layoutList = [
+var containerList = [
 	{
 		name: "Container",
 		title:'Container',
@@ -120,12 +122,14 @@ var layoutList = [
 	}
 ];
 
-
-
-
-
-
-
+var layoutList = _.map(uiTiles,function(item,index){
+	return	{
+		container: item,
+		name: "Group",
+		title: item.name,
+		icon: MdMap,
+		desc: item.name
+	}});
 
 
 let ToolBox = (props) => {
@@ -145,9 +149,9 @@ let ToolBox = (props) => {
 					<span style={{fontSize:18}}>{item.title}</span>
 					</div>	
 			})}
-			<h3>Layout</h3>
+			<h3>Containers</h3>
 			<hr/>
-			{layoutList.map(function(item,i){
+			{containerList.map(function(item,i){
 				var addFce = (e)=> {
 					props.add({
 						elementName: item.name,
@@ -159,7 +163,20 @@ let ToolBox = (props) => {
 					<span style={{fontSize:18}}>{item.title}</span>
 				</div>
 			})}
-
+			<h3>Layouts</h3>
+			<hr/>
+			{layoutList.map(function(item,i){
+				var addFce = (e)=> {
+					props.add({
+						elementName: item.name,
+						container:item.container
+					})
+				}
+				return <div key={'l' + i}  onClick={addFce}>
+					{React.createElement(item.icon,{width:60,height:60})}
+					<span style={{fontSize:18}}>{item.title}</span>
+				</div>
+			})}
 			<h3>Charts</h3>
 			<hr/>
 			{props.dataSource.Charts.controls.map(function(item,i){

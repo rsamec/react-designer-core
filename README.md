@@ -136,7 +136,7 @@ npm install react-designer-core --save
 
 ## Usage
 
-import {Workplace,ObjectBrowser,ObjectPropertyGrid} from 'react-designer-core';
+import {Workplace,ObjectBrowser} from 'react-designer-core';
 
 
 

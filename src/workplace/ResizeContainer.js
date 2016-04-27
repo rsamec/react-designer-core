@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import ItemTypes from '../util/ItemTypes.js';
 import { DropTarget } from 'react-dnd';
-import _ from 'lodash';
 
+import _ from 'lodash';
 import ResizableHandle from './ResizableHandle.js';
 
 
@@ -13,13 +13,11 @@ const target = {
             // target already handled drop
             return;
         }
-        //props.onDrop(monitor.getItem());
 
         var item = monitor.getItem().item;
-        //console.log(item);
 
         var delta = monitor.getDifferenceFromInitialOffset();
-        //console.log(delta);
+
         if (!!!delta) return;
 
         if (monitor.getItemType() === ItemTypes.RESIZABLE_HANDLE) {
@@ -31,6 +29,8 @@ const target = {
 
     }
 };
+const HANDLE_OFFSET = 30;
+
 class ResizeContainer extends React.Component {
     resizeContainer(container, deltaWidth, deltaHeight) {
         if (container === undefined) return;
@@ -40,24 +40,21 @@ class ResizeContainer extends React.Component {
         style.width += deltaWidth;
         style.height += deltaHeight;
 
-        //var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
         var updated = container.set({'style': style});
         this.props.currentChanged(updated);
-        //currentChanged(updated);
 
     }
     render() {
 
-        var style = this.props.node.style;
+		const { canDrop, isOver, connectDropTarget}  = this.props;
+		
+        var style = this.props.node && this.props.node.style || {};
 
         //resize handle position
-        var handle = 30;
         var useResize = !!style.height && !!style.width;
-        var resizeHandlePosition = {top: (style.height - handle), left: (style.width - handle)};
+        var resizeHandlePosition = {top: (style.height - HANDLE_OFFSET), left: (style.width - HANDLE_OFFSET)};
 
-
-        const { canDrop, isOver, connectDropTarget}  = this.props;
-
+        
         return connectDropTarget(
             <div>
                 {this.props.children}
@@ -68,8 +65,6 @@ class ResizeContainer extends React.Component {
         );
     }
 };
-
-//Container.propTypes = propTypes;
 
 var collect = (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),

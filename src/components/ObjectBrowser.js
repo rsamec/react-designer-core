@@ -2,7 +2,8 @@ import React from 'react';
 import TreeView from 'react-treeview';
 import _ from 'lodash';
 import cx from 'classnames';
-const  ContainerKeys  = ["ObjectSchema","Container","Repeater","Grid","Cell","BackgroundContainer"];
+
+const  CONTAINER_KEYS  = ["ObjectSchema","Container","Repeater","Grid","Cell","BackgroundContainer"];
 
 export default class ObjectBrowser extends React.Component {
 	constructor(props) {
@@ -32,7 +33,7 @@ export default class ObjectBrowser extends React.Component {
 
         //find source
         var source = from.node;
-        var isContainer = _.contains(ContainerKeys,source.elementName);
+        var isContainer = _.contains(CONTAINER_KEYS,source.elementName);
 		
         //move source to target - do it in transaction
         var targetArray = isContainer? to.node.containers:to.node.boxes;

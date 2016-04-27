@@ -1,12 +1,12 @@
 import React, { PropTypes } from 'react';
 import { DragSource } from 'react-dnd';
-import ItemTypes  from '../util/ItemTypes.js';
-
 import _ from 'lodash';
 import cx from 'classnames';
-import {Transhand} from 'transhand';
+
 import ResizeContainer from './ResizeContainer.js';
-import RichTextEditor from '../workplace/RichTextEditor';
+
+import ItemTypes  from '../util/ItemTypes.js';
+import generateCssTransform from '../util/generateCssTransform';
 
 /**
  * Implements the drag source contract.
@@ -29,9 +29,8 @@ function collect(connect, monitor) {
 		isDragging: monitor.isDragging()
 	};
 }
-const propTypes = {
-	//item: PropTypes.string.isRequired,
 
+const propTypes = {
 	// Injected by React DnD:
 	isDragging: PropTypes.bool.isRequired,
 	connectDragSource: PropTypes.func.isRequired
@@ -53,74 +52,68 @@ class Box extends React.Component {
 		// The comparison is fast, and we won't render the component if
 		// it does not need it. This is a huge gain in performance.
 		var box = this.props.node;
-		var update = this.props.node !== nextProps.node || this.props.selected != nextProps.selected;
+		var update = box !== nextProps.node || this.props.selected != nextProps.selected;
 		//console.log(nextProps.node.name + ' : ' + update);
 		if (update) return update;
 
+		//test -> widget custom style changed
 		var propsStyles = this.props.ctx.styles;
 		var nextPropsStyles = nextProps.ctx.styles;
 		update = (propsStyles && propsStyles[box.elementName]) !== (nextPropsStyles && nextPropsStyles[box.elementName]);
 
 		return update;
 	}
-
-	generateCssTransform(transform) {
-		var cssTransform = '';
-
-		if (transform.tx !== undefined)  cssTransform += ' translateX(' + transform.tx + 'px)';
-		if (transform.ty !== undefined) cssTransform += ' translateY(' + transform.ty + 'px)';
-		if (transform.rz !== undefined) cssTransform += ' rotate(' + transform.rz + 'rad)';
-		if (transform.sx !== undefined) cssTransform += ' scaleX(' + transform.sx + ')';
-		if (transform.sy !== undefined) cssTransform += ' scaleY(' + transform.sy + ')';
-
-		return cssTransform
-	}
+	
 
 	render() {
-		//console.log(this.props.path);
+		
+		const {widgets,widgetRenderer,selected,node,dataBinder, currentChanged} = this.props;
+		const {isDragging, connectDragSource, item } = this.props;
+		
 		//prepare styles
 		var classes = cx({
 			'box': true,
-			'selected': this.props.selected
+			'selected': selected
 		});
 
-		var box = this.props.node.toJS();
+		//clone node
+		var box = node.toJS();
+		
+		//document custom style
 		var ctx = this.props.ctx || {};
 		var customStyle = ctx["styles"] && ctx["styles"][box.elementName];
-		//var intlData = ctx["intlData"];
-
-
-		var widgets = this.props.widgets;
-		//propagete width and height to widget props
+		
+		//specific props resolution rule -> propagate width and height from style to widget props
 		if (!box.props.width && !!box.style.width) box.props.width = box.style.width;
 		if (!box.props.height && !!box.style.height) box.props.height = box.style.height;
-
-		var WidgetRenderer = this.props.widgetRenderer;
-
-		var boxComponent = WidgetRenderer !== undefined ?
-			<WidgetRenderer widget={widgets[box.elementName]} node={box} dataBinder={this.props.dataBinder}
-							customStyle={customStyle} customCode={ctx['customCode']} designer={true}/> :
-			<div>No widget renderer provided</div>
-		const { isDragging, connectDragSource, item } = this.props;
-
-
-		//var styles = _.omit(box.style,['width','height']);
-		var styles = _.extend({position:this.props.position},box.style);
 		
-		if (box.style.transform !== undefined) styles['transform'] = this.generateCssTransform(box.style.transform);
+		
+		var boxComponent = widgetRenderer !== undefined && widgets !== undefined ?
+			React.createElement(widgetRenderer,{
+				widget:widgets[box.elementName],
+				node:box,
+				dataBinder:dataBinder,
+				customStyle:customStyle,
+				customCode:ctx['customCode'],
+				designer:true,
+				current:node,
+				currentChanged:currentChanged,
+				selected:selected
+			},null) :
+			<div>No widget renderer or widget factory provided.</div>;
+		
+		
+		//create style
+		var styles = _.extend({position:this.props.position},box.style);
+		if (box.style.transform !== undefined) styles['transform'] = generateCssTransform(box.style.transform);
 
-		var isInlineEdit = this.props.selected && box.elementName === "Core.RichTextContent";
-		var inlineEditor = <RichTextEditor font={box.props.font} current={this.props.node}
-										   currentChanged={this.props.currentChanged} content={box.props.content}/>;
-
+		//wrap with div double click for transhand transformation
+		if (box.elementName !== "Core.RichTextContent") boxComponent = <div onDoubleClick={this.handleDoubleClick.bind(this)}>{boxComponent}</div>;
+	
 		return connectDragSource(
 			<div style={styles} className={classes} onClick={this.handleClick.bind(this)}>
-				<ResizeContainer node={this.props.node} currentChanged={this.props.currentChanged}>
-					{isInlineEdit ? inlineEditor :
-						<div onDoubleClick={this.handleDoubleClick.bind(this)}>
-							{boxComponent}
-						</div>
-					}
+				<ResizeContainer node={node} currentChanged={currentChanged}>
+					{boxComponent}
 				</ResizeContainer>
 			</div>
 		);

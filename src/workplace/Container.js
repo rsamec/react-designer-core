@@ -24,13 +24,11 @@ const target = {
             // target already handled drop
             return;
         }
-        //props.onDrop(monitor.getItem());
 
         var item = monitor.getItem().item;
-        //console.log(item);
 
         var delta = monitor.getDifferenceFromInitialOffset();
-        //console.log(delta);
+
         if (!!!delta) return;
 
         if (monitor.getItemType() === ItemTypes.BOX) {
@@ -51,42 +49,21 @@ const target = {
 class Container extends React.Component {
 	shouldComponentUpdate(nextProps,nextState) {
 
-		//return true;
-		
-		
 		// The comparison is fast, and we won't render the component if
 		// it does not need it. This is a huge gain in performance.
-		//var box = this.props.node;
-		var update = this.props.node !== nextProps.node || (this.props.current && this.props.current.path) != (nextProps.current && nextProps.current.path);
+		var node = this.props.node;
+		var current = this.props.current;
+		var update = node !== nextProps.node || (current && current.path) != (nextProps.current && nextProps.current.path);
 		
-		//if (update)	console.log(nextProps.node.name + ' : ' + update);
 		if (update) return update;
 
-		//var propsStyles = this.props.ctx.styles;
-		//var nextPropsStyles = nextProps.ctx.styles;
-		//update = (propsStyles && propsStyles[box.elementName]) !== (nextPropsStyles && nextPropsStyles[box.elementName]);
+		//test -> container custom style changed
+		var propsStyles = this.props.ctx.styles;
+		var nextPropsStyles = nextProps.ctx.styles;
+		update = (propsStyles && propsStyles[node.elementName]) !== (nextPropsStyles && nextPropsStyles[node.elementName]);
 
 		return update;
 	}
-	
-	// componentWillReceiveProps(nextProps) {
-	// 	var current = this.props.node;
-	// 	var updatedCurrent = nextProps.node;
-	// 	console.log(nextProps.node.name);
-	// 	if (!updatedCurrent.$selected) return;
-	//	
-	//	
-	//	
-	// 	var parent = updatedCurrent.__.parents;
-	// 	var parentNode = parent.length !== 0 ? parent[0].__.parents[0] : undefined;
-	// 	this.setState({
-	// 			current: {
-	// 				node: updatedCurrent,
-	// 				parentNode: parentNode
-	// 			}
-	// 		}
-	// 	);
-	//}
 	
 	moveBox(index, left, top) {
 		var boxes = this.props.boxes;
@@ -96,7 +73,6 @@ class Container extends React.Component {
 
 		var deltas = snapToGrid(this.context.snapGrid, left, top);
 		var updated = box.set({'style': _.merge(_.clone(box.style), {'left': deltas[0], 'top': deltas[1],})});
-		//var updated = box.set({'style': {'top': top, 'left': left,'height':box.style.height,'width':box.style.width}});
 		this.props.currentChanged(updated);
 	}
 
@@ -114,10 +90,8 @@ class Container extends React.Component {
 		style.width = deltas[0];
 		style.height = deltas[1];
 
-		//var newStyle = {'style':{'top':container.top,'left':container.left,'width':width,'height':height, 'position':container.position}};
 		var updated = container.set({'style': style});
 		this.props.currentChanged(updated);
-		//currentChanged(updated);
 		
 	}
 
@@ -127,7 +101,7 @@ class Container extends React.Component {
 	}
 	
 	render() {
-		let { elementName, ctx,widgets, node, parent, dataBinder} = this.props;
+		let { elementName, ctx,widgets,widgetRenderer, current, currentChanged,node, parent, dataBinder} = this.props;
 		const { canDrop, isOver, connectDropTarget } = this.props;
 
 		var containers = this.props.containers || [];
@@ -155,10 +129,10 @@ class Container extends React.Component {
 		
 		//apply custom styles
 		var customStyle = ctx["styles"] && ctx["styles"][elementName];
-		if (customStyle !== undefined) nodeProps = _.merge(_.cloneDeep(customStyle), nodeProps)
+		if (customStyle !== undefined) nodeProps = _.merge(_.cloneDeep(customStyle), nodeProps);
 
 		//apply node props
-		if (this.props.dataBinder !== undefined && this.props.widgetRenderer && this.props.widgetRenderer.bindProps)nodeProps = this.props.widgetRenderer.bindProps(_.cloneDeep(nodeProps), nodeBindings.bindings, this.props.dataBinder, true);
+		if (dataBinder !== undefined && widgetRenderer)nodeProps = widgetRenderer.bindProps(_.cloneDeep(nodeProps), nodeBindings.bindings, dataBinder, true);
 
 
 		var containerComponent = widgets[elementName] || 'div';
@@ -168,32 +142,32 @@ class Container extends React.Component {
 				<div>
 					{containers.length !== 0 ? React.createElement(containerComponent, nodeProps, containers.map(function (container, index) {
 
-						var selected = container === this.props.current.node;
-						var parentSelected = false; //container === this.props.current.parentNode;
+						var selected = container === current.node;
+						var parentSelected = false; //container === current.parentNode;
 						var key = container.name + index;
 
 						var path = `${this.props.path}.containers[${index}]`;
 						
 						var handleClick = function () {
-							if (this.props.currentChanged !== undefined) this.props.currentChanged(container,path);
-						}.bind(this);
+							if (currentChanged !== undefined) currentChanged(container,path);
+						}
 
 						var left = container.style.left === undefined ? 0 : parseInt(container.style.left, 10);
 						var top = container.style.top === undefined ? 0 : parseInt(container.style.top, 10);
 
-						//je potreba merge
+						
 						var childProps = _.cloneDeep(container.props) || {};
 						var childBindings = container.bindings || {};
 
 						//apply custom styles
 						var childCustomStyle = ctx["styles"] && ctx["styles"][container.elementName];
-						if (childCustomStyle !== undefined) childProps = _.merge(_.cloneDeep(childCustomStyle), childProps)
+						if (childCustomStyle !== undefined) childProps = _.merge(_.cloneDeep(childCustomStyle), childProps);
 
 						//apply node props
-						if (dataBinder !== undefined && this.props.widgetRenderer && this.props.widgetRenderer.bindProps)childProps = this.props.widgetRenderer.bindProps(childProps, childBindings.bindings, dataBinder, true);
+						if (dataBinder !== undefined && widgetRenderer)childProps = widgetRenderer.bindProps(childProps, childBindings.bindings, dataBinder, true);
 
 
-						//propagete width and height to child container props
+						//specific props resolution rule -> propagate width and height from style to child container props
 						if (!childProps.width && !!container.style.width) childProps.width = container.style.width;
 						if (!childProps.height && !!container.style.height) childProps.height = container.style.height;
 
@@ -212,22 +186,22 @@ class Container extends React.Component {
 											  node={container}
 											  path={path}
 											  parent={this.props.parent}
-											  currentChanged={this.props.currentChanged}
-											  current={this.props.current}
+											  currentChanged={currentChanged}
+											  current={current}
 											  handleClick={handleClick}
 											  parentSelected={parentSelected}
 											  selected={selected}
-											  dataBinder={this.props.dataBinder}
-											  ctx={this.props.ctx}
+											  dataBinder={dataBinder}
+											  ctx={ctx}
 											  widgets={widgets}
-											  widgetRenderer={this.props.widgetRenderer}
+											  widgetRenderer={widgetRenderer}
 							/>
 						));
 					}, this)) : null}
 
 					{boxes.map(function (box, index) {
 
-						var selected = box === this.props.current.node;
+						var selected = box === current.node;
 						var key = box.name + index;
 
 						var left = box.style.left === undefined ? 0 : parseInt(box.style.left, 10);
@@ -244,11 +218,11 @@ class Container extends React.Component {
 								 position={elementName ==="Cell"?'relative':'absolute'}
 								 selected={selected}
 								 hideSourceOnDrag={this.props.hideSourceOnDrag}
-								 currentChanged={this.props.currentChanged}
-								 node={box} dataBinder={this.props.dataBinder}
-								 ctx={this.props.ctx}
-								 widgets={this.props.widgets}
-								 widgetRenderer={this.props.widgetRenderer}
+								 currentChanged={currentChanged}
+								 node={box} dataBinder={dataBinder}
+								 ctx={ctx}
+								 widgets={widgets}
+								 widgetRenderer={widgetRenderer}
 							>
 							</Box>
 
@@ -274,6 +248,4 @@ var collect = (connect, monitor) => ({
     canDrop: monitor.canDrop()
 });
 var WrappedContainer = DropTarget([ItemTypes.RESIZABLE_HANDLE, ItemTypes.BOX], target, collect)(Container);
-// Export the wrapped component:
 export default WrappedContainer;
-//module.exports = Container;

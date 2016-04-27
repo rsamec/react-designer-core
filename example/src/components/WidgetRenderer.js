@@ -29,6 +29,10 @@ export default class WidgetRenderer extends React.Component
 		var widgetStyle = _.cloneDeep(widget.metaData.props || {});
         if (customStyle !== undefined) widgetStyle = _.merge(widgetStyle,customStyle);
         props = _.merge(widgetStyle,props);
+
+		//specific inline editor
+		var isInlineEdit = this.props.selected && box.elementName === "Core.RichTextContent";
+		if (isInlineEdit) props = _.extend(props,{designer:true,current:this.props.current,currentChanged:this.props.currentChanged,node:this.props.node});
 		
         return  React.createElement(widget,props,props.content !== undefined ? React.DOM.div({ dangerouslySetInnerHTML: {__html: props.content } }) : null);
     }

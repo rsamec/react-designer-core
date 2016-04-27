@@ -20,10 +20,10 @@ import { Router, Route, Link, IndexRoute, hashHistory } from 'react-router';
 import {Modal} from 'react-overlays';
 import ModalStyles from './components/ModalStyles.js';
 
-const BASE_SERVICE_URL = 'http://www.paperify.io'
+//const BASE_SERVICE_URL = 'http://www.paperify.io'
 //const BASE_SERVICE_URL = 'http://photo-papermill.rhcloud.com';
 //const BASE_SERVICE_URL = 'http://render-pergamon.rhcloud.com';
-//const BASE_SERVICE_URL = 'http://localhost:8080';
+const BASE_SERVICE_URL = 'http://localhost:8080';
 let SERVICE_URL = BASE_SERVICE_URL + '/api';
 /**
  * Number.prototype.format(n, x, s, c)
@@ -183,7 +183,8 @@ class Designer extends React.Component {
 			importDlgShow: false,
 			previewModalOpen: false,
 			toolboxVisible: false,
-			snapGrid: [10, 10]
+			snapGrid: [10, 10],
+			data: _.cloneDeep(store.schema.props && store.schema.props.defaultData) || {}
 		};
 
 		this.saveChanges = _.debounce(this.saveChanges,10000);
@@ -200,7 +201,6 @@ class Designer extends React.Component {
 		this.props.store.set(this.state.storeHistory[nextIndex]);
 		this.setState({currentStore: nextIndex});
 	}
-
 	schema() {
 		return this.props.store.get().schema;
 	}
@@ -248,7 +248,12 @@ class Designer extends React.Component {
 	addNewCtrl(elName, itemToAdd) {
 		var current = this.state.current.node;
 		if (current === undefined) return;
-		
+
+		if (elName === "Group") {
+			this.currentChanged(current.containers.push(_.cloneDeep(itemToAdd.container)).__.parents[0]);
+			return;
+		}
+
 
 		var isContainer = isContainerFce(elName);
 		var normalizeElName = elName;
@@ -258,15 +263,15 @@ class Designer extends React.Component {
 		}
 		var items = isContainer ? current.containers : current.boxes;
 		var defaultNewItem = isContainer ? {
-			name: "Container",
+			name: normalizeElName,
 			elementName: elName,
-			style: (elName ==="Container" || elName==="Repater" || elName==="BackgroundContainer")?{
+			style: (elName === "Container" || elName === "Repater" || elName === "BackgroundContainer") ? {
 				top: 0,
 				left: 0,
 				height: 200,
 				width: 740,
 				position: 'relative'
-			}:{},
+			} : {},
 			props: {},
 			boxes: [],
 			containers: []
@@ -287,6 +292,7 @@ class Designer extends React.Component {
 			//  defaultNewItem.style.top = 0;
 			//  defaultNewItem.style.left = 0;
 		}
+
 
 		var updated = items.push(defaultNewItem);
 		this.currentChanged(updated.__.parents[0]);
@@ -310,7 +316,7 @@ class Designer extends React.Component {
 		// });
 
 			// We are going to update the props every time the store changes
-		this.props.store.on('update', function (updated) {
+		this.props.store.on('update', function (updated,prevState) {
 
 			var storeHistory, nextIndex;
 			// Check if this state has not been set by the history
@@ -319,6 +325,13 @@ class Designer extends React.Component {
 				nextIndex = me.state.currentStore + 1;
 				storeHistory = me.state.storeHistory.slice(0, nextIndex);
 				storeHistory.push(updated);
+
+				var prevSchema = prevState.schema;
+				var defaultData = prevSchema.props && prevSchema.props.defaultData;
+				var updatedSchema = updated.schema;
+				var newDefautData = updatedSchema.props && updatedSchema.props.defaultData;
+
+				if (defaultData !== newDefautData) me.setState({data: _.cloneDeep(newDefautData)});
 
 				// Set the state will re-render our component
 				me.setState({
@@ -432,12 +445,13 @@ class Designer extends React.Component {
 		var published = this.state.published || false;
 		var publishInfo = this.state.publishInfo || {};
 
+		var dataContext = Binder.bindToState(this, 'data');
 		return (
 			<div>
 
 				<SplitPane split="vertical" minSize={80} defaultSize="65vw">
 					<div>
-						<Workplace schema={schema} current={this.state.current}
+						<Workplace schema={schema} current={this.state.current} dataContext={dataContext}
 								   currentChanged={this.currentChanged.bind(this)} widgets={Widgets}
 								   widgetRenderer={WidgetRenderer} snapGrid={this.state.snapGrid}/>
 					</div>

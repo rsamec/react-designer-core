@@ -1,24 +1,26 @@
 import React from 'react';
-import Binder from 'react-binding';
 import _ from 'lodash';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import {CSSTranshand} from 'transhand';
 import Container from './../workplace/Container';
-import backgroundStyle from '../util/backgroundStyle';
-import RichTextEditor from '../workplace/RichTextEditor';
 
-var defaultTransform = {
+import backgroundStyle from '../util/backgroundStyle';
+
+const DEFAULT_TRANSFORM = {
     tx: 0, ty: 0,     //translate in px
     sx: 1, sy: 1,     //scale
     rz: 0,            //rotation in radian
     ox: 0.5, oy: 0.5 //transform origin
 };
 
+const DEFAULT_ROOT_PATH = 'path';
+
 class Workplace extends React.Component {
-	constructor(props) {
+	
+	constructor(props){
 		super(props);
-		this.state = {data: _.cloneDeep(this.props.schema.props.defaultData) || {}};
+		this.state = {};
 	}
 	getChildContext() {
 		return {snapGrid: this.props.snapGrid};
@@ -31,24 +33,14 @@ class Workplace extends React.Component {
 		if (style === undefined) return;
 
 		//resolution strategy -> defaultTransform -> style.transform -> change
-		var transform = _.merge(_.merge(_.clone(defaultTransform), style.transform), change);
-
-		//apply to current DOM node
-		//this.state.currentNode.style.transform = this.generateCssTransform(transform);
-		//this.state.currentNode.style.transformOrigin = `${transform.ox*100}% ${transform.oy*100}%`;
+		var transform = _.merge(_.merge(_.clone(DEFAULT_TRANSFORM), style.transform), change);
+		
 
 		var updated = currentNode.set('style', _.extend(_.clone(style), {'transform': transform}));
 		this.props.currentChanged(updated);
 	}
 
-	componentWillReceiveProps(newProps) {
-		var defaultData = this.props.schema.props && this.props.schema.props.defaultData;
-		var newDefautData = newProps.schema.props && newProps.schema.props.defaultData;
-
-		if (defaultData !== newDefautData) {
-			this.setState({data: _.cloneDeep(newDefautData)});
-		}
-	}
+	
 	currentChanged(node,path,domEl) {
 		if (this.props.currentChanged !== undefined) this.props.currentChanged(node,path);
 		this.setState({
@@ -57,23 +49,25 @@ class Workplace extends React.Component {
 	}
 
 	render() {
-		let path = 'schema'
+		
+		const {schema,current,currentChanged, dataContext} = this.props;
+		
 		var handleClick = function () {
-			if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.schema,path);
-		}.bind(this);
+			if (currentChanged !== undefined) currentChanged(schema,DEFAULT_ROOT_PATH);
+		};
 
-		var dataContext = Binder.bindToState(this, 'data');
+		
 
-		var style = this.props.current.node.style || {};
-		var transform = _.merge(_.clone(defaultTransform), style.transform);
+		var style = current.node && current.node.style || {};
+		var transform = _.merge(_.clone(DEFAULT_TRANSFORM), style.transform);
 
-		var ctx = (this.props.schema.props && this.props.schema.props.context) || {};
+		var ctx = (schema.props && schema.props.context) || {};
 		var customStyles = ctx['styles'] || {};
 		var code = ctx['code'] && ctx['code'].code;
 		var customCode = !!code ? new Function(code)() : undefined;
 		
 		//append shared code to data context
-		dataContext.customCode = customCode;
+		if (dataContext !== undefined) dataContext.customCode = customCode;
 		
 		var context = {
 			styles: customStyles,
@@ -81,7 +75,7 @@ class Workplace extends React.Component {
 		};
 
 		
-		var bg = (this.props.schema.props && this.props.schema.props.background) || {};
+		var bg = (schema.props && schema.props.background) || {};
 		var bgStyle = backgroundStyle(bg);
 		
 		bgStyle.position = 'absolute';
@@ -91,14 +85,14 @@ class Workplace extends React.Component {
 
 		var component =
 			<Container
-				containers={this.props.schema.containers}
-				boxes={this.props.schema.boxes}
+				containers={schema.containers}
+				boxes={schema.boxes}
 				currentChanged={this.currentChanged.bind(this)}
-				current={this.props.current}
-				path={path}
+				current={current}
+				path={DEFAULT_ROOT_PATH}
 				handleClick={handleClick}
 				isRoot={true}
-				node={this.props.schema}
+				node={schema}
 				dataBinder={dataContext}
 				ctx={context}
 				widgets={this.props.widgets}
