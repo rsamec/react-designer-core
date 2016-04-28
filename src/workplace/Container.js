@@ -80,7 +80,7 @@ class Container extends React.Component {
 		if (container === undefined) return;
 
 		//TODO: use merge instead of clone
-		var style = _.clone(container.style);
+		var style = _.clone(container.style) || {};
 		var newWidth = (style.width || 0) + deltaWidth;
 		if (newWidth < 0)return;
 		var newHeight = (style.height || 0) + deltaHeight;
@@ -145,6 +145,7 @@ class Container extends React.Component {
 						var selected = container === current.node;
 						var parentSelected = false; //container === current.parentNode;
 						var key = container.name + index;
+						var containerStyle = container.style || {};
 
 						var path = `${this.props.path}.containers[${index}]`;
 						
@@ -152,8 +153,8 @@ class Container extends React.Component {
 							if (currentChanged !== undefined) currentChanged(container,path);
 						}
 
-						var left = container.style.left === undefined ? 0 : parseInt(container.style.left, 10);
-						var top = container.style.top === undefined ? 0 : parseInt(container.style.top, 10);
+						var left = containerStyle.left === undefined ? 0 : parseInt(containerStyle.left, 10);
+						var top = containerStyle.top === undefined ? 0 : parseInt(containerStyle.top, 10);
 
 						
 						var childProps = _.cloneDeep(container.props) || {};
@@ -168,8 +169,9 @@ class Container extends React.Component {
 
 
 						//specific props resolution rule -> propagate width and height from style to child container props
-						if (!childProps.width && !!container.style.width) childProps.width = container.style.width;
-						if (!childProps.height && !!container.style.height) childProps.height = container.style.height;
+						
+						if (!childProps.width && !!containerStyle.width) childProps.width = containerStyle.width;
+						if (!childProps.height && !!containerStyle.height) childProps.height = containerStyle.height;
 
 						var childComponent = widgets[container.elementName] || 'div';
 						
@@ -178,14 +180,14 @@ class Container extends React.Component {
 											  index={index}
 											  left={left}
 											  top={top}
-											  height={container.style.height}
-											  width={container.style.width}
-											  position={container.style.position || 'relative'}
+											  height={containerStyle.height}
+											  width={containerStyle.width}
+											  position={containerStyle.position || 'relative'}
 											  boxes={container.boxes}
 											  containers={container.containers}
 											  node={container}
 											  path={path}
-											  parent={this.props.parent}
+											  parent={parent}
 											  currentChanged={currentChanged}
 											  current={current}
 											  handleClick={handleClick}
@@ -204,8 +206,9 @@ class Container extends React.Component {
 						var selected = box === current.node;
 						var key = box.name + index;
 
-						var left = box.style.left === undefined ? 0 : parseInt(box.style.left, 10);
-						var top = box.style.top === undefined ? 0 : parseInt(box.style.top, 10);
+						var boxStyle = box.style || {};
+						var left = boxStyle.left === undefined ? 0 : parseInt(box.style.left, 10);
+						var top = boxStyle.top === undefined ? 0 : parseInt(box.style.top, 10);
 
 						var path = `${this.props.path}.boxes[${index}]`;
 						return (

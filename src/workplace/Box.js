@@ -84,8 +84,10 @@ class Box extends React.Component {
 		var customStyle = ctx["styles"] && ctx["styles"][box.elementName];
 		
 		//specific props resolution rule -> propagate width and height from style to widget props
-		if (!box.props.width && !!box.style.width) box.props.width = box.style.width;
-		if (!box.props.height && !!box.style.height) box.props.height = box.style.height;
+		var boxProps = box.props || {};
+		var boxStyle = box.style || {};
+		if (!boxProps.width && !!boxStyle.width) boxProps.width =boxStyle.width;
+		if (!boxProps.height && !!boxStyle.height) boxProps.height = boxStyle.height;
 		
 		
 		var boxComponent = widgetRenderer !== undefined && widgets !== undefined ?
@@ -104,8 +106,8 @@ class Box extends React.Component {
 		
 		
 		//create style
-		var styles = _.extend({position:this.props.position},box.style);
-		if (box.style.transform !== undefined) styles['transform'] = generateCssTransform(box.style.transform);
+		var styles = _.extend({position:this.props.position},boxStyle);
+		if (boxStyle.transform !== undefined) styles['transform'] = generateCssTransform(boxStyle.transform);
 
 		//wrap with div double click for transhand transformation
 		if (box.elementName !== "Core.RichTextContent") boxComponent = <div onDoubleClick={this.handleDoubleClick.bind(this)}>{boxComponent}</div>;
