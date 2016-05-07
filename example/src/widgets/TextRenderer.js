@@ -12,14 +12,16 @@ let TextRenderer = (props) => {
 	if (props.height) style.height = props.height;
 	if (props.width) style.width = props.width;
 
-	
+
 	return (
 		<span style={style}>{props.content}</span>
 	);
 }
 
-TextRenderer.defaultProps = {content:'type your content'};
-export default TextRenderer; 
+TextRenderer.defaultProps = {
+  content:'type your content'
+};
+export default TextRenderer;
 
 
 

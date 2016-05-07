@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "classnames": "^2.2.3",
-    "freezer-js": "^0.11.1",
     "lodash": "^3.10.1",
     "react-dnd": "^2.0.2",
     "react-dnd-html5-backend": "^2.1.2",
@@ -22,27 +21,18 @@
     "transhand": "^0.1.23"
   },
   "devDependencies": {
+    "freezer-js": "^0.11.1",
     "babel-eslint": "^4.1.3",
     "backdraft-js": "0.0.1",
     "draft-js": "^0.2.2",
     "eslint": "^1.6.0",
     "eslint-plugin-react": "^3.5.1",
-    "freezer-js": "^0.9.4",
     "gulp": "^3.9.0",
     "react-component-gulp-tasks": "^0.7.6",
     "react-dnd-html5-backend": "^2.0.2",
-    "react-dock": "^0.2.3",
     "react-flexr": "^2.1.0-beta",
-    "react-gmaps": "^1.4.3",
-    "react-html-pages-renderer": "^1.6.4",
-    "react-input-range": "^0.6.2",
-    "react-overlays": "0.4.4",
-    "react-pathjs-chart": "^0.3.4",
-    "react-photo-widget-factory": "^1.2.2",
-    "react-property-editor": "^1.0.1",
-    "react-router": "^2.0.1",
-    "react-shapes": "^0.1.0",
-    "react-split-pane": "^0.1.22"
+    "react-split-pane": "^0.1.38",
+    "react-overlays": "^0.6.3"
   },
   "peerDependencies": {
     "react": "^0.14.0",

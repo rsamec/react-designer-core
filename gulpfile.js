@@ -9,16 +9,6 @@ var initGulpTasks = require('react-component-gulp-tasks');
  *
  * You can also add your own additional gulp tasks if you like.
  */
-gulp.task('apply-prod-environment', function() {
-	process.stdout.write("Setting NODE_ENV to 'production'" + "\n");
-	process.env.NODE_ENV = 'production';
-	if (process.env.NODE_ENV != 'production') {
-		throw new Error("Failed to set NODE_ENV to production!!!!");
-	} else {
-		process.stdout.write("Successfully set NODE_ENV to production" + "\n");
-		console.log('NODE_ENV : ' + process.env.NODE_ENV);
-	}
-});
 
 var taskConfig = {
 

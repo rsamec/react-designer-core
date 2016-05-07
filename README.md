@@ -1,58 +1,37 @@
 react-designer-core
 =======================
 
-React designer is WYSIWYG editor for **easy content creation** (legal contracts, business forms, marketing leaflets, technical guides, visual reports, rich dashboards, tutorials and other content, etc.).
+React-designer-core is a set of core components for [react-designer](https://github.com/rsamec/react-designer). This is WYSIWYG editor for **easy content creation** (legal contracts, business forms, marketing leaflets, technical guides, visual reports, rich dashboards, tutorials and other content, etc.).
 
-[Live demo](http://rsamec.github.io/react-designer-core/)
+Live demos
+
++	[simple](http://rsamec.github.io/react-designer-core/)
++	[react-designer](http://rsamec.github.io/react-designer/)
 
 ## Main goals 
 
 +   it is for developers - to use it in your own solutions with your own widgets (components)  
 +   it is based on simple principals
  	+	minimal JSON definition - [PTT](https://github.com/rsamec/ptt) - maps directly to React components
- 	+	good performance even for big documents - due to usage of immutable structure
- 	+	fully extensible by various css and widgets frameworks (react-bootstrap, material-design, your company made widgets, etc.) 	
-+ 	offers standard design components (Workplace, Container, Box, PropertyEditor, ObjectBrowser) and features
+ 	+	good performance even for big documents - due to usage of immutable structure using [freezer-js](https://github.com/arqex/freezer)
+ 	+	simple extensible by custom components or frameworks (react-bootstrap, material-design, your company made widgets, etc.) 	
++ 	offers standard design components (Workplace, Container, Box, ObjectBrowser) and features
 	+	layouting - moving positions, resizing, moving up/down in component hieararchy, copying, deleting, etc.
  	+	component editing - property editors, inline editing - using [draftjs](https://facebook.github.io/draft-js/), streching, rotating, transforming [transhand](https://github.com/azazdeaz/transhand),etc.
- 	+	workplace - selecting, undo/redo, previewing, import/export, etc.
- 	  	 	
+ 	+	workplace - selecting, undo/redo, previewing, import/export, etc. 	 	
  	       
-**Warning**: Nevertheless, i must repeatedly stress that it is still a prototype and work in progress.
-
-## Features
-
-+   directly manipulate the layout of a document without having to type or remember names of components, elements, properties or other layout commands.
-+   precise visual layout that corresponds to an existing paper version
-    +   support for various output formats - html, pdf, ...
-+   high-quality on-screen output and on-printer output (only partially implemented)
-+   comfortable user experience - basic WYSIWYG features
-    +   support drag nad drop - resize object length, move object positions
-    +   support manipulating objects -> copy, move, up, down objects in object schema hierarchy
-    +   highlighting currently selected object and its parent
-	+   minimum input, maximum output
-	+	remove the barriers of entry
-+   build-in html content publishing (preview of html dynamic document)
-+   binding support using [react-binding](https://github.com/rsamec/react-binding) - experimental
-+   props inheritance - when rendering occurs -> the props value is resolved by using a value resolution strategy (Binding Value -> Local Value -> Style Value -> Default Value)
-+   usable for big documents - careful designed to use react performance
-    +   we won't render the component if it doesn't need it
-    +   simple comparison is fast because of using immutable data structure
-+   undo/redo functionality
-
 It comes with core components typical for WYSIWYG designers
 
 +   Workplace - main working area for drawing documents
 +   ObjectTree - logical component tree - enables to search and move components between nodes
-+   PropertyGrid - component properties editors (html editors, color pickers, json editors, etc.)
 
-Document definition is done in JSON - uses [PTT](https://github.com/rsamec/ptt) that follows the separation between      
+Document definition is done in JSON - uses [PTT](https://github.com/rsamec/ptt)      
 
-+   logical component tree - JSON simple document description - [Page Transform Tree (PTT)](https://github.com/rsamec/ptt) - it is framework agnostic definition
-+   visual component tree - [React virtual DOM](http://facebook.github.io/react) - rendering to DOM so that it maps each component (terminal node) from logical tree to react component and its properties
++   document definition - simple JSON - [Page Transform Tree (PTT)](https://github.com/rsamec/ptt) - it is framework agnostic definition
++   document rendering  - visual component tree - [React virtual DOM](http://facebook.github.io/react) - rendering to DOM so that it maps each component (terminal node) from logical tree to react component and its properties
 
 
-### Logical component tree - [PTT](https://github.com/rsamec/ptt)
+### Document definition - [PTT](https://github.com/rsamec/ptt)
 
 The PPT format is __framework agnostic__ document description. It enables to dynamically render pages in different sizes (A4,A3,Letter,...),in various formats (html,pdf,...) and for various visual media (screen, papers).
 
@@ -84,23 +63,16 @@ There is an minimal 'Hello world' example. The PTT consists of one container and
 }
 ```
 
-
 See the full [PTT specification](https://github.com/rsamec/ptt).
 
-### Visual componenet tree - PTT rendering in react
+### Document rendering - visual component tree - PTT rendering in react
 
 To render react components specifies in react is really simple
 
 ```js
-    createComponent: function (box) {
-        var widget =widgets[box.elementName];
-        if (widget === undefined) return React.DOM.span(null,'Component ' + box.elementName + ' is not register among widgets.');
-
-        return React.createElement(widget,box, box.content!== undefined?React.DOM.span(null, box.content):undefined);
-    },
-    render:function(){
+    render:{
        {this.props.boxes.map(function (box, i) {
-                var component = this.createComponent(box);
+                var component = React.createElement(widget,box, box.content!== undefined?React.DOM.span(null, box.content):undefined);
                 return (
                        <div style={box.style}>
                             {component}
@@ -112,7 +84,8 @@ To render react components specifies in react is really simple
 
 ## Demo & Examples
 
-[Live demo](http://rsamec.github.io/react-designer-core/)
++	[Simple](http://rsamec.github.io/react-designer-core/)
++	[Complex](http://rsamec.github.io/react-designer/)
 
 To build the examples locally, run:
 
@@ -128,7 +101,7 @@ Then open [`localhost:8000`](http://localhost:8000) in a browser.
 
 The easiest way to use this component is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
 
-You can also use the standalone build by including `dist/react-shapes.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
+You can also use the standalone build by including `dist/react-designer-core.js` in your page. If you use this, make sure you have already included React, and it is available as a global variable.
 
 ```
 npm install react-designer-core --save
@@ -138,31 +111,87 @@ npm install react-designer-core --save
 
 import {Workplace,ObjectBrowser} from 'react-designer-core';
 
+```js
+
+import React from 'react';
+import Freezer from 'freezer-js';
+import Designer from './Designer';
+
+// Create a Freezer store
+var freezer  = new Freezer({
+  schema: {
+    elementName: 'ObjectSchema',
+    name: 'New Document',
+    containers: []
+  }
+})
+
+export default class AppContainer extends React.Component {
+
+   componentDidMount() {
+     var me = this;
+
+     // 2. Your app get re-rendered on any state change
+     freezer.on('update', function () {
+       me.forceUpdate()
+     });
+   }
+
+   render() {
+     // 1. Your app receives the state
+     var state = freezer.get();
+     return <Designer state={ state } />;
+   }
+ }
+```
+
+```js
+
+import React from 'react';
+import {Workplace,ObjectBrowser} from 'react-designer-core';
+
+import Widgets from './Widgets';
+import WidgetRenderer from './WidgetRenderer';
 
 
-See the example folder.
+export default class Designer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      current: {
+        node: props.state.schema
+      },
+      snapGrid: [10, 10]
+    }
+  }
 
-## Roadmap
+  currentChanged(currentNode, path) {
+    if (currentNode === undefined) return;
+  
+    this.setState({
+        current: {
+          node: currentNode,
+          path: path === undefined ? this.state.current && this.state.current.path : path
+        }
+      }
+    );
+  }
+  
+ render() {
+    var schema = this.props.state.schema;
+    return
+     	<div className="index">
+            <Workplace schema={schema} current={this.state.current}
+                       currentChanged={this.currentChanged.bind(this)} widgets={Widgets}
+                       widgetRenderer={WidgetRenderer} snapGrid={this.state.snapGrid}/>
+            <ObjectBrowser rootNode={schema} current={this.state.current}
+                       currentChanged={this.currentChanged.bind(this)}/>
+      	</div>
+ }
+}
+```
 
-+   support for more positioning schemas (especially to support for responsive design)
-	+	[Responsive grid system] (http://getbootstrap.com/css/#grid)
-	+	[CSS Flex box](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Using_CSS_flexible_boxes)
-	+	[Grid Style Sheets](http://gridstylesheets.org/)
-+   support for typography (vertical rhythm, modular scale, web fonts, etc.)
-+   support for more fonts (google fonts)
-+   support for print (PDF) - 300 DPI pixel perfect print
-	+	support html fragments -> to pdf (using html parser)
-	+	custom PDF rendering - (no dependency on PhantomJS or Electron)
-+   improve designer experience
-    +   move objects in object browser
-    +   disabled add widget when box is selected
-    +   improve property editor
-+   performance issues
-    +   recheck - should component update
-    +   parse property values (parseInt,etc.) - to many places - remove defensive programming favor contract by design
-+   data binding refactoring    
-    +   support for binding to remote stores (consider falcor)
-    +   data watchers - if some data changes, it changes on the other site
+See the example folder to see more features.
 
 ### License
 

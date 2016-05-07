@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 const TooltipStyle = {
 	position: 'absolute',
@@ -50,14 +51,16 @@ export default class ToolTip extends React.Component {
 		let {
 			style,
 			arrowOffsetLeft: left = placementStyle.arrow.left,
-			arrowOffsetTop: top = placementStyle.arrow.top,
-			...props } = this.props;
+			arrowOffsetTop: top = placementStyle.arrow.top} = this.props;
+
+    let tooltipStyle = _.extend({},TooltipStyle,placementStyle.tooltip,style);
+    let tooltipArrowStyle = _.extend({},TooltipArrowStyle,placementStyle.arrow,{left:left,top:top});
 
 		return (
-			<div style={{...TooltipStyle, ...placementStyle.tooltip, ...style}}>
-				<div style={{...TooltipArrowStyle, ...placementStyle.arrow, left, top }}/>
+			<div style={tooltipStyle}>
+				<div style={tooltipArrowStyle}/>
 				<div style={TooltipInnerStyle}>
-					{ props.children }
+					{ this.props.children }
 				</div>
 			</div>
 		);
