@@ -84,8 +84,8 @@ To render react components specifies in react is really simple
 
 ## Demo & Examples
 
-+	[Simple](http://rsamec.github.io/react-designer-core/)
-+	[Complex](http://rsamec.github.io/react-designer/)
++	[Minimal](http://rsamec.github.io/react-designer-core/)
++	[react-designer](http://rsamec.github.io/react-designer/)
 
 To build the examples locally, run:
 
