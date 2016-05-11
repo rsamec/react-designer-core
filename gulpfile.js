@@ -25,9 +25,10 @@ var taskConfig = {
 	example: {
 		src: 'example/src',
 		dist: 'example/dist',
-		port: 8400,
+		port: 8000,
 		files: [
 			'index.html',
+			'grid.png',
 			'.gitignore'
 		],
 		scripts: [
