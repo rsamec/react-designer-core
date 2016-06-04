@@ -60,7 +60,7 @@ class Container extends React.Component {
 		//test -> container custom style changed
 		var propsStyles = this.props.ctx.styles;
 		var nextPropsStyles = nextProps.ctx.styles;
-		update = (propsStyles && propsStyles[node.elementName]) !== (nextPropsStyles && nextPropsStyles[node.elementName]);
+		update = (propsStyles !== nextPropsStyles);
 
 		return update;
 	}
@@ -172,6 +172,8 @@ class Container extends React.Component {
 						
 						if (!childProps.width && !!containerStyle.width) childProps.width = containerStyle.width;
 						if (!childProps.height && !!containerStyle.height) childProps.height = containerStyle.height;
+						if (!childProps.left && !!containerStyle.left) childProps.left = containerStyle.left;
+						if (!childProps.top && !!containerStyle.top) childProps.top = containerStyle.top;
 
 						var childComponent = widgets[container.elementName] || 'div';
 						

@@ -68,6 +68,11 @@
   position: absolute;
   width: 100%;
 }
+
+p
+{
+  margin: 0px;
+}
 .con {
   min-height: 20px;
   min-width: 20px;

@@ -47,10 +47,11 @@ class RichEditor extends React.Component {
     };
 
     this.focus = () => this.refs.editor.focus();
-    this.saveChanges = _.debounce(this.saveChanges, 500);
+    //this.saveChanges = _.debounce(this.saveChanges, 100);
     this.onChange = (editorState) => {
       this.setState({editorState});
-      this.saveChanges();
+		//this.props.saveChanges(editorState);
+      //this.saveChanges();
     };
 
 
@@ -61,8 +62,11 @@ class RichEditor extends React.Component {
 
   componentWillMount() {
     var content = this.props.node && this.props.node.props && this.props.node.props.content;
-    this.setState({editorState: content !== undefined ? EditorState.createWithContent(ContentState.createFromBlockArray(convertFromRaw(content))) : EditorState.createWithContent(ContentState.createFromText('Type your content'))});
+    this.setState({editorState: content !== undefined ? EditorState.createWithContent(convertFromRaw(content)) : EditorState.createWithContent(ContentState.createFromText('Type your content'))});
   }
+  componentWillUnmount(){
+	  this.saveChanges()
+  }	
 
   toolboxToggle() {
     let show = this.state.show;
@@ -89,8 +93,8 @@ class RichEditor extends React.Component {
       _.extend({
         content: convertToRaw(editorState.getCurrentContent())
       }, _.omit(current.props, 'content')));
-
-    this.props.currentChanged(updated)
+    
+    //this.props.currentChanged(updated)
   }
 
 
@@ -303,6 +307,28 @@ let RichText = (props) => {
   var box = props.designer ? <RichEditor {...props}/> : <RichTextRenderer {...props}/>;
   return box;
 }
-
+// export default class RichTextComponent extends React.Component {
+//
+// 	componentWillReceiveProps(nextProps) {
+// 		if (nextProps.designer !== this.props.designer){
+// 			console.log(this.props);
+// 		}
+// 	}
+//	
+// 	saveChanges(editorState){
+// 		//const {editorState} = this.state;
+// 		 var current = this.props.current;
+// 		 var updated = current.set('props',
+// 		   _.extend({
+// 		     content: convertToRaw(editorState.getCurrentContent())
+// 		   }, _.omit(current.props, 'content')));
+//		
+// 		 this.props.currentChanged(updated)
+// 	}
+// 	render (){
+// 		var box = this.props.designer ? <RichEditor {...this.props} saveChanges={this.saveChanges.bind(this)}/> : <RichTextRenderer {...this.props}/>;
+// 		return box;
+// 	}
+// }
 //RichEditorRenderer.defaultProps = {content:'type your content'};
 export default RichText;

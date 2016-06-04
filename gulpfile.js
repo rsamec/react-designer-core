@@ -25,7 +25,7 @@ var taskConfig = {
 	example: {
 		src: 'example/src',
 		dist: 'example/dist',
-		port: 8000,
+		port: 8002,
 		files: [
 			'index.html',
 			'grid.png',

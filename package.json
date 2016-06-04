@@ -1,6 +1,6 @@
 {
   "name": "react-designer-core",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "React-designer-core is a set of core components for easy content creation.",
   "main": "lib/Designer.js",
   "author": "Roman Samec",
@@ -24,8 +24,8 @@
     "babel-eslint": "^4.1.3",
     "babel-runtime": "^6.6.1",
     "babelify": "^7.3.0",
-    "backdraft-js": "0.0.1",
-    "draft-js": "^0.2.2",
+    "draft-js": "^0.7.0",
+    "draft-js-export-html": "^0.2.2",
     "eslint": "^1.6.0",
     "eslint-plugin-react": "^3.5.1",
     "freezer-js": "^0.11.1",

@@ -1,4 +1,4 @@
-import React from 'react';
+var React = require('react');
 import _ from 'lodash';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -63,8 +63,8 @@ class Workplace extends React.Component {
 
 		var ctx = (schema.props && schema.props.context) || {};
 		var customStyles = ctx['styles'] || {};
-		var code = ctx['code'] && ctx['code'].code;
-		var customCode = !!code ? new Function(code)() : undefined;
+		var code = ctx['code'] && ctx['code'].compiled;
+		var customCode = !!code ? eval(code) : undefined;
 		
 		//append shared code to data context
 		if (dataContext !== undefined) dataContext.customCode = customCode;
