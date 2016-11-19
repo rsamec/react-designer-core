@@ -24891,10 +24891,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -24914,6 +24910,8 @@ var _workplaceContainer2 = _interopRequireDefault(_workplaceContainer);
 var _utilBackgroundStyle = require('../util/backgroundStyle');
 
 var _utilBackgroundStyle2 = _interopRequireDefault(_utilBackgroundStyle);
+
+var React = require('react');
 
 var DEFAULT_TRANSFORM = {
 	tx: 0, ty: 0, //translate in px
@@ -24980,8 +24978,8 @@ var Workplace = (function (_React$Component) {
 
 			var ctx = schema.props && schema.props.context || {};
 			var customStyles = ctx['styles'] || {};
-			var code = ctx['code'] && ctx['code'].code;
-			var customCode = !!code ? new Function(code)() : undefined;
+			var code = ctx['code'] && ctx['code'].compiled;
+			var customCode = !!code ? eval(code) : undefined;
 
 			//append shared code to data context
 			if (dataContext !== undefined) dataContext.customCode = customCode;
@@ -24999,7 +24997,7 @@ var Workplace = (function (_React$Component) {
 			bgStyle.height = '100%';
 			bgStyle.zIndex = -1;
 
-			var component = _react2['default'].createElement(_workplaceContainer2['default'], {
+			var component = React.createElement(_workplaceContainer2['default'], {
 				containers: schema.containers,
 				boxes: schema.boxes,
 				currentChanged: this.currentChanged.bind(this),
@@ -25014,22 +25012,22 @@ var Workplace = (function (_React$Component) {
 				widgetRenderer: this.props.widgetRenderer
 			});
 
-			return _react2['default'].createElement(
+			return React.createElement(
 				'div',
 				{ className: 'cWorkplace' },
-				_react2['default'].createElement('div', { style: bgStyle }),
+				React.createElement('div', { style: bgStyle }),
 				component,
-				this.state.currentDOMNode !== undefined ? _react2['default'].createElement(_transhand.CSSTranshand, { transform: transform, deTarget: this.state.currentDOMNode,
+				this.state.currentDOMNode !== undefined ? React.createElement(_transhand.CSSTranshand, { transform: transform, deTarget: this.state.currentDOMNode,
 					onChange: this.handleChange.bind(this) }) : null
 			);
 		}
 	}]);
 
 	return Workplace;
-})(_react2['default'].Component);
+})(React.Component);
 
 ;
-Workplace.childContextTypes = { snapGrid: _react2['default'].PropTypes.arrayOf(_react2['default'].PropTypes.number) };
+Workplace.childContextTypes = { snapGrid: React.PropTypes.arrayOf(React.PropTypes.number) };
 exports['default'] = (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2['default'])(Workplace);
 module.exports = exports['default'];
 
@@ -25446,7 +25444,7 @@ var Container = (function (_React$Component) {
 			//test -> container custom style changed
 			var propsStyles = this.props.ctx.styles;
 			var nextPropsStyles = nextProps.ctx.styles;
-			update = (propsStyles && propsStyles[node.elementName]) !== (nextPropsStyles && nextPropsStyles[node.elementName]);
+			update = propsStyles !== nextPropsStyles;
 
 			return update;
 		}
@@ -25572,6 +25570,8 @@ var Container = (function (_React$Component) {
 
 						if (!childProps.width && !!containerStyle.width) childProps.width = containerStyle.width;
 						if (!childProps.height && !!containerStyle.height) childProps.height = containerStyle.height;
+						if (!childProps.left && !!containerStyle.left) childProps.left = containerStyle.left;
+						if (!childProps.top && !!containerStyle.top) childProps.top = containerStyle.top;
 
 						var childComponent = widgets[container.elementName] || 'div';
 

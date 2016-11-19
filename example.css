@@ -68,6 +68,9 @@
   position: absolute;
   width: 100%;
 }
+p {
+  margin: 0px;
+}
 .con {
   min-height: 20px;
   min-width: 20px;
@@ -132,6 +135,9 @@
   -ms-user-select: none;
   user-select: none;
   font-size: 20px;
+}
+.tree-view_arrow:after {
+  content: '▾';
 }
 /* rotate the triangle to close it */
 .tree-view_arrow-collapsed {
