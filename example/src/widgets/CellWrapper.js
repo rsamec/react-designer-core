@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Cell } from 'react-flexr';
+import Cell from './GridItem';
 
 import backgroundStyle from './utils/backgroundStyle';
 import styleBorder from'./utils/border'
@@ -52,6 +52,7 @@ let CellWrapper = (props) => {
     <div style={styles}>{props.children}</div>
   </Cell>
 }
+
 
 export default CellWrapper;
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Grid } from 'react-flexr';
+import Grid from './GridContainer';
 
 import backgroundStyle from './utils/backgroundStyle';
 import styleBorder from'./utils/border'

@@ -1,11 +1,14 @@
 import React from 'react';
+import _ from "lodash";
+
 import {Workplace, ObjectBrowser} from 'react-designer-core';
 import SplitPane from 'react-split-pane';
-
 import Widgets from './Widgets';
 import WidgetRenderer from './WidgetRenderer';
 import Toolbar from './Toolbar';
 
+//import { JsonTree, ADD_DELTA_TYPE, REMOVE_DELTA_TYPE, UPDATE_DELTA_TYPE } from 'react-editable-json-tree';
+import  getContainerProps from './containerMetadata';
 
 export default class Designer extends React.Component {
   constructor(props) {
@@ -31,7 +34,14 @@ export default class Designer extends React.Component {
       }
     );
   }
-
+  widgetPropsChanged(updatedValue) {
+    console.log(updatedValue);
+    var current = this.state.current.node;
+    
+    //var updated = current.set({'props': updatedValue.props, 'bindings':updatedValue.binding});
+    var updated = current.set({'props': updatedValue});
+    this.currentChanged(updated);
+  }
   addNewContainer(elName) {
 
     var itemToAdd = {
@@ -66,6 +76,12 @@ export default class Designer extends React.Component {
   render() {
     var schema = this.props.state.schema;
     var editorState = this.props.editorState || {};
+
+    var currentNode = this.state.current.node;
+    var elementName = currentNode.elementName;
+    var props = _.merge(getContainerProps(elementName),currentNode.props && currentNode.props.toJS());
+    
+    
     return (
       <div className="index">
 
@@ -127,9 +143,11 @@ export default class Designer extends React.Component {
 										
               <Toolbar current={this.state.current} currentChanged={this.currentChanged.bind(this)}/>
             </div>
-
+            <div>
+            {/* <JsonTree data={props} onFullyUpdate={this.widgetPropsChanged.bind(this)} /> */}
             <ObjectBrowser rootNode={schema} current={this.state.current}
                            currentChanged={this.currentChanged.bind(this)}/>
+            </div>
           </div>
         </SplitPane>
       </div>

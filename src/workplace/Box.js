@@ -1,4 +1,6 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import ReactDOM from 'react-dom';
 import { DragSource } from 'react-dnd';
 import _ from 'lodash';
 import cx from 'classnames';
@@ -37,9 +39,11 @@ const propTypes = {
 };
 
 class Box extends React.Component {
+
+	
 	handleDoubleClick(e) {
 		e.stopPropagation();
-		if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node, this.props.path, React.findDOMNode(this));
+		if (this.props.currentChanged !== undefined) this.props.currentChanged(this.props.node, this.props.path, ReactDOM.findDOMNode(this));
 	}
 
 	handleClick(e) {
@@ -63,11 +67,16 @@ class Box extends React.Component {
 
 		return update;
 	}
-	
-
+	// componentWillReceiveProps(nextProps){		
+	// 	var index = this.props.index;
+	// 	for (var action of ['right','left','up','down'])
+	// 	{
+	// 		if (nextProps.selected)this.props.bindShortcut(action, this.props.moveBox.bind(this,index,action));//: this.props.unbindShortcut(action);
+	// 	}
+	// }
 	render() {
 		
-		const {widgets,widgetRenderer,selected,node,dataBinder, currentChanged} = this.props;
+		const {widgets,widgetRenderer,selected,node,dataBinder, currentChanged, index} = this.props;
 		const {isDragging, connectDragSource, item } = this.props;
 		
 		//prepare styles
@@ -92,6 +101,7 @@ class Box extends React.Component {
 		
 		var boxComponent = widgetRenderer !== undefined && widgets !== undefined ?
 			React.createElement(widgetRenderer,{
+				tabIndex: index,
 				widget:widgets[box.elementName],
 				node:box,
 				dataBinder:dataBinder,
@@ -123,7 +133,5 @@ class Box extends React.Component {
 };
 
 Box.propTypes = propTypes;
-
 // Export the wrapped component:
 export default DragSource(ItemTypes.BOX, source, collect)(Box);
-

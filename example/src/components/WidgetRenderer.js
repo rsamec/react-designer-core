@@ -12,6 +12,6 @@ export default (properties) => {
     var isInlineEdit = selected && node.elementName === 'Core.RichTextContent';
     if (isInlineEdit) props = _.extend(props,{designer:true,current:current,currentChanged:currentChanged,node:node});
 
-    return  React.createElement(widget,props,props.content !== undefined ? React.DOM.div({ dangerouslySetInnerHTML: {__html: props.content } }) : null);
+    return  React.createElement(widget,props,props.content !== undefined ? React.createElement("div",{ dangerouslySetInnerHTML: {__html: props.content } }) : null);
 
 };

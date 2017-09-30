@@ -33,7 +33,7 @@ export default class ObjectBrowser extends React.Component {
 
         //find source
         var source = from.node;
-        var isContainer = _.contains(CONTAINER_KEYS,source.elementName);
+        var isContainer = _.includes(CONTAINER_KEYS,source.elementName);
 		
         //move source to target - do it in transaction
         var targetArray = isContainer? to.node.containers:to.node.boxes;
@@ -87,7 +87,7 @@ class TreeNode extends React.Component
         var trav = function(node){
             var containers = node.containers;
             var boxes = node.boxes;
-            var anyBoxes = _.any(boxes,function(item){return item.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1});
+            var anyBoxes = _.some(boxes,function(item){return item.name.toLowerCase().indexOf(filterText.toLowerCase()) !== -1});
             if (anyBoxes) return true;
             if (node.name.indexOf(filterText) !== -1) return true;
             //recursion condtion stop

@@ -1,4 +1,5 @@
 var React = require('react');
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
@@ -109,5 +110,5 @@ class Workplace extends React.Component {
 		</div>);
 	}
 };
-Workplace.childContextTypes = {snapGrid: React.PropTypes.arrayOf(React.PropTypes.number)};
+Workplace.childContextTypes = {snapGrid: PropTypes.arrayOf(PropTypes.number)};
 export default DragDropContext(HTML5Backend)(Workplace);
